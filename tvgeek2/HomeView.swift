@@ -9,6 +9,6 @@
 import Foundation
 import UIKit
 
-class ShowView:UIViewController{
+class HomeView:UIViewController{
     
 }

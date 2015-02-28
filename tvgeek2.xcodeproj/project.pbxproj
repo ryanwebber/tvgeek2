@@ -13,8 +13,9 @@
 		933C0E371A2CD5AE006AB2FC /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 933C0E351A2CD5AE006AB2FC /* LaunchScreen.xib */; };
 		933C0E431A2CD5AE006AB2FC /* tvgeek2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933C0E421A2CD5AE006AB2FC /* tvgeek2Tests.swift */; };
 		9344428B1A92A7BE005A1EB3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9344428A1A92A7BE005A1EB3 /* Main.storyboard */; };
-		9344428D1A92A7F7005A1EB3 /* ShowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9344428C1A92A7F7005A1EB3 /* ShowView.swift */; };
+		9344428D1A92A7F7005A1EB3 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9344428C1A92A7F7005A1EB3 /* HomeView.swift */; };
 		9348BBB01A2E93D1006A0DDE /* Http.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9348BBAF1A2E93D1006A0DDE /* Http.swift */; };
+		93A0D7361A9FED25002366DF /* FavouriteList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A0D7351A9FED25002366DF /* FavouriteList.swift */; };
 		93B689F61A90F4C100EDAB0D /* Show.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B689F51A90F4C100EDAB0D /* Show.swift */; };
 		93B689F81A90F59300EDAB0D /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B689F71A90F59300EDAB0D /* Api.swift */; };
 /* End PBXBuildFile section */
@@ -40,8 +41,9 @@
 		933C0E411A2CD5AE006AB2FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		933C0E421A2CD5AE006AB2FC /* tvgeek2Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tvgeek2Tests.swift; sourceTree = "<group>"; };
 		9344428A1A92A7BE005A1EB3 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		9344428C1A92A7F7005A1EB3 /* ShowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowView.swift; sourceTree = "<group>"; };
+		9344428C1A92A7F7005A1EB3 /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		9348BBAF1A2E93D1006A0DDE /* Http.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Http.swift; sourceTree = "<group>"; };
+		93A0D7351A9FED25002366DF /* FavouriteList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavouriteList.swift; sourceTree = "<group>"; };
 		93B689F51A90F4C100EDAB0D /* Show.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Show.swift; sourceTree = "<group>"; };
 		93B689F71A90F59300EDAB0D /* Api.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -132,6 +134,15 @@
 			name = api;
 			sourceTree = "<group>";
 		};
+		93A0D7341A9FEA37002366DF /* home */ = {
+			isa = PBXGroup;
+			children = (
+				9344428C1A92A7F7005A1EB3 /* HomeView.swift */,
+				93A0D7351A9FED25002366DF /* FavouriteList.swift */,
+			);
+			name = home;
+			sourceTree = "<group>";
+		};
 		93B689F31A90F48E00EDAB0D /* objects */ = {
 			isa = PBXGroup;
 			children = (
@@ -143,7 +154,7 @@
 		93B689F41A90F49700EDAB0D /* views */ = {
 			isa = PBXGroup;
 			children = (
-				9344428C1A92A7F7005A1EB3 /* ShowView.swift */,
+				93A0D7341A9FEA37002366DF /* home */,
 			);
 			name = views;
 			sourceTree = "<group>";
@@ -250,10 +261,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				93B689F81A90F59300EDAB0D /* Api.swift in Sources */,
+				93A0D7361A9FED25002366DF /* FavouriteList.swift in Sources */,
 				93B689F61A90F4C100EDAB0D /* Show.swift in Sources */,
 				933C0E2B1A2CD5AE006AB2FC /* AppDelegate.swift in Sources */,
 				9348BBB01A2E93D1006A0DDE /* Http.swift in Sources */,
-				9344428D1A92A7F7005A1EB3 /* ShowView.swift in Sources */,
+				9344428D1A92A7F7005A1EB3 /* HomeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

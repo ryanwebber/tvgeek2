@@ -20,7 +20,7 @@ class Api{
             "Content-Type": "application/json",
             "trakt-api-version": "2",
             "trakt-api-key": Api.api_keys["trakt_key"] as String,
-            "Authorization": "Bearer" + (Api.api_keys["trakt_token"] as String)
+            "Authorization": "Bearer " + (Api.api_keys["trakt_token"] as String)
         ]
         return dict
     }
