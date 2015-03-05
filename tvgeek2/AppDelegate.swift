@@ -16,11 +16,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
-        Api().getShowFromId("1390", callback: {(show: Show) -> Void in
-            NSLog(show.title);
-        })
+        var homeViewController = HomeViewController(nibName: "HomeView", bundle: nil)
+        var navigator = AppNavigator()
+        navigator.pushViewController(homeViewController, animated:false)
         
-        application.setStatusBarStyle(UIStatusBarStyle.LightContent, animated: false)
+        window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        window?.rootViewController = navigator
+        window?.makeKeyAndVisible()
         
         return true
     }
