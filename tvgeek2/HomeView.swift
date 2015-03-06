@@ -9,9 +9,11 @@
 import Foundation
 import UIKit
 
-class HomeViewController:UIViewController{
+class HomeViewController:BaseViewController{
     
-    override func viewDidLoad() {
+    init(){
+        super.init(nibName: nil, bundle: nil)
+        
         var searchBar = UISearchBar()
         var searchController = UISearchDisplayController(searchBar: searchBar, contentsController: self)
 
@@ -19,66 +21,50 @@ class HomeViewController:UIViewController{
         self.navigationItem.titleView = searchBar
         
         Api().getShowFromId("1390", callback: {(show: Show) -> Void in
-            (self.view as HomeView).setFavourites([show, show, show])
+            self.view = HomeView(shows: [show, show, show, show])
         })
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
 class HomeView:UIView{
     
-    var favourites:[Show]?;
-    var loader:UIActivityIndicatorView
+    private var favourites:[Show];
+    private var scroller = UIScrollView()
     
     required init(coder aDecoder: NSCoder){
-        loader = UIActivityIndicatorView()
-        super.init(coder: aDecoder)
-        
-        loader.startAnimating()
-        self.addSubview(loader)
+        fatalError("init(coder:) has not been implemented")
     }
     
-    override init(frame: CGRect) {
-        loader = UIActivityIndicatorView()
-        super.init(frame: frame)
-        
-        loader.startAnimating()
-        self.addSubview(loader)
-    }
-    
-    func setFavourites(shows: [Show]){
+    init(shows: [Show]){
         self.favourites = shows
-        loader.removeFromSuperview()
-        self.setNeedsLayout()
+        super.init(frame: CGRectZero)
+        
+        scroller.pagingEnabled = true
+        self.backgroundColor = COLOR_DARK
+        self.addSubview(scroller)
     }
-    
+
     override func layoutSubviews() {
         var bounds = self.bounds
-        if let favs = self.favourites {
-            if favs.isEmpty {
-                
-            } else {
-                
-                var scroller = SnapScroll(frame: self.frame)
-                scroller.frame.origin.y=0
-                scroller.contentSize.width = self.frame.size.width
-                scroller.contentSize.height = self.frame.size.height * CGFloat(favs.count)
-                scroller.delegate = scroller
-                
-                var counter = 0
-                for show in favs {
+        scroller.frame = bounds
+        if favourites.isEmpty {
+            scroller.contentSize.height = bounds.size.height
+        } else {
+            scroller.contentSize.height = bounds.height * CGFloat(favourites.count)
+            var counter = 0
+            for show in favourites {
 
-                    var page = ShowView(frame: CGRect(
-                        origin: CGPoint(x: 0, y: CGFloat(counter++) * bounds.height),
-                        size: bounds.size
-                    ))
-                    page.show = show
-                    scroller.addSubview(page)
-                }
-
-                self.addSubview(scroller)
+                var page = ShowView(frame: CGRect(
+                    origin: CGPoint(x: 0, y: CGFloat(counter++) * bounds.height),
+                    size: bounds.size
+                ))
+                page.setShow(show)
+                scroller.insertSubview(page, atIndex: 0)
             }
-        }else{
-            loader.center = self.center
         }
     }
 }
