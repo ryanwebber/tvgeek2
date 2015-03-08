@@ -47,7 +47,7 @@ class Api{
                 var json = self.getJSONFromData(result.data!)
                 callback(show: Show(
                     title: json["title"] as String,
-                    rating: json["rating"] as? Double,
+                    rating: json["rating"] as? Float,
                     poster: ((json["images"] as NSDictionary)["poster"] as NSDictionary)["thumb"] as? String,
                     cover: ((json["images"] as NSDictionary)["fanart"] as NSDictionary)["thumb"] as? String,
                     description: json["overview"] as? String,
@@ -56,7 +56,8 @@ class Api{
                     airTimezone: (json["airs"] as NSDictionary)["timezone"] as? String,
                     network: json["network"] as? String,
                     year: json["year"] as Int,
-                    id: (json["ids"] as NSDictionary)["trakt"] as Int
+                    id: (json["ids"] as NSDictionary)["trakt"] as Int,
+                    genres: json["genres"] as [String]
                 ))
             }else{
                 Error.HTTPError(result.error!)

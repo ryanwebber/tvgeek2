@@ -10,7 +10,7 @@ import Foundation
 
 struct Show{
     var title: String;
-    var rating: Double?;
+    var rating: Float?;
     var poster: String?;
     var cover: String?;
     var description: String?;
@@ -20,4 +20,5 @@ struct Show{
     var network: String?;
     var year: Int;
     var id: Int;
+    var genres: [String];
 }

@@ -12,7 +12,7 @@ import UIKit
 class AppNavigator:UINavigationController{
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.navigationBar.tintColor = COLOR_THEME
         self.navigationBar.barStyle = UIBarStyle.BlackTranslucent
     }
 }

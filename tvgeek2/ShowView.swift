@@ -24,6 +24,8 @@ class ShowView:UIView{
     private var rating = UILabel()
     private var ratingLabel = UILabel()
     private var network = UILabel()
+    private var genres = UILabel()
+    private var genresLabel = UILabel()
     
     required init(coder aDecoder: NSCoder) {
         fatalError("[ShowView] Nib initializer not implemented yet")
@@ -70,6 +72,14 @@ class ShowView:UIView{
         network.textAlignment = NSTextAlignment.Center
         network.numberOfLines = 0
         
+        genres.font = UIFont.systemFontOfSize(FONT_SIZE_MED)
+        genres.textColor = COLOR_LIGHT
+        genres.textAlignment = NSTextAlignment.Right
+        
+        genresLabel.font = UIFont.systemFontOfSize(FONT_SIZE_MED)
+        genresLabel.textColor = COLOR_LIGHT
+        genresLabel.text = "Genre: "
+        
         info.addSubview(poster)
         info.addSubview(overview)
         info.addSubview(title)
@@ -77,6 +87,8 @@ class ShowView:UIView{
         info.addSubview(seperator)
         info.addSubview(ratingLabel)
         info.addSubview(rating)
+        info.addSubview(genresLabel)
+        info.addSubview(genres)
         info.addSubview(network)
         
         container.addSubview(cover)
@@ -102,11 +114,17 @@ class ShowView:UIView{
                 self.rating.text = "Unknown"
             }
             
+            if show.genres.isEmpty{
+                self.genres.text = "None"
+            }else{
+                self.genres.text = "/".join(show.genres)
+            }
+            
             if let n = show.network{
                 if (show.airDay != nil && show.airTime != nil){
                     self.network.text = "\(show.airDay!)s at \(show.airTime!) on \(n)"
                 }else{
-                    self.network.text = "Airs on (\n)"
+                    self.network.text = "Aired on \(n)"
                 }
             }else{
                 self.network.text = "Unknown air time"
@@ -172,11 +190,25 @@ class ShowView:UIView{
                 height: rating.font.lineHeight
             )
             
-            network.frame = CGRect(
+            genresLabel.frame = CGRect(
                 x: poster_offset,
                 y: rating.frame.origin.y + rating.frame.height,
                 width: data_width,
-                height: poster_height - (rating.frame.origin.y + rating.frame.height - PADDING)
+                height: genres.font.lineHeight
+            )
+            
+            genres.frame = CGRect(
+                x: poster_offset,
+                y: rating.frame.origin.y + rating.frame.height,
+                width: data_width,
+                height: genres.font.lineHeight
+            )
+            
+            network.frame = CGRect(
+                x: poster_offset,
+                y: genres.frame.origin.y + genres.frame.height,
+                width: data_width,
+                height: poster_height - (genres.frame.origin.y + genres.frame.height - PADDING)
             )
             
             overview.frame = CGRect(
