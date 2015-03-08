@@ -15,9 +15,15 @@ class ShowView:UIView{
     private var container = UIView()
     private var info = UIView()
     private var loader = UIActivityIndicatorView()
-    private var cover = UIImageView()
-    private var poster = UIImageView()
+    private var cover = URLImageView()
+    private var poster = URLImageView()
     private var title = UILabel()
+    private var overview = UITextView()
+    private var year = UILabel()
+    private var seperator = UIView()
+    private var rating = UILabel()
+    private var ratingLabel = UILabel()
+    private var network = UILabel()
     
     required init(coder aDecoder: NSCoder) {
         fatalError("[ShowView] Nib initializer not implemented yet")
@@ -29,15 +35,50 @@ class ShowView:UIView{
         loader.startAnimating()
         info.backgroundColor = COLOR_DARK_TRANS
         cover.contentMode = UIViewContentMode.ScaleAspectFill
+        
         poster.contentMode = UIViewContentMode.ScaleAspectFill
+        poster.layer.borderWidth = 1
+        poster.layer.borderColor = COLOR_WHITE.CGColor
+        
+        var border = CALayer()
+        
         title.textColor = COLOR_WHITE
-        title.numberOfLines = 2
         title.adjustsFontSizeToFitWidth = false;
         title.lineBreakMode = NSLineBreakMode.ByTruncatingTail;
         title.font = UIFont.systemFontOfSize(FONT_SIZE_LARGE)
         
+        overview.editable = false
+        overview.textColor = COLOR_LIGHT
+        overview.backgroundColor = COLOR_TRANS
+        overview.font = UIFont.systemFontOfSize(FONT_SIZE_MED)
+        
+        year.textColor = COLOR_LIGHT
+        year.font = UIFont.systemFontOfSize(FONT_SIZE_MED)
+        
+        seperator.backgroundColor = COLOR_THEME
+        
+        rating.font = UIFont.systemFontOfSize(FONT_SIZE_MED)
+        rating.textColor = COLOR_LIGHT
+        rating.textAlignment = NSTextAlignment.Right
+        
+        ratingLabel.font = UIFont.systemFontOfSize(FONT_SIZE_MED)
+        ratingLabel.textColor = COLOR_LIGHT
+        ratingLabel.text = "Rating: "
+        
+        network.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
+        network.textColor = COLOR_LIGHT
+        network.textAlignment = NSTextAlignment.Center
+        network.numberOfLines = 0
+        
         info.addSubview(poster)
+        info.addSubview(overview)
         info.addSubview(title)
+        info.addSubview(year)
+        info.addSubview(seperator)
+        info.addSubview(ratingLabel)
+        info.addSubview(rating)
+        info.addSubview(network)
+        
         container.addSubview(cover)
         container.addSubview(info)
         self.addSubview(container)
@@ -46,11 +87,31 @@ class ShowView:UIView{
     func setShow(show: Show){
         self.show = show
         
-        cover.image = UIImage(named: "cover")
-        poster.image = UIImage(named: "poster")
-        title.text = show.title
+        self.cover.setImageUrl(show.cover)
+        self.poster.setImageUrl(show.poster)
         
-        self.setNeedsLayout()
+        dispatch_async(dispatch_get_main_queue()) {
+            self.overview.text = show.description
+            self.title.text = show.title
+            self.year.text = "(\(show.year))"
+            
+            if let r = show.rating{
+                var rounded = Double(round(10*r)/10)
+                self.rating.text = "\(rounded)/10"
+            }else{
+                self.rating.text = "Unknown"
+            }
+            
+            if let n = show.network{
+                if (show.airDay != nil && show.airTime != nil){
+                    self.network.text = "\(show.airDay!)s at \(show.airTime!) on \(n)"
+                }else{
+                    self.network.text = "Airs on (\n)"
+                }
+            }else{
+                self.network.text = "Unknown air time"
+            }
+        }
     }
     
     override func layoutSubviews() {
@@ -72,15 +133,58 @@ class ShowView:UIView{
             
             
             var poster_width = max(50, edge.width/3)
+            var poster_height = poster_width*3/2
             var poster_offset = PADDING*2 + poster_width
             var data_width = lims.width - (poster_offset+PADDING)
             poster.frame = CGRect(
                 origin: edge.origin,
-                size: CGSize(width: poster_width, height: poster_width*3/2)
+                size: CGSize(width: poster_width, height: poster_height)
             )
-
-            title.frame = CGRect(x: poster_offset, y: edge.origin.y, width: data_width, height: 0)
-            title.sizeToFit()
+            
+            title.frame.size = CGSize(width: data_width, height: title.font.lineHeight)
+            title.frame.origin = CGPoint(x: poster_offset, y: edge.origin.y)
+            
+            year.frame = CGRect(
+                x: poster_offset,
+                y: title.frame.origin.y + title.frame.height,
+                width: data_width / 2,
+                height: year.font.lineHeight
+            )
+            
+            seperator.frame = CGRect(
+                x: poster_offset,
+                y: year.frame.origin.y + year.font.lineHeight + 2,
+                width: data_width,
+                height: 1
+            )
+            
+            ratingLabel.frame = CGRect(
+                x: poster_offset,
+                y: seperator.frame.origin.y + seperator.frame.height + PADDING,
+                width: data_width,
+                height: rating.font.lineHeight
+            )
+            
+            rating.frame = CGRect(
+                x: poster_offset,
+                y: seperator.frame.origin.y + seperator.frame.height + PADDING,
+                width: data_width,
+                height: rating.font.lineHeight
+            )
+            
+            network.frame = CGRect(
+                x: poster_offset,
+                y: rating.frame.origin.y + rating.frame.height,
+                width: data_width,
+                height: poster_height - (rating.frame.origin.y + rating.frame.height - PADDING)
+            )
+            
+            overview.frame = CGRect(
+                x: edge.origin.x,
+                y: edge.origin.y + poster.frame.height + PADDING,
+                width: edge.width,
+                height: edge.height - (poster.frame.height + PADDING)
+            )
             
         }else{
             loader.hidden = false

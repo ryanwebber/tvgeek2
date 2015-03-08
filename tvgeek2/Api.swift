@@ -25,6 +25,10 @@ class Api{
         return dict
     }
     
+    class var nil_headers: Dictionary<String, String>{
+        return Dictionary<String, String>()
+    }
+    
     var http: Http
     
     init(){
@@ -55,8 +59,31 @@ class Api{
                     id: (json["ids"] as NSDictionary)["trakt"] as Int
                 ))
             }else{
-                //global error handler
+                Error.HTTPError(result.error!)
             }
         })
+    }
+    
+    func getImageDataFromUrl(url: String?, success: (data: NSData) -> (), failure: () -> ()){
+        if let imageurlstr = url {
+            if let imgurl = NSURL(string: imageurlstr) {
+                http.get(imgurl, headers: Api.nil_headers, completionHandler: {(result:HttpResult) -> Void in
+                    var json: NSDictionary;
+                    if result.success{
+                        if let data = result.data{
+                            success(data: data)
+                        }else{
+                            failure()
+                        }
+                    }else{
+                        failure()
+                    }
+                })
+            }else{
+                failure()
+            }
+        }else{
+            failure()
+        }
     }
 }

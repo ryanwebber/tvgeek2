@@ -20,8 +20,10 @@ class HomeViewController:BaseViewController{
         searchBar.barStyle = UIBarStyle.BlackTranslucent
         self.navigationItem.titleView = searchBar
         
-        Api().getShowFromId("1390", callback: {(show: Show) -> Void in
-            self.view = HomeView(shows: [show, show, show, show])
+        Api().getShowFromId("breaking-bad", callback: {(show: Show) -> Void in
+            dispatch_async(dispatch_get_main_queue()) {
+                self.view = HomeView(shows: [show, show, show, show])
+            }
         })
     }
 
