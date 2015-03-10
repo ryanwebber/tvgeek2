@@ -9,7 +9,7 @@
 import Foundation
 
 class Error{
-    class func HTTPError(details: AnyObject){
+    class func HTTPError(details: HttpResult){
         fatalError("[HTTPError] Error with http")
     }
 }

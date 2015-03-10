@@ -11,7 +11,7 @@ import UIKit
 
 let COLOR_THEME = UIColor(hue: 0.386, saturation: 0.48, brightness: 0.56, alpha: 1)
 let COLOR_DARK = UIColor(white: 0.1, alpha: 1)
-let COLOR_GRAY = UIColor(white: 0.15, alpha: 1)
+let COLOR_GRAY = UIColor(white: 0.2, alpha: 1)
 let COLOR_WHITE = UIColor(white: 1, alpha: 1)
 let COLOR_LIGHT = UIColor(white: 0.9, alpha: 1)
 let COLOR_DARK_TRANS = UIColor(white: 0.1, alpha: 0.9)
@@ -22,3 +22,5 @@ let PADDING:CGFloat = 12
 let FONT_SIZE_LARGE:CGFloat = 20
 let FONT_SIZE_MED:CGFloat = 16
 let FONT_SIZE_SMALL:CGFloat = 14
+
+let ROW_HEIGHT:CGFloat = 100

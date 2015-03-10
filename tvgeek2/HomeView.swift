@@ -23,13 +23,11 @@ class HomeViewController:BaseViewController, UISearchBarDelegate{
         
         self.navigationItem.titleView = searchBar
         
-        Api().getShowFromId("californication", callback: {(show: Show) -> Void in
+        Api().getShowFromId("family-guy", callback: {(show: Show) -> Void in
             dispatch_async(dispatch_get_main_queue()) {
                 self.view = HomeView(shows: [show, show, show, show])
             }
         })
-        
-        
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -43,12 +41,14 @@ class HomeViewController:BaseViewController, UISearchBarDelegate{
     func searchBarCancelButtonClicked(searchBar: UISearchBar){
         searchBar.showsCancelButton = false
         searchBar.resignFirstResponder()
+        searchBar.text = nil
     }
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar){
         searchBar.showsCancelButton = false
         searchBar.resignFirstResponder()
         self.navigationController?.pushViewController(SearchViewController(searchBar.text), animated: true)
+        searchBar.text = nil
     }
 }
 

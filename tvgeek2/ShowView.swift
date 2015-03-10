@@ -23,6 +23,7 @@ class ShowView:UIView{
     private var seperator = UIView()
     private var rating = UILabel()
     private var ratingLabel = UILabel()
+    private var networkLabel = UILabel()
     private var network = UILabel()
     private var genres = UILabel()
     private var genresLabel = UILabel()
@@ -59,24 +60,27 @@ class ShowView:UIView{
         
         seperator.backgroundColor = COLOR_THEME
         
-        rating.font = UIFont.systemFontOfSize(FONT_SIZE_MED)
+        rating.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
         rating.textColor = COLOR_LIGHT
         rating.textAlignment = NSTextAlignment.Right
         
-        ratingLabel.font = UIFont.systemFontOfSize(FONT_SIZE_MED)
+        ratingLabel.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
         ratingLabel.textColor = COLOR_LIGHT
         ratingLabel.text = "Rating: "
         
         network.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
         network.textColor = COLOR_LIGHT
-        network.textAlignment = NSTextAlignment.Center
-        network.numberOfLines = 0
+        network.textAlignment = NSTextAlignment.Right
         
-        genres.font = UIFont.systemFontOfSize(FONT_SIZE_MED)
+        networkLabel.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
+        networkLabel.textColor = COLOR_LIGHT
+        networkLabel.text = "Network: "
+        
+        genres.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
         genres.textColor = COLOR_LIGHT
         genres.textAlignment = NSTextAlignment.Right
         
-        genresLabel.font = UIFont.systemFontOfSize(FONT_SIZE_MED)
+        genresLabel.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
         genresLabel.textColor = COLOR_LIGHT
         genresLabel.text = "Genre: "
         
@@ -89,6 +93,7 @@ class ShowView:UIView{
         info.addSubview(rating)
         info.addSubview(genresLabel)
         info.addSubview(genres)
+        info.addSubview(networkLabel)
         info.addSubview(network)
         
         container.addSubview(cover)
@@ -108,7 +113,7 @@ class ShowView:UIView{
             self.year.text = "(\(show.year))"
             
             if let r = show.rating{
-                var rounded = Double(round(10*r)/10)
+                var rounded = String(format: "%.1f", r)
                 self.rating.text = "\(rounded)/10"
             }else{
                 self.rating.text = "Unknown"
@@ -121,13 +126,9 @@ class ShowView:UIView{
             }
             
             if let n = show.network{
-                if (show.airDay != nil && show.airTime != nil){
-                    self.network.text = "\(show.airDay!)s at \(show.airTime!) on \(n)"
-                }else{
-                    self.network.text = "Aired on \(n)"
-                }
+                self.network.text = n
             }else{
-                self.network.text = "Unknown air time"
+                self.network.text = "Unknown"
             }
         }
     }
@@ -204,11 +205,18 @@ class ShowView:UIView{
                 height: genres.font.lineHeight
             )
             
+            networkLabel.frame = CGRect(
+                x: poster_offset,
+                y: genres.frame.origin.y + genres.frame.height,
+                width: data_width,
+                height: network.font.lineHeight
+            )
+            
             network.frame = CGRect(
                 x: poster_offset,
                 y: genres.frame.origin.y + genres.frame.height,
                 width: data_width,
-                height: poster_height - (genres.frame.origin.y + genres.frame.height - PADDING)
+                height: network.font.lineHeight
             )
             
             overview.frame = CGRect(

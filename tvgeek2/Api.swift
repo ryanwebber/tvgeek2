@@ -39,6 +39,41 @@ class Api{
         return NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil) as NSDictionary
     }
     
+    private func getJSONArrayFromData(data:NSData) -> NSArray{
+        return NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil) as NSArray
+    }
+    
+    func getShowsFromSearchString(searchString: String, callback: (shows: [Show]) -> ()){
+        var encoded = searchString.lowercaseString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+        var url = NSURL(string: "https://api-v2launch.trakt.tv/search?query=\(encoded!)&type=show")
+        http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in
+            var json: NSDictionary;
+            if result.success{
+                var arr = self.getJSONArrayFromData(result.data!)
+                var shows = [Show]()
+                for json in arr{
+                    shows.append(Show(
+                        title: "The Walking Dead",
+                        rating: 8.543,
+                        poster: "https://walter.trakt.us/images/shows/000/002/273/posters/thumb/6a2568c755.jpg",
+                        cover: "https://walter.trakt.us/images/shows/000/002/273/fanarts/thumb/7d42efbf73.jpg",
+                        description: "Description here",
+                        airDay: "Sunday",
+                        airTime: "21:00",
+                        airTimezone: "",
+                        network: "AMC",
+                        year: 2015,
+                        id: 11,
+                        genres: ["action", "adventure"]
+                    ))
+                }
+                callback(shows: shows)
+            }else{
+                Error.HTTPError(result)
+            }
+        })
+    }
+    
     func getShowFromId(id:String, callback: (show: Show) -> ()){
         var url = NSURL(string: "https://api-v2launch.trakt.tv/shows/\(id)?extended=images,full")
         http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in
@@ -60,7 +95,7 @@ class Api{
                     genres: json["genres"] as [String]
                 ))
             }else{
-                Error.HTTPError(result.error!)
+                Error.HTTPError(result)
             }
         })
     }

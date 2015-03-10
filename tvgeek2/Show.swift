@@ -20,5 +20,5 @@ struct Show{
     var network: String?;
     var year: Int;
     var id: Int;
-    var genres: [String];
+    var genres: [String]? = [];
 }

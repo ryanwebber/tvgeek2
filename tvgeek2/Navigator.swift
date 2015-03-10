@@ -10,6 +10,11 @@ import Foundation
 import UIKit
 
 class AppNavigator:UINavigationController{
+    
+    convenience override init(){
+        self.init(rootViewController: HomeViewController())
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationBar.tintColor = COLOR_THEME
