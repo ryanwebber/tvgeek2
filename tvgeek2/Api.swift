@@ -53,7 +53,7 @@ class Api{
                 var shows = [Show]()
                 for json in arr{
                     shows.append(Show(
-                        title: "The Walking Dead",
+                        title: json["title"] as String,
                         rating: 8.543,
                         poster: "https://walter.trakt.us/images/shows/000/002/273/posters/thumb/6a2568c755.jpg",
                         cover: "https://walter.trakt.us/images/shows/000/002/273/fanarts/thumb/7d42efbf73.jpg",
