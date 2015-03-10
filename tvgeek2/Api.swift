@@ -51,11 +51,12 @@ class Api{
             if result.success{
                 var arr = self.getJSONArrayFromData(result.data!)
                 var shows = [Show]()
-                for json in arr{
+                for (var i = 0;i<arr.count;i++) {
+                    var json = (arr[i] as NSDictionary)["show"] as NSDictionary
                     shows.append(Show(
                         title: json["title"] as String,
                         rating: 8.543,
-                        poster: "https://walter.trakt.us/images/shows/000/002/273/posters/thumb/6a2568c755.jpg",
+                        poster: ((json["images"] as NSDictionary)["poster"] as NSDictionary)["thumb"] as? String,
                         cover: "https://walter.trakt.us/images/shows/000/002/273/fanarts/thumb/7d42efbf73.jpg",
                         description: "Description here",
                         airDay: "Sunday",

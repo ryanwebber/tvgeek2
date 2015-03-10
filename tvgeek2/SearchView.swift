@@ -59,7 +59,6 @@ class SearchView:UITableView, UITableViewDataSource{
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        NSLog("RETREIVING CELL #\(indexPath.item)")
         return self.tableCells[indexPath.item]
     }
 }

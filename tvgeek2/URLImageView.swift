@@ -16,8 +16,11 @@ class URLImageView : UIImageView{
     override init(){
         super.init(frame: CGRectZero)
         self.backgroundColor = COLOR_DARK
+        self.clipsToBounds = true
+        
         loader.startAnimating()
         loader.alpha = 0.2
+        
         self.addSubview(loader)
     }
     
@@ -33,13 +36,18 @@ class URLImageView : UIImageView{
                 completion: nil
             )
         }, failure: {() -> Void in
-            self.setImageUnknown()
+            dispatch_async(dispatch_get_main_queue()) {
+                self.setImageUnknown()
+            }
+            NSLog("[ImageView] Failure to get image {\(url)}")
         })
     }
     
     func setImageUnknown(){
-        loader.hidden = false
-        NSLog("[ImageView] Failure to get image")
+        loader.stopAnimating()
+        loader.hidden = true
+        self.backgroundColor = COLOR_GRAY
+        self.setNeedsLayout()
     }
 
     required init(coder aDecoder: NSCoder) {
