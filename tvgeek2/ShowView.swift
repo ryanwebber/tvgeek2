@@ -110,7 +110,12 @@ class ShowView:UIView{
         dispatch_async(dispatch_get_main_queue()) {
             self.overview.text = show.description
             self.title.text = show.title
-            self.year.text = "(\(show.year))"
+            
+            if let y = show.year{
+                self.year.text = "(\(y))"
+            }else{
+                self.year.text = "--"
+            }
             
             if let r = show.rating{
                 var rounded = String(format: "%.1f", r)

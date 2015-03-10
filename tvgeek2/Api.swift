@@ -55,17 +55,17 @@ class Api{
                     var json = (arr[i] as NSDictionary)["show"] as NSDictionary
                     shows.append(Show(
                         title: json["title"] as String,
-                        rating: 8.543,
+                        rating: nil,
                         poster: ((json["images"] as NSDictionary)["poster"] as NSDictionary)["thumb"] as? String,
-                        cover: "https://walter.trakt.us/images/shows/000/002/273/fanarts/thumb/7d42efbf73.jpg",
-                        description: "Description here",
-                        airDay: "Sunday",
-                        airTime: "21:00",
-                        airTimezone: "",
-                        network: "AMC",
-                        year: 2015,
-                        id: 11,
-                        genres: ["action", "adventure"]
+                        cover: ((json["images"] as NSDictionary)["fanart"] as NSDictionary)["thumb"] as? String,
+                        description: json["overview"] as? String,
+                        airDay: nil,
+                        airTime: nil,
+                        airTimezone: nil,
+                        network: nil,
+                        year: json["year"] as? Int,
+                        id: (json["ids"] as NSDictionary)["trakt"] as Int,
+                        genres: []
                     ))
                 }
                 callback(shows: shows)
@@ -91,7 +91,7 @@ class Api{
                     airTime: (json["airs"] as NSDictionary)["time"] as? String,
                     airTimezone: (json["airs"] as NSDictionary)["timezone"] as? String,
                     network: json["network"] as? String,
-                    year: json["year"] as Int,
+                    year: json["year"] as? Int,
                     id: (json["ids"] as NSDictionary)["trakt"] as Int,
                     genres: json["genres"] as [String]
                 ))

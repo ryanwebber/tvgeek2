@@ -75,6 +75,8 @@ class SearchResultTableCell: UITableViewCell{
         self.backgroundColor = COLOR_DARK
         self.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         
+        var titleText = (show.year != nil) ? "\(show.title) (\(show.year!))" : show.title
+        
         poster.contentMode = UIViewContentMode.ScaleAspectFill
         poster.layer.borderWidth = 1
         poster.layer.borderColor = COLOR_WHITE.CGColor
@@ -84,13 +86,13 @@ class SearchResultTableCell: UITableViewCell{
         title.adjustsFontSizeToFitWidth = false;
         title.lineBreakMode = NSLineBreakMode.ByTruncatingTail;
         title.font = UIFont.systemFontOfSize(FONT_SIZE_LARGE)
-        title.text = show.title
+        title.text = titleText
         
         alt.textColor = COLOR_LIGHT
         alt.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
         alt.adjustsFontSizeToFitWidth = false
         alt.lineBreakMode = NSLineBreakMode.ByTruncatingTail
-        alt.text = "/".join(show.genres)
+        alt.text = show.description
         
         whenSelected.backgroundColor = COLOR_GRAY
         

@@ -18,7 +18,7 @@ struct Show{
     var airTime: String?;
     var airTimezone: String?;
     var network: String?;
-    var year: Int;
+    var year: Int?;
     var id: Int;
     var genres: [String] = [];
 }
