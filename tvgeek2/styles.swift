@@ -18,9 +18,13 @@ let COLOR_DARK_TRANS = UIColor(white: 0.1, alpha: 0.9)
 let COLOR_TRANS = UIColor(white: 0, alpha: 0)
 
 let PADDING:CGFloat = 12
+let PADDING_SMALL:CGFloat = 2
+let PADDING_MED:CGFloat = 5
 
 let FONT_SIZE_LARGE:CGFloat = 20
 let FONT_SIZE_MED:CGFloat = 16
 let FONT_SIZE_SMALL:CGFloat = 14
 
 let ROW_HEIGHT:CGFloat = 100
+
+let COVER_HEIGHT:CGFloat = 250

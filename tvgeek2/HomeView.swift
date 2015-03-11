@@ -9,10 +9,13 @@
 import Foundation
 import UIKit
 
-class HomeViewController:BaseViewController, UISearchBarDelegate{
+class HomeViewController:UIViewController, UISearchBarDelegate{
     
-    init(){
+    private var homeView = HomeView()
+    
+    override init(){
         super.init(nibName: nil, bundle: nil)
+        self.view = homeView
         
         var searchBar = UISearchBar()
         
@@ -23,9 +26,9 @@ class HomeViewController:BaseViewController, UISearchBarDelegate{
         
         self.navigationItem.titleView = searchBar
         
-        Api().getShowFromId("family-guy", callback: {(show: Show) -> Void in
+        Api().getShowFromId("archer", callback: {(show: Show) -> Void in
             dispatch_async(dispatch_get_main_queue()) {
-                self.view = HomeView(shows: [show, show, show, show])
+                self.homeView.setShows([show, show, show, show])
             }
         })
     }
@@ -52,25 +55,31 @@ class HomeViewController:BaseViewController, UISearchBarDelegate{
     }
 }
 
-class HomeView:UIView{
+class HomeView:BaseView{
     
-    private var favourites:[Show];
+    private var favourites:[Show] = [];
     private var scroller = UIScrollView()
     
     required init(coder aDecoder: NSCoder){
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(shows: [Show]){
-        self.favourites = shows
-        super.init(frame: CGRectZero)
+    override init(){
+        super.init()
         
         scroller.pagingEnabled = true
         self.backgroundColor = COLOR_DARK
         self.addSubview(scroller)
     }
+    
+    func setShows(shows: [Show]){
+        self.favourites = shows
+        self.doneLoading()
+    }
 
     override func layoutSubviews() {
+        super.layoutSubviews()
+        
         var bounds = self.bounds
         scroller.frame = bounds
         if favourites.isEmpty {
@@ -80,7 +89,7 @@ class HomeView:UIView{
             var counter = 0
             for show in favourites {
 
-                var page = ShowView(frame: CGRect(
+                var page = HomeShowView(frame: CGRect(
                     origin: CGPoint(x: 0, y: CGFloat(counter++) * bounds.height),
                     size: bounds.size
                 ))

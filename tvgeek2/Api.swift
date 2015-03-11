@@ -93,7 +93,7 @@ class Api{
                     network: json["network"] as? String,
                     year: json["year"] as? Int,
                     id: (json["ids"] as NSDictionary)["trakt"] as Int,
-                    genres: json["genres"] as [String]
+                    genres: (json["genres"] as [String])
                 ))
             }else{
                 Error.HTTPError(result)

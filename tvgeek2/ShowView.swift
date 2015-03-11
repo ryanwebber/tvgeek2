@@ -2,239 +2,112 @@
 //  ShowView.swift
 //  tvgeek2
 //
-//  Created by Ryan Webber on 2015-03-04.
+//  Created by Ryan Webber on 2015-03-10.
 //  Copyright (c) 2015 Ryan Webber. All rights reserved.
 //
 
 import Foundation
-import UIKit;
+import UIKit
 
-class ShowView:UIView{
-    private var show:Show?
+class ShowViewController:UIViewController{
     
-    private var container = UIView()
-    private var info = UIView()
-    private var loader = UIActivityIndicatorView()
-    private var cover = URLImageView()
-    private var poster = URLImageView()
-    private var title = UILabel()
-    private var overview = UITextView()
-    private var year = UILabel()
-    private var seperator = UIView()
-    private var rating = UILabel()
-    private var ratingLabel = UILabel()
-    private var networkLabel = UILabel()
-    private var network = UILabel()
-    private var genres = UILabel()
-    private var genresLabel = UILabel()
+    var showView = ShowView()
     
-    required init(coder aDecoder: NSCoder) {
-        fatalError("[ShowView] Nib initializer not implemented yet")
+    override init(){
+        super.init(nibName: nil, bundle: nil)
+        self.view = showView
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setShowId(id: Int){
+        Api().getShowFromId(String(id), callback: {(show: Show) -> Void in
+            dispatch_async(dispatch_get_main_queue()) {
+                self.showView.setShow(show)
+                self.title = show.title
+            }
+        })
+    }
+}
+
+class ShowView:BaseView{
+    
+    private var show:Show?;
+    
+    private var scroll = UIScrollView()
+    private var cover = URLImageView()
+    private var poster = URLImageView()
+    private var ratings = RatingView()
+    
+    required init(coder aDecoder: NSCoder){
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override init(){
+        self.show = nil
+        super.init()
         
-        loader.startAnimating()
-        info.backgroundColor = COLOR_DARK_TRANS
+        scroll.backgroundColor = COLOR_DARK
+        scroll.bounces = false
+        
+        cover.backgroundColor = COLOR_DARK
         cover.contentMode = UIViewContentMode.ScaleAspectFill
+        cover.layer.borderWidth = PADDING_MED
+        cover.layer.borderColor = COLOR_WHITE.CGColor
         
+        poster.backgroundColor = COLOR_DARK
         poster.contentMode = UIViewContentMode.ScaleAspectFill
-        poster.layer.borderWidth = 1
+        poster.layer.borderWidth = PADDING_MED
         poster.layer.borderColor = COLOR_WHITE.CGColor
+                
+        scroll.addSubview(cover)
+        scroll.addSubview(poster)
+        scroll.addSubview(ratings)
         
-        var border = CALayer()
-        
-        title.textColor = COLOR_WHITE
-        title.adjustsFontSizeToFitWidth = false;
-        title.lineBreakMode = NSLineBreakMode.ByTruncatingTail;
-        title.font = UIFont.systemFontOfSize(FONT_SIZE_LARGE)
-        
-        overview.editable = false
-        overview.textColor = COLOR_LIGHT
-        overview.backgroundColor = COLOR_TRANS
-        overview.font = UIFont.systemFontOfSize(FONT_SIZE_MED)
-        
-        year.textColor = COLOR_LIGHT
-        year.font = UIFont.systemFontOfSize(FONT_SIZE_MED)
-        
-        seperator.backgroundColor = COLOR_THEME
-        
-        rating.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
-        rating.textColor = COLOR_LIGHT
-        rating.textAlignment = NSTextAlignment.Right
-        
-        ratingLabel.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
-        ratingLabel.textColor = COLOR_LIGHT
-        ratingLabel.text = "Rating: "
-        
-        network.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
-        network.textColor = COLOR_LIGHT
-        network.textAlignment = NSTextAlignment.Right
-        
-        networkLabel.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
-        networkLabel.textColor = COLOR_LIGHT
-        networkLabel.text = "Network: "
-        
-        genres.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
-        genres.textColor = COLOR_LIGHT
-        genres.textAlignment = NSTextAlignment.Right
-        
-        genresLabel.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
-        genresLabel.textColor = COLOR_LIGHT
-        genresLabel.text = "Genre: "
-        
-        info.addSubview(poster)
-        info.addSubview(overview)
-        info.addSubview(title)
-        info.addSubview(year)
-        info.addSubview(seperator)
-        info.addSubview(ratingLabel)
-        info.addSubview(rating)
-        info.addSubview(genresLabel)
-        info.addSubview(genres)
-        info.addSubview(networkLabel)
-        info.addSubview(network)
-        
-        container.addSubview(cover)
-        container.addSubview(info)
-        self.addSubview(container)
+        self.addSubview(scroll)
     }
     
     func setShow(show: Show){
         self.show = show
+        cover.setImageUrl(show.cover)
+        poster.setImageUrl(show.poster)
         
-        self.cover.setImageUrl(show.cover)
-        self.poster.setImageUrl(show.poster)
-        
-        dispatch_async(dispatch_get_main_queue()) {
-            self.overview.text = show.description
-            self.title.text = show.title
-            
-            if let y = show.year{
-                self.year.text = "(\(y))"
-            }else{
-                self.year.text = "--"
-            }
-            
-            if let r = show.rating{
-                var rounded = String(format: "%.1f", r)
-                self.rating.text = "\(rounded)/10"
-            }else{
-                self.rating.text = "Unknown"
-            }
-            
-            if show.genres.isEmpty{
-                self.genres.text = "None"
-            }else{
-                self.genres.text = "/".join(show.genres)
-            }
-            
-            if let n = show.network{
-                self.network.text = n
-            }else{
-                self.network.text = "Unknown"
-            }
+        if let r = show.rating{
+            self.ratings.setRating(CGFloat(r))
+        }else{
+            self.ratings.setRating(0.0)
         }
+        
+        super.doneLoading()
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        var lims = self.bounds.size
-        if let sinfo = show{
-            container.hidden = false
-            container.frame = self.bounds
-            cover.frame = self.bounds
-            info.frame = self.bounds
+        if(!super.isLoading()){
+            var lims = self.bounds.size
             
-            loader.hidden = true
+            scroll.frame = CGRect(origin: CGPointZero, size: lims)
+            scroll.contentSize = lims
             
-            var edge = CGRect(x: PADDING,
-                y: PADDING,
-                width: lims.width - PADDING*2,
-                height: lims.height - PADDING*2
-            )
+            cover.frame = CGRect(x: -PADDING_MED, y: PADDING_MED, width: lims.width + 2*PADDING_MED, height: COVER_HEIGHT + 2*PADDING_MED)
             
+            var poster_height = COVER_HEIGHT*2/3
+            var poster_width = poster_height*2/3
             
-            var poster_width = max(50, edge.width/3)
-            var poster_height = poster_width*3/2
-            var poster_offset = PADDING*2 + poster_width
-            var data_width = lims.width - (poster_offset+PADDING)
-            poster.frame = CGRect(
-                origin: edge.origin,
-                size: CGSize(width: poster_width, height: poster_height)
-            )
+            poster.frame = CGRect(x: PADDING, y: COVER_HEIGHT + PADDING_MED*2 - (poster_height/2), width: poster_width, height: poster_height)
             
-            title.frame.size = CGSize(width: data_width, height: title.font.lineHeight)
-            title.frame.origin = CGPoint(x: poster_offset, y: edge.origin.y)
+            var endy = (poster.frame.origin.y + poster.frame.height)
+            var data_width = lims.width - (poster.frame.origin.x + poster.frame.width + PADDING*2)
+            var rating_height = min(FONT_SIZE_LARGE, (data_width - PADDING_SMALL*4) / 5)
             
-            year.frame = CGRect(
-                x: poster_offset,
-                y: title.frame.origin.y + title.frame.height,
-                width: data_width / 2,
-                height: year.font.lineHeight
-            )
-            
-            seperator.frame = CGRect(
-                x: poster_offset,
-                y: year.frame.origin.y + year.font.lineHeight + 2,
+            ratings.frame = CGRect(
+                x: poster.frame.origin.x + poster.frame.width + PADDING,
+                y: COVER_HEIGHT + ((endy-COVER_HEIGHT) - rating_height)/2,
                 width: data_width,
-                height: 1
+                height: rating_height
             )
-            
-            ratingLabel.frame = CGRect(
-                x: poster_offset,
-                y: seperator.frame.origin.y + seperator.frame.height + PADDING,
-                width: data_width,
-                height: rating.font.lineHeight
-            )
-            
-            rating.frame = CGRect(
-                x: poster_offset,
-                y: seperator.frame.origin.y + seperator.frame.height + PADDING,
-                width: data_width,
-                height: rating.font.lineHeight
-            )
-            
-            genresLabel.frame = CGRect(
-                x: poster_offset,
-                y: rating.frame.origin.y + rating.frame.height,
-                width: data_width,
-                height: genres.font.lineHeight
-            )
-            
-            genres.frame = CGRect(
-                x: poster_offset,
-                y: rating.frame.origin.y + rating.frame.height,
-                width: data_width,
-                height: genres.font.lineHeight
-            )
-            
-            networkLabel.frame = CGRect(
-                x: poster_offset,
-                y: genres.frame.origin.y + genres.frame.height,
-                width: data_width,
-                height: network.font.lineHeight
-            )
-            
-            network.frame = CGRect(
-                x: poster_offset,
-                y: genres.frame.origin.y + genres.frame.height,
-                width: data_width,
-                height: network.font.lineHeight
-            )
-            
-            overview.frame = CGRect(
-                x: edge.origin.x,
-                y: edge.origin.y + poster.frame.height + PADDING,
-                width: edge.width,
-                height: edge.height - (poster.frame.height + PADDING)
-            )
-            
-        }else{
-            loader.hidden = false
-            container.hidden = true
-            loader.center = self.center
         }
     }
 }

@@ -9,20 +9,9 @@
 import Foundation
 import UIKit
 
-class BaseViewController:UIViewController{
-    
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        self.view = BaseView()
-    }
-    
-    required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
 class BaseView: UIView{
-    var loader = UIActivityIndicatorView()
+    private var loader = UIActivityIndicatorView()
+    private var loading = true
     
     override init(){
         super.init(frame: CGRectZero)
@@ -33,6 +22,17 @@ class BaseView: UIView{
     
     required init(coder aDecoder: NSCoder) {
         fatalError("Not implementing views with nibs")
+    }
+    
+    func doneLoading(){
+        loader.hidden = true
+        loader.removeFromSuperview()
+        loading = false
+        self.setNeedsLayout()
+    }
+    
+    func isLoading() -> Bool{
+        return loading
     }
     
     override func layoutSubviews() {

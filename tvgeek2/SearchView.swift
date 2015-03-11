@@ -9,12 +9,15 @@
 import Foundation
 import UIKit
 
-class SearchViewController:UIViewController{
+class SearchViewController:UIViewController, UITableViewDelegate{
+    
     init(_ searchStr: String){
         super.init(nibName: nil, bundle: nil)
         self.title = "\"\(searchStr)\""
         
         var searchView = SearchView()
+        searchView.delegate = self
+        
         self.view = searchView
         
         Api().getShowsFromSearchString(searchStr, callback: { (shows) -> () in
@@ -28,10 +31,17 @@ class SearchViewController:UIViewController{
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
+        var index = indexPath.row
+        var showView = ShowViewController()
+        self.navigationController?.pushViewController(showView, animated: true)
+        showView.setShowId((self.view as SearchView).shows[index].id)
+    }
 }
 
 class SearchView:UITableView, UITableViewDataSource{
-    private var shows: [Show] = []
+    var shows: [Show] = []
     private var tableCells: [UITableViewCell] = []
     
     convenience override init(){
