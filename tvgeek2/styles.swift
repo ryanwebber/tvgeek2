@@ -11,7 +11,7 @@ import UIKit
 
 let COLOR_THEME = UIColor(hue: 0.386, saturation: 0.48, brightness: 0.56, alpha: 1)
 let COLOR_DARK = UIColor(white: 0.1, alpha: 1)
-let COLOR_GRAY = UIColor(white: 0.25, alpha: 1)
+let COLOR_GRAY = UIColor(white: 0.15, alpha: 1)
 let COLOR_GRAY_FADE = UIColor(white: 0.5, alpha: 1)
 let COLOR_WHITE = UIColor(white: 1, alpha: 1)
 let COLOR_LIGHT = UIColor(white: 0.75, alpha: 1)

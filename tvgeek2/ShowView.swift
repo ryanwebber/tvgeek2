@@ -40,7 +40,6 @@ class ShowViewController:UIViewController{
 class ShowView:BaseView{
     
     private var show:Show?
-    private var related:[Show]?
     
     private var scroll = UIScrollView()
     private var cover = URLImageView()
@@ -56,6 +55,8 @@ class ShowView:BaseView{
     private var airs = UILabel()
     private var overviewLabel = UILabel()
     private var overview = UITextView()
+    private var relatedLabel = UILabel()
+    private var related = RelatedView()
     
     required init(coder aDecoder: NSCoder){
         fatalError("init(coder:) has not been implemented")
@@ -114,6 +115,11 @@ class ShowView:BaseView{
         overview.textColor = COLOR_WHITE
         overview.backgroundColor = COLOR_TRANS
         overview.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
+        overview.userInteractionEnabled = false
+        
+        relatedLabel.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
+        relatedLabel.textColor = COLOR_GRAY_FADE
+        relatedLabel.text = "You Might Also Like"
         
         scroll.addSubview(cover)
         scroll.addSubview(poster)
@@ -128,6 +134,8 @@ class ShowView:BaseView{
         scroll.addSubview(airs)
         scroll.addSubview(overviewLabel)
         scroll.addSubview(overview)
+        scroll.addSubview(relatedLabel)
+        scroll.addSubview(related)
         
         self.addSubview(scroll)
     }
@@ -177,7 +185,7 @@ class ShowView:BaseView{
     }
     
     func setRelated(shows: [Show]){
-        self.related = shows
+        related.setRelated(shows)
     }
     
     override func layoutSubviews() {
@@ -236,8 +244,15 @@ class ShowView:BaseView{
             size = overview.sizeThatFits(CGSize(width: width, height: lims.height))
             overview.frame = CGRect(x: PADDING, y: start, width: width, height: size.height)
             
-            start += size.height
+            start += size.height + PADDING*2
+            size = relatedLabel.sizeThatFits(CGSize(width: width, height: relatedLabel.font.lineHeight))
+            relatedLabel.frame = CGRect(x: PADDING, y: start, width: size.width, height: size.height)
             
+            start += size.height + PADDING
+            size = CGSize(width: lims.width, height: (lims.width/3) * 3/2)
+            related.frame = CGRect(x: 0, y: start, width: lims.width, height: size.height)
+            
+            start += size.height + PADDING
             scroll.contentSize = CGSize(width: lims.width, height: start + PADDING)
         }
     }
