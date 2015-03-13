@@ -60,20 +60,20 @@ class HomeShowView:UIView{
         seperator.backgroundColor = COLOR_THEME
         
         network.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
-        network.textColor = COLOR_LIGHT
+        network.textColor = COLOR_WHITE
         network.textAlignment = NSTextAlignment.Right
         
         networkLabel.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
-        networkLabel.textColor = COLOR_LIGHT
-        networkLabel.text = "Network: "
+        networkLabel.textColor = COLOR_GRAY_FADE
+        networkLabel.text = "Network"
         
         genres.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
-        genres.textColor = COLOR_LIGHT
+        genres.textColor = COLOR_WHITE
         genres.textAlignment = NSTextAlignment.Right
         
         genresLabel.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
-        genresLabel.textColor = COLOR_LIGHT
-        genresLabel.text = "Genre: "
+        genresLabel.textColor = COLOR_GRAY_FADE
+        genresLabel.text = "Genre"
         
         info.addSubview(poster)
         info.addSubview(overview)
