@@ -61,7 +61,6 @@ class HomeShowView:UIView{
         
         network.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
         network.textColor = COLOR_WHITE
-        network.textAlignment = NSTextAlignment.Right
         
         networkLabel.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
         networkLabel.textColor = COLOR_GRAY_FADE
@@ -69,7 +68,6 @@ class HomeShowView:UIView{
         
         genres.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
         genres.textColor = COLOR_WHITE
-        genres.textAlignment = NSTextAlignment.Right
         
         genresLabel.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
         genresLabel.textColor = COLOR_GRAY_FADE
@@ -175,41 +173,23 @@ class HomeShowView:UIView{
                 height: 1
             )
             
-            genresLabel.frame = CGRect(
-                x: poster_offset,
-                y: seperator.frame.origin.y + seperator.frame.height + PADDING,
-                width: data_width,
-                height: genres.font.lineHeight
-            )
+            var start = seperator.frame.origin.y + seperator.frame.height + PADDING
+            var size = genresLabel.sizeThatFits(CGSize(width: data_width, height: genresLabel.font.lineHeight))
+            genresLabel.frame = CGRect(x: poster_offset, y: start, width: size.width, height: size.height)
+            genres.frame = CGRect(x: poster_offset+PADDING+size.width, y: start, width: data_width-size.width-PADDING, height: size.height)
             
-            genres.frame = CGRect(
-                x: poster_offset,
-                y: seperator.frame.origin.y + seperator.frame.height + PADDING,
-                width: data_width,
-                height: genres.font.lineHeight
-            )
+            start += size.height
+            size = networkLabel.sizeThatFits(CGSize(width: data_width, height: networkLabel.font.lineHeight))
+            networkLabel.frame = CGRect(x: poster_offset, y: start, width: size.width, height: size.height)
+            network.frame = CGRect(x: poster_offset+PADDING+size.width, y: start, width: data_width-size.width-PADDING, height: size.height)
             
-            networkLabel.frame = CGRect(
-                x: poster_offset,
-                y: genres.frame.origin.y + genres.frame.height,
-                width: data_width,
-                height: network.font.lineHeight
-            )
-            
-            network.frame = CGRect(
-                x: poster_offset,
-                y: genres.frame.origin.y + genres.frame.height,
-                width: data_width,
-                height: network.font.lineHeight
-            )
-            
-            var lasty = (network.frame.origin.y + network.font.lineHeight)
+            start += size.height
             var endy = (poster.frame.origin.y + poster.frame.height)
             var rating_height = min(FONT_SIZE_LARGE, (data_width - PADDING_SMALL*4) / 5)
             
             rating.frame = CGRect(
                 x: poster_offset,
-                y: lasty + ((endy-lasty) - rating_height)/2,
+                y: start + ((endy-start) - rating_height)/2,
                 width: data_width,
                 height: rating_height
             )
