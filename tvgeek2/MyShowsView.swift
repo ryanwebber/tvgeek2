@@ -21,6 +21,8 @@ class MyShowsView:BaseView{
     
     override init(){
         super.init()
+        super.hideLoading()
+        
         self.backgroundColor = COLOR_GRAY
         
         scroll.backgroundColor = COLOR_GRAY
@@ -69,10 +71,8 @@ class SimpleShowView: UIView{
     private var show: Show
     
     private var cover = URLImageView()
-    private var poster = URLImageView()
     private var title = UILabel()
     private var year = UILabel()
-    private var seperator = UIView()
     private var overlay = UIView()
     
     required init(coder aDecoder: NSCoder){
@@ -84,13 +84,8 @@ class SimpleShowView: UIView{
         super.init(frame: CGRectZero)
         
         cover.contentMode = UIViewContentMode.ScaleAspectFill
-        cover.backgroundColor = COLOR_LIGHT
+        cover.backgroundColor = COLOR_GRAY
         cover.setImageUrl(show.cover)
-        
-        poster.contentMode = UIViewContentMode.ScaleAspectFill
-        poster.layer.borderWidth = 1
-        poster.layer.borderColor = COLOR_WHITE.CGColor
-        poster.setImageUrl(show.poster)
         
         title.textColor = COLOR_WHITE
         title.adjustsFontSizeToFitWidth = false;
@@ -106,13 +101,9 @@ class SimpleShowView: UIView{
             self.year.text = "--"
         }
         
-        seperator.backgroundColor = COLOR_THEME
-        
         overlay.backgroundColor = COLOR_DARK_TRANS
-        overlay.addSubview(poster)
         overlay.addSubview(year)
         overlay.addSubview(title)
-        overlay.addSubview(seperator)
         
         self.addSubview(cover)
         self.addSubview(overlay)
@@ -124,40 +115,12 @@ class SimpleShowView: UIView{
         var lims = self.bounds.size
         
         cover.frame = self.bounds
-        overlay.frame = self.bounds
         
-        var edge = CGRect(x: PADDING,
-            y: PADDING,
-            width: lims.width - PADDING*2,
-            height: lims.height - PADDING*2
-        )
+        var height = (PADDING*2) + title.font.lineHeight + year.font.lineHeight
+        overlay.frame = CGRect(x:0, y: lims.height - height, width: lims.width, height: height)
         
-        
-        var poster_height = edge.height
-        var poster_width = poster_height*2/3
-        var poster_offset = PADDING*2 + poster_width
-        var data_width = lims.width - (poster_offset+PADDING)
-        poster.frame = CGRect(
-            origin: edge.origin,
-            size: CGSize(width: poster_width, height: poster_height)
-        )
-        
-        title.frame.size = CGSize(width: data_width, height: title.font.lineHeight)
-        title.frame.origin = CGPoint(x: poster_offset, y: edge.origin.y)
-        
-        year.frame = CGRect(
-            x: poster_offset,
-            y: title.frame.origin.y + title.frame.height,
-            width: data_width / 2,
-            height: year.font.lineHeight
-        )
-        
-        seperator.frame = CGRect(
-            x: poster_offset,
-            y: year.frame.origin.y + year.font.lineHeight + 2,
-            width: data_width,
-            height: 1
-        )
+        title.frame = CGRect(x: PADDING, y: PADDING, width: lims.width - PADDING*2, height: title.font.lineHeight)
+        year.frame = CGRect(x: PADDING, y: PADDING + title.font.lineHeight, width: lims.width - PADDING*2, height: title.font.lineHeight)
     }
 }
 

@@ -27,14 +27,9 @@ class HomeViewController:UIViewController, UISearchBarDelegate{
         self.navigationItem.titleView = searchBar
         self.edgesForExtendedLayout = UIRectEdge.None
         
-        Api().getShowFromId("archer", callback: {(show: Show) -> Void in
-            dispatch_async(dispatch_get_main_queue()) {
-                self.homeView.setShows([show, show, show, show])
-            }
-        })
-        
         Api().getPopularShows({(popular: [Show]) -> Void in
             dispatch_async(dispatch_get_main_queue()) {
+                self.homeView.setShows(popular)
                 self.homeView.setPopular(popular)
             }
         })
@@ -78,6 +73,9 @@ class HomeView:BaseView{
 
         self.backgroundColor = COLOR_DARK
         
+        myshows.layer.borderWidth = PADDING_SMALL
+        myshows.layer.borderColor = COLOR_GRAY.CGColor
+        
         myshowsLabel.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
         myshowsLabel.textColor = COLOR_GRAY_FADE
         myshowsLabel.text = "My Shows"
@@ -111,8 +109,8 @@ class HomeView:BaseView{
             myshowsLabel.frame = CGRect(x: PADDING, y: start, width: width, height: size.height)
             
             start+=size.height + PADDING
-            size = CGSize(width: lims.width, height: lims.width/2)
-            myshows.frame = CGRect(x: 0, y: start, width: size.width, height: size.height)
+            size = CGSize(width: lims.width, height: lims.width)
+            myshows.frame = CGRect(x: -PADDING_SMALL, y: start, width: size.width + PADDING_SMALL*2, height: size.height)
             
             start+=size.height
             scroller.contentSize = CGSize(width: lims.width, height: start + PADDING*2)

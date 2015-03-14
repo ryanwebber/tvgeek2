@@ -35,6 +35,10 @@ class BaseView: UIView{
         return loading
     }
     
+    func hideLoading(){
+        loader.removeFromSuperview()
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         var lims = self.bounds
