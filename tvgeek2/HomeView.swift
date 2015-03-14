@@ -25,6 +25,7 @@ class HomeViewController:UIViewController, UISearchBarDelegate{
         searchBar.delegate = self
         
         self.navigationItem.titleView = searchBar
+        self.edgesForExtendedLayout = UIRectEdge.None
         
         Api().getShowFromId("archer", callback: {(show: Show) -> Void in
             dispatch_async(dispatch_get_main_queue()) {

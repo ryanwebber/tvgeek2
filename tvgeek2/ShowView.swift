@@ -16,6 +16,8 @@ class ShowViewController:UIViewController{
     override init(){
         super.init(nibName: nil, bundle: nil)
         self.view = showView
+        
+        self.edgesForExtendedLayout = UIRectEdge.None
     }
     
     required init(coder aDecoder: NSCoder) {
