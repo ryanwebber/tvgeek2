@@ -25,8 +25,6 @@ class RelatedView:BaseView{
         
         scroll.backgroundColor = COLOR_GRAY
         scroll.showsHorizontalScrollIndicator = false
-        
-        self.addSubview(scroll)
     }
     
     func setRelated(shows: [Show]){
@@ -48,6 +46,11 @@ class RelatedView:BaseView{
             scroll.addSubview(view)
             images.append(view)
         }
+        
+        if super.isLoading(){
+            self.addSubview(scroll)
+        }
+        
         super.doneLoading()
     }
     

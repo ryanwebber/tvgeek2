@@ -34,6 +34,13 @@ class ShowViewController:UIViewController{
                 self.showView.setRelated(shows)
             }
         })
+        
+        
+        Api().getCastForShowById(String(id), callback: {(cast: [Person]) -> Void in
+            dispatch_async(dispatch_get_main_queue()) {
+                return
+            }
+        })
     }
 }
 
@@ -67,7 +74,7 @@ class ShowView:BaseView{
         super.init()
         
         scroll.backgroundColor = COLOR_DARK
-        scroll.bounces = false
+        scroll.showsVerticalScrollIndicator = false
         
         cover.backgroundColor = COLOR_DARK
         cover.contentMode = UIViewContentMode.ScaleAspectFill

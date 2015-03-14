@@ -47,7 +47,6 @@ class Api{
         var encoded = searchString.lowercaseString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
         var url = NSURL(string: "https://api-v2launch.trakt.tv/search?query=\(encoded!)&type=show")
         http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in
-            var json: NSDictionary;
             if result.success{
                 var arr = self.getJSONArrayFromData(result.data!)
                 var shows = [Show]()
@@ -75,10 +74,32 @@ class Api{
         })
     }
     
+    func getCastForShowById(id: String, callback: (cast:[Person]) -> ()){
+        var url = NSURL(string: "https://api-v2launch.trakt.tv/shows/\(id)/people?extended=images,full")
+        http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in
+            var json:NSDictionary
+            if result.success{
+                var arr = (self.getJSONFromData(result.data!) as NSDictionary)["cast"] as NSArray
+                var cast = [Person]()
+                for (var i = 0;i<arr.count;i++) {
+                    var json = arr[i] as NSDictionary
+                    cast.append(Person(
+                        name: (json["person"] as NSDictionary)["name"] as String,
+                        character: json["character"] as String,
+                        headshot: (((json["person"] as NSDictionary)["images"] as NSDictionary)["headshot"] as NSDictionary)["thumb"] as? String,
+                        id: ((json["person"] as NSDictionary)["ids"] as NSDictionary)["trakt"] as Int
+                    ))
+                }
+                callback(cast: cast)
+            }else{
+                Error.HTTPError(result)
+            }
+        })
+    }
+    
     func getRelatedShowsById(id: String, callback: (shows: [Show]) -> ()){
         var url = NSURL(string: "https://api-v2launch.trakt.tv/shows/\(id)/related?extended=images,full")
         http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in
-            var json: NSDictionary;
             if result.success{
                 var arr = self.getJSONArrayFromData(result.data!)
                 var shows = [Show]()
@@ -109,7 +130,6 @@ class Api{
     func getShowFromId(id:String, callback: (show: Show) -> ()){
         var url = NSURL(string: "https://api-v2launch.trakt.tv/shows/\(id)?extended=images,full")
         http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in
-            var json: NSDictionary;
             if result.success{
                 var json = self.getJSONFromData(result.data!)
                 callback(show: Show(

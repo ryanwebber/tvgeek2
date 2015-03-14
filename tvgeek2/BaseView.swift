@@ -37,7 +37,9 @@ class BaseView: UIView{
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        loader.center = self.center
+        var lims = self.bounds
+        
+        loader.frame = self.bounds
     }
 }
 
