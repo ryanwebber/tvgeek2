@@ -97,6 +97,28 @@ class Api{
         })
     }
     
+    func getSeasonsForShowById(id: String, callback: (thumbnails:[String]) -> ()){
+        var url = NSURL(string: "https://api-v2launch.trakt.tv/shows/\(id)/seasons?extended=images,full")
+        http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in
+            if result.success{
+                var arr = self.getJSONArrayFromData(result.data!)
+                var images = [String]()
+                for (var i = 0;i<arr.count;i++) {
+                    var num = (arr[i] as NSDictionary)["number"] as Int
+                    if num > 0 {
+                        var image = (((arr[i] as NSDictionary)["images"] as NSDictionary)["poster"] as NSDictionary)["thumb"] as? String
+                        if let i = image{
+                            images.append(i)
+                        }
+                    }
+                }
+                callback(thumbnails: images)
+            }else{
+                Error.HTTPError(result)
+            }
+        })
+    }
+    
     func getRelatedShowsById(id: String, callback: (shows: [Show]) -> ()){
         var url = NSURL(string: "https://api-v2launch.trakt.tv/shows/\(id)/related?extended=images,full")
         http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in

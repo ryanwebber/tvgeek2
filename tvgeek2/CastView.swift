@@ -51,7 +51,7 @@ class CastView:BaseView{
             var clabel = UILabel()
             clabel.textColor = COLOR_WHITE
             clabel.text = person.character
-            clabel.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
+            clabel.font = UIFont.systemFontOfSize(FONT_SIZE_LARGE)
             clabel.textAlignment = NSTextAlignment.Center
             characters.append(clabel)
             scroll.addSubview(clabel)
@@ -59,7 +59,7 @@ class CastView:BaseView{
             var alabel = UILabel()
             alabel.textColor = COLOR_LIGHT
             alabel.text = person.name
-            alabel.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
+            alabel.font = UIFont.systemFontOfSize(FONT_SIZE_MED)
             alabel.textAlignment = NSTextAlignment.Center
             actors.append(alabel)
             scroll.addSubview(alabel)

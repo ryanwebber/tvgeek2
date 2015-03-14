@@ -31,6 +31,12 @@ class ShowViewController:UIViewController{
             }
         })
         
+        Api().getSeasonsForShowById(String(id), callback: {(thumbnails: [String]) -> Void in
+            dispatch_async(dispatch_get_main_queue()) {
+                self.showView.setSeasons(thumbnails)
+            }
+        })
+        
         Api().getRelatedShowsById(String(id), callback: {(shows: [Show]) -> Void in
             dispatch_async(dispatch_get_main_queue()) {
                 self.showView.setRelated(shows)
@@ -64,6 +70,8 @@ class ShowView:BaseView{
     private var airs = UILabel()
     private var overviewLabel = UILabel()
     private var overview = UITextView()
+    private var seasonsLabel = UILabel()
+    private var seasons = SeasonView()
     private var relatedLabel = UILabel()
     private var related = RelatedView()
     private var castLabel = UILabel()
@@ -128,6 +136,10 @@ class ShowView:BaseView{
         overview.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
         overview.userInteractionEnabled = false
         
+        seasonsLabel.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
+        seasonsLabel.textColor = COLOR_GRAY_FADE
+        seasonsLabel.text = "Season(s)"
+        
         relatedLabel.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
         relatedLabel.textColor = COLOR_GRAY_FADE
         relatedLabel.text = "You Might Also Like"
@@ -149,6 +161,8 @@ class ShowView:BaseView{
         scroll.addSubview(airs)
         scroll.addSubview(overviewLabel)
         scroll.addSubview(overview)
+        scroll.addSubview(seasonsLabel)
+        scroll.addSubview(seasons)
         scroll.addSubview(relatedLabel)
         scroll.addSubview(related)
         scroll.addSubview(castLabel)
@@ -199,6 +213,12 @@ class ShowView:BaseView{
         self.overview.text = show.description
         
         super.doneLoading()
+    }
+    
+    func setSeasons(images: [String]){
+        seasonsLabel.text = "\(images.count) Season(s)"
+        seasons.setSeasons(images)
+        self.setNeedsLayout()
     }
     
     func setRelated(shows: [Show]){
@@ -264,6 +284,14 @@ class ShowView:BaseView{
             start += size.height
             size = overview.sizeThatFits(CGSize(width: width, height: lims.height))
             overview.frame = CGRect(x: PADDING, y: start, width: width, height: size.height)
+            
+            start += size.height + PADDING*2
+            size = seasonsLabel.sizeThatFits(CGSize(width: width, height: seasonsLabel.font.lineHeight))
+            seasonsLabel.frame = CGRect(x: PADDING, y: start, width: size.width, height: size.height)
+            
+            start += size.height + PADDING
+            size = CGSize(width: lims.width, height: (lims.width/3) * 3/2)
+            seasons.frame = CGRect(x: 0, y: start, width: lims.width, height: size.height)
             
             start += size.height + PADDING*2
             size = relatedLabel.sizeThatFits(CGSize(width: width, height: relatedLabel.font.lineHeight))
