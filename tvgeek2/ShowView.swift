@@ -40,7 +40,7 @@ class ShowViewController:UIViewController{
         
         Api().getCastForShowById(String(id), callback: {(cast: [Person]) -> Void in
             dispatch_async(dispatch_get_main_queue()) {
-                return
+                self.showView.setCast(cast)
             }
         })
     }
@@ -66,6 +66,8 @@ class ShowView:BaseView{
     private var overview = UITextView()
     private var relatedLabel = UILabel()
     private var related = RelatedView()
+    private var castLabel = UILabel()
+    private var cast = CastView()
     
     required init(coder aDecoder: NSCoder){
         fatalError("init(coder:) has not been implemented")
@@ -130,6 +132,10 @@ class ShowView:BaseView{
         relatedLabel.textColor = COLOR_GRAY_FADE
         relatedLabel.text = "You Might Also Like"
         
+        castLabel.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
+        castLabel.textColor = COLOR_GRAY_FADE
+        castLabel.text = "Cast"
+        
         scroll.addSubview(cover)
         scroll.addSubview(poster)
         scroll.addSubview(ratings)
@@ -145,6 +151,8 @@ class ShowView:BaseView{
         scroll.addSubview(overview)
         scroll.addSubview(relatedLabel)
         scroll.addSubview(related)
+        scroll.addSubview(castLabel)
+        scroll.addSubview(cast)
         
         self.addSubview(scroll)
     }
@@ -195,6 +203,10 @@ class ShowView:BaseView{
     
     func setRelated(shows: [Show]){
         related.setRelated(shows)
+    }
+    
+    func setCast(cast: [Person]){
+        self.cast.setCast(cast)
     }
     
     override func layoutSubviews() {
@@ -260,6 +272,14 @@ class ShowView:BaseView{
             start += size.height + PADDING
             size = CGSize(width: lims.width, height: (lims.width/3) * 3/2)
             related.frame = CGRect(x: 0, y: start, width: lims.width, height: size.height)
+            
+            start += size.height + PADDING*2
+            size = castLabel.sizeThatFits(CGSize(width: width, height: castLabel.font.lineHeight))
+            castLabel.frame = CGRect(x: PADDING, y: start, width: size.width, height: size.height)
+            
+            start += size.height + PADDING
+            size = CGSize(width: lims.width, height: (lims.width/3) * 3/2)
+            cast.frame = CGRect(x: 0, y: start, width: lims.width, height: size.height)
             
             start += size.height + PADDING
             scroll.contentSize = CGSize(width: lims.width, height: start + PADDING)
