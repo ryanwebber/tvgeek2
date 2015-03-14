@@ -32,6 +32,12 @@ class HomeViewController:UIViewController, UISearchBarDelegate{
                 self.homeView.setShows([show, show, show, show])
             }
         })
+        
+        Api().getPopularShows({(popular: [Show]) -> Void in
+            dispatch_async(dispatch_get_main_queue()) {
+                self.homeView.setPopular(popular)
+            }
+        })
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -58,8 +64,10 @@ class HomeViewController:UIViewController, UISearchBarDelegate{
 
 class HomeView:BaseView{
     
-    private var favourites:[Show] = [];
     private var scroller = UIScrollView()
+    
+    private var myshows = MyShowsView()
+    private var myshowsLabel = UILabel()
     
     required init(coder aDecoder: NSCoder){
         fatalError("init(coder:) has not been implemented")
@@ -67,15 +75,25 @@ class HomeView:BaseView{
     
     override init(){
         super.init()
-        
-        scroller.pagingEnabled = true
+
         self.backgroundColor = COLOR_DARK
+        
+        myshowsLabel.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
+        myshowsLabel.textColor = COLOR_GRAY_FADE
+        myshowsLabel.text = "My Shows"
+        
+        scroller.addSubview(myshows)
+        scroller.addSubview(myshowsLabel)
         self.addSubview(scroller)
     }
     
     func setShows(shows: [Show]){
-        self.favourites = shows
+        myshows.setShows(shows)
         self.doneLoading()
+    }
+    
+    func setPopular(popular: [Show]){
+        return
     }
 
     override func layoutSubviews() {
@@ -83,20 +101,21 @@ class HomeView:BaseView{
         
         var bounds = self.bounds
         scroller.frame = bounds
-        if favourites.isEmpty {
-            scroller.contentSize.height = bounds.size.height
-        } else {
-            scroller.contentSize.height = bounds.height * CGFloat(favourites.count)
-            var counter = 0
-            for show in favourites {
-
-                var page = HomeShowView(frame: CGRect(
-                    origin: CGPoint(x: 0, y: CGFloat(counter++) * bounds.height),
-                    size: bounds.size
-                ))
-                page.setShow(show)
-                scroller.insertSubview(page, atIndex: 0)
-            }
+        if !super.isLoading(){
+            var lims = super.bounds.size
+            
+            var start = PADDING*2
+            var width = lims.width - 2*PADDING
+            
+            var size = myshowsLabel.sizeThatFits(CGSize(width: width, height: lims.height))
+            myshowsLabel.frame = CGRect(x: PADDING, y: start, width: width, height: size.height)
+            
+            start+=size.height + PADDING
+            size = CGSize(width: lims.width, height: lims.width/2)
+            myshows.frame = CGRect(x: 0, y: start, width: size.width, height: size.height)
+            
+            start+=size.height
+            scroller.contentSize = CGSize(width: lims.width, height: start + PADDING*2)
         }
     }
 }

@@ -74,6 +74,36 @@ class Api{
         })
     }
     
+    func getPopularShows(callback: (popular: [Show]) -> ()){
+        var url = NSURL(string: "https://api-v2launch.trakt.tv/shows/trending?extended=images,full")
+        http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in
+            if result.success{
+                var arr = self.getJSONArrayFromData(result.data!)
+                var shows = [Show]()
+                for (var i = 0;i<arr.count;i++) {
+                    var json = (arr[i] as NSDictionary)["show"] as NSDictionary
+                    shows.append(Show(
+                        title: json["title"] as String,
+                        rating: json["rating"] as? Float,
+                        poster: ((json["images"] as NSDictionary)["poster"] as NSDictionary)["thumb"] as? String,
+                        cover: ((json["images"] as NSDictionary)["fanart"] as NSDictionary)["thumb"] as? String,
+                        description: json["overview"] as? String,
+                        airDay: nil,
+                        airTime: nil,
+                        airTimezone: nil,
+                        network: nil,
+                        year: json["year"] as? Int,
+                        id: (json["ids"] as NSDictionary)["trakt"] as Int,
+                        genres: []
+                    ))
+                }
+                callback(popular: shows)
+            }else{
+                Error.HTTPError(result)
+            }
+        })
+    }
+    
     func getCastForShowById(id: String, callback: (cast:[Person]) -> ()){
         var url = NSURL(string: "https://api-v2launch.trakt.tv/shows/\(id)/people?extended=images,full")
         http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in
