@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class HomeViewController:UIViewController, UISearchBarDelegate{
+class HomeViewController:UIViewController, UISearchBarDelegate, ViewShowDelegate{
     
     private var homeView = HomeView()
     
@@ -26,6 +26,8 @@ class HomeViewController:UIViewController, UISearchBarDelegate{
         
         self.navigationItem.titleView = searchBar
         self.edgesForExtendedLayout = UIRectEdge.None
+        
+        homeView.delegate = self
         
         Api().getPopularShows({(popular: [Show]) -> Void in
             dispatch_async(dispatch_get_main_queue()) {
@@ -55,6 +57,12 @@ class HomeViewController:UIViewController, UISearchBarDelegate{
         self.navigationController?.pushViewController(SearchViewController(searchBar.text), animated: true)
         searchBar.text = nil
     }
+    
+    func shouldViewShow(show: Show) {
+        var viewController = ShowViewController()
+        self.navigationController?.pushViewController(viewController, animated: true)
+        viewController.setShowId(show.id)
+    }
 }
 
 class HomeView:BaseView{
@@ -63,6 +71,15 @@ class HomeView:BaseView{
     
     private var myshows = MyShowsView()
     private var myshowsLabel = UILabel()
+    
+    var delegate: ViewShowDelegate?{
+        get{
+            return self.myshows.delegate
+        }
+        set{
+            self.myshows.delegate = newValue
+        }
+    }
     
     required init(coder aDecoder: NSCoder){
         fatalError("init(coder:) has not been implemented")
@@ -78,7 +95,7 @@ class HomeView:BaseView{
         myshowsLabel.text = "My Shows"
         
         scroller.addSubview(myshows)
-        scroller.addSubview(myshowsLabel)
+        //scroller.addSubview(myshowsLabel)
         self.addSubview(scroller)
     }
     
@@ -99,13 +116,13 @@ class HomeView:BaseView{
         if !super.isLoading(){
             var lims = super.bounds.size
             
-            var start = PADDING*2
+            var start = CGFloat(0)
             var width = lims.width - 2*PADDING
             
             var size = myshowsLabel.sizeThatFits(CGSize(width: width, height: lims.height))
             myshowsLabel.frame = CGRect(x: PADDING, y: start, width: width, height: size.height)
             
-            start+=size.height + PADDING
+            //start+=size.height + PADDING
             size = CGSize(width: lims.width, height: lims.width)
             myshows.frame = CGRect(x: 0, y: start, width: size.width, height: size.height)
             

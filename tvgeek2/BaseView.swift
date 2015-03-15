@@ -37,6 +37,7 @@ class BaseView: UIView{
     
     func hideLoading(){
         loader.removeFromSuperview()
+        self.setNeedsLayout()
     }
     
     override func layoutSubviews() {

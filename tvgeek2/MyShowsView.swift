@@ -9,11 +9,13 @@
 import Foundation
 import UIKit
 
-class MyShowsView:BaseView{
+class MyShowsView:BaseView, UIScrollViewDelegate{
     private var shows:[Show] = []
     private var showViews: [SimpleShowView] = []
     
     private var scroll = UIScrollView()
+    private var pageControl = UIPageControl()
+    var delegate: ViewShowDelegate?;
     
     required init(coder aDecoder: NSCoder){
         fatalError("init(coder:) has not been implemented")
@@ -28,6 +30,21 @@ class MyShowsView:BaseView{
         scroll.backgroundColor = COLOR_GRAY
         scroll.showsHorizontalScrollIndicator = false
         scroll.pagingEnabled = true
+        scroll.delegate = self
+        
+        var taps = UITapGestureRecognizer(target: self, action: Selector("viewTapped:"))
+        scroll.addGestureRecognizer(taps)
+        
+        pageControl.currentPageIndicatorTintColor = COLOR_THEME
+    }
+    
+    func viewTapped(handler: UIGestureRecognizer){
+        var p = handler.locationInView(scroll)
+        var index:Int = Int(p.x / self.frame.width)
+        
+        if let del = self.delegate{
+            del.shouldViewShow(self.shows[index])
+        }
     }
     
     func setShows(shows: [Show]){
@@ -44,11 +61,19 @@ class MyShowsView:BaseView{
             scroll.addSubview(view)
         }
         
+        pageControl.numberOfPages = shows.count
+        
         if super.isLoading(){
             self.addSubview(scroll)
+            self.addSubview(pageControl)
         }
         
         super.doneLoading()
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView){
+        var page:CGFloat = (scroll.contentOffset.x * CGFloat(shows.count) / scroll.contentSize.width)
+        pageControl.currentPage = Int(round(page))
     }
     
     override func layoutSubviews() {
@@ -63,6 +88,9 @@ class MyShowsView:BaseView{
                 var view = showViews[i]
                 view.frame = CGRect(x: CGFloat(i)*lims.width, y:0, width: lims.width, height: lims.height)
             }
+            
+            var size = pageControl.sizeThatFits(lims)
+            pageControl.frame = CGRect(x: 0, y: 0, width: lims.width, height: size.height*2/3)
         }
     }
 }
