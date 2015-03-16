@@ -11,32 +11,37 @@ import UIKit
 
 class SearchViewController:UIViewController, UITableViewDelegate{
     
+    private var searchView = SearchView()
+    private var searchStr:String
+    
     init(_ searchStr: String){
+        self.searchStr = searchStr
         super.init(nibName: nil, bundle: nil)
         self.title = "\"\(searchStr)\""
         
-        var searchView = SearchView()
         searchView.delegate = self
-        
-        self.view = searchView
-        
-        Api().getShowsFromSearchString(searchStr, callback: { (shows) -> () in
-            dispatch_async(dispatch_get_main_queue()) {
-                searchView.setSearchResults(shows)
-            }
-        })
-        
     }
 
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func loadView() {
+        super.loadView()
+        self.view = searchView
+    }
+    
+    override func viewDidLoad() {
+        Api().getShowsFromSearchString(searchStr, callback: { (shows) -> () in
+            dispatch_async(dispatch_get_main_queue()) {
+                self.searchView.setSearchResults(shows)
+            }
+        })
+    }
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
         var index = indexPath.row
-        var showView = ShowViewController()
-        self.navigationController?.pushViewController(showView, animated: true)
-        showView.setShowId((self.view as SearchView).shows[index].id)
+        self.navigationController?.pushViewController(ShowViewController(showId: (self.view as SearchView).shows[index].id), animated: true)
     }
 }
 

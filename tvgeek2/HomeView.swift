@@ -15,7 +15,6 @@ class HomeViewController:UIViewController, UISearchBarDelegate, ViewShowDelegate
     
     override init(){
         super.init(nibName: nil, bundle: nil)
-        self.view = homeView
         
         var searchBar = UISearchBar()
         
@@ -28,17 +27,24 @@ class HomeViewController:UIViewController, UISearchBarDelegate, ViewShowDelegate
         self.edgesForExtendedLayout = UIRectEdge.None
         
         homeView.delegate = self
-        
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func loadView() {
+        super.loadView()
+        self.view = homeView
+    }
+    
+    override func viewDidLoad() {
         Api().getPopularShows({(popular: [Show]) -> Void in
             dispatch_async(dispatch_get_main_queue()) {
                 self.homeView.setShows(popular)
                 self.homeView.setPopular(popular)
             }
         })
-    }
-
-    required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     func searchBarTextDidBeginEditing(searchBar: UISearchBar){
@@ -58,10 +64,8 @@ class HomeViewController:UIViewController, UISearchBarDelegate, ViewShowDelegate
         searchBar.text = nil
     }
     
-    func shouldViewShow(show: Show) {
-        var viewController = ShowViewController()
-        self.navigationController?.pushViewController(viewController, animated: true)
-        viewController.setShowId(show.id)
+    func shouldViewShow(showId: Int) {
+        self.navigationController?.pushViewController(ShowViewController(showId: showId), animated: true)
     }
 }
 

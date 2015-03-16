@@ -9,46 +9,56 @@
 import Foundation
 import UIKit
 
-class ShowViewController:UIViewController{
+class ShowViewController:UIViewController, ViewShowDelegate{
     
-    var showView = ShowView()
+    private var showView = ShowView()
+    private var showId:Int
     
-    override init(){
+    init(showId: Int){
+        self.showId = showId
         super.init(nibName: nil, bundle: nil)
-        self.view = showView
         
         self.edgesForExtendedLayout = UIRectEdge.None
+        showView.delegate = self
     }
     
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setShowId(id: Int){
-        Api().getShowFromId(String(id), callback: {(show: Show) -> Void in
+    override func loadView() {
+        self.view = showView
+    }
+    
+    override func viewDidLoad() {
+        Api().getShowFromId(String(self.showId), callback: {(show: Show) -> Void in
             dispatch_async(dispatch_get_main_queue()) {
                 self.showView.setShow(show)
             }
         })
         
-        Api().getSeasonsForShowById(String(id), callback: {(thumbnails: [String]) -> Void in
+        Api().getSeasonsForShowById(String(self.showId), callback: {(thumbnails: [String]) -> Void in
             dispatch_async(dispatch_get_main_queue()) {
                 self.showView.setSeasons(thumbnails)
             }
         })
         
-        Api().getRelatedShowsById(String(id), callback: {(shows: [Show]) -> Void in
+        Api().getRelatedShowsById(String(self.showId), callback: {(shows: [Show]) -> Void in
             dispatch_async(dispatch_get_main_queue()) {
                 self.showView.setRelated(shows)
             }
         })
         
         
-        Api().getCastForShowById(String(id), callback: {(cast: [Person]) -> Void in
+        Api().getCastForShowById(String(self.showId), callback: {(cast: [Person]) -> Void in
             dispatch_async(dispatch_get_main_queue()) {
                 self.showView.setCast(cast)
             }
         })
+    }
+    
+    func shouldViewShow(showId: Int) {
+        self.navigationController?.pushViewController(ShowViewController(showId: showId), animated: true)
     }
 }
 
@@ -76,6 +86,15 @@ class ShowView:BaseView{
     private var related = RelatedView()
     private var castLabel = UILabel()
     private var cast = CastView()
+    
+    var delegate: ViewShowDelegate?{
+        get{
+            return self.related.delegate
+        }
+        set{
+            self.related.delegate = newValue
+        }
+    }
     
     required init(coder aDecoder: NSCoder){
         fatalError("init(coder:) has not been implemented")
@@ -294,20 +313,20 @@ class ShowView:BaseView{
             seasons.frame = CGRect(x: 0, y: start, width: lims.width, height: size.height)
             
             start += size.height + PADDING*2
-            size = relatedLabel.sizeThatFits(CGSize(width: width, height: relatedLabel.font.lineHeight))
-            relatedLabel.frame = CGRect(x: PADDING, y: start, width: size.width, height: size.height)
-            
-            start += size.height + PADDING
-            size = CGSize(width: lims.width, height: (lims.width/3) * 3/2)
-            related.frame = CGRect(x: 0, y: start, width: lims.width, height: size.height)
-            
-            start += size.height + PADDING*2
             size = castLabel.sizeThatFits(CGSize(width: width, height: castLabel.font.lineHeight))
             castLabel.frame = CGRect(x: PADDING, y: start, width: size.width, height: size.height)
             
             start += size.height + PADDING
             size = CGSize(width: lims.width, height: (lims.width/3) * 3/2)
             cast.frame = CGRect(x: 0, y: start, width: lims.width, height: size.height)
+            
+            start += size.height + PADDING*2
+            size = relatedLabel.sizeThatFits(CGSize(width: width, height: relatedLabel.font.lineHeight))
+            relatedLabel.frame = CGRect(x: PADDING, y: start, width: size.width, height: size.height)
+            
+            start += size.height + PADDING
+            size = CGSize(width: lims.width, height: (lims.width/3) * 3/2)
+            related.frame = CGRect(x: 0, y: start, width: lims.width, height: size.height)
             
             start += size.height + PADDING
             scroll.contentSize = CGSize(width: lims.width, height: start + PADDING)

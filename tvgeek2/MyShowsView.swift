@@ -43,7 +43,7 @@ class MyShowsView:BaseView, UIScrollViewDelegate{
         var index:Int = Int(p.x / self.frame.width)
         
         if let del = self.delegate{
-            del.shouldViewShow(self.shows[index])
+            del.shouldViewShow(self.shows[index].id)
         }
     }
     

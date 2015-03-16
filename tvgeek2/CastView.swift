@@ -9,11 +9,12 @@
 import Foundation
 import UIKit
 
-class CastView:BaseView{
+class CastView:BaseView, UIScrollViewDelegate{
     private var cast:[Person] = []
     private var images:[URLImageView] = []
     private var characters:[UILabel] = []
     private var actors:[UILabel] = []
+    private var pageControl = UIPageControl()
     
     private var scroll = UIScrollView()
     
@@ -28,10 +29,15 @@ class CastView:BaseView{
         scroll.backgroundColor = COLOR_GRAY
         scroll.showsHorizontalScrollIndicator = false
         scroll.pagingEnabled = true
+        scroll.delegate = self
+        
+        pageControl.currentPageIndicatorTintColor = COLOR_THEME
     }
     
     func setCast(cast: [Person]){
         self.cast = cast
+        
+        pageControl.numberOfPages = cast.count
         
         while(!images.isEmpty){
             images[0].removeFromSuperview()
@@ -67,9 +73,15 @@ class CastView:BaseView{
         
         if super.isLoading(){
             self.addSubview(scroll)
+            self.addSubview(pageControl)
         }
         
         super.doneLoading()
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView){
+        var page:CGFloat = (scroll.contentOffset.x * CGFloat(cast.count) / scroll.contentSize.width)
+        pageControl.currentPage = Int(round(page))
     }
     
     override func layoutSubviews() {
@@ -79,7 +91,11 @@ class CastView:BaseView{
             var lims = self.bounds.size
             scroll.frame = self.bounds
             
-            var poster_width = (lims.height-PADDING*2)*2/3
+            var size = pageControl.sizeThatFits(lims)
+            var pager_height = size.height*2/3
+            pageControl.frame = CGRect(x: 0, y: lims.height - pager_height, width: lims.width, height: pager_height)
+            
+            var poster_width = (lims.height-((PADDING) + pager_height))*2/3
             var poster_height = poster_width*3/2
             
             for (var i=0;i<images.count;i++){
@@ -92,10 +108,10 @@ class CastView:BaseView{
                 var width = lims.width - (PADDING*3 + poster_width)
                 
                 var clabel = characters[i]
-                clabel.frame = CGRect(x: offset, y: (lims.height/2) - clabel.font.lineHeight, width: width, height: clabel.font.lineHeight)
+                clabel.frame = CGRect(x: offset, y: ((lims.height-pager_height)/2) - clabel.font.lineHeight, width: width, height: clabel.font.lineHeight)
                 
                 var alabel = actors[i]
-                alabel.frame = CGRect(x: offset, y: (lims.height/2), width: width, height: clabel.font.lineHeight)
+                alabel.frame = CGRect(x: offset, y: ((lims.height-pager_height)/2), width: width, height: clabel.font.lineHeight)
             }
             
             scroll.contentSize = CGSize(width: CGFloat(images.count) * lims.width, height: lims.height)

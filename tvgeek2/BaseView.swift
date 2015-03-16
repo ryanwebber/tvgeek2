@@ -15,6 +15,7 @@ class BaseView: UIView{
     
     override init(){
         super.init(frame: CGRectZero)
+        self.backgroundColor = COLOR_DARK
         
         loader.startAnimating()
         self.addSubview(loader)

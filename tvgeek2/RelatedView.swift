@@ -12,6 +12,7 @@ import UIKit
 class RelatedView:BaseView{
     private var related:[Show] = []
     private var images:[URLImageView] = []
+    var delegate: ViewShowDelegate?
     
     private var scroll = UIScrollView()
     
@@ -25,6 +26,15 @@ class RelatedView:BaseView{
         
         scroll.backgroundColor = COLOR_GRAY
         scroll.showsHorizontalScrollIndicator = false
+    }
+    
+    func viewTapped(handler: UIGestureRecognizer){
+        var index = handler.view?.tag
+        if let del = delegate{
+            if let i = index{
+                del.shouldViewShow(i)
+            }
+        }
     }
     
     func setRelated(shows: [Show]){
@@ -42,6 +52,10 @@ class RelatedView:BaseView{
             view.contentMode = UIViewContentMode.ScaleAspectFill
             view.layer.borderWidth = 1
             view.layer.borderColor = COLOR_WHITE.CGColor
+            view.userInteractionEnabled = true
+            var taps = UITapGestureRecognizer(target: self, action: Selector("viewTapped:"))
+            view.addGestureRecognizer(taps)
+            view.tag = show.id
             
             scroll.addSubview(view)
             images.append(view)

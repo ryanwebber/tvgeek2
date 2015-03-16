@@ -9,5 +9,5 @@
 import Foundation
 
 protocol ViewShowDelegate{
-    func shouldViewShow(show: Show);
+    func shouldViewShow(showId: Int);
 }
