@@ -3,15 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "heart-empty.png"
+      "filename" : "icon.png"
     },
     {
       "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "3x"
+      "scale" : "2x",
+      "filename" : "icon@2x.png"
     }
   ],
   "info" : {

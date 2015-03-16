@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class Error{
     class func HTTPError(details: HttpResult){
