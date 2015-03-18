@@ -81,6 +81,7 @@ class HomeView:BaseView{
         }
         set{
             self.myshows.delegate = newValue
+            self.popular.showDelegate = newValue
         }
     }
     
@@ -93,6 +94,7 @@ class HomeView:BaseView{
 
         self.backgroundColor = COLOR_DARK
         
+        scroller.showsVerticalScrollIndicator = false
         scroller.addSubview(myshows)
         scroller.addSubview(popular)
         self.addSubview(scroller)
