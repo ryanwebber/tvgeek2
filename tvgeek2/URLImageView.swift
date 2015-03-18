@@ -26,15 +26,18 @@ class URLImageView : UIImageView{
     
     func setImageUrl(url: String?){
         Api().getImageDataFromUrl(url, success: {(data: NSData) -> Void in
-            self.loader.hidden = true;
-            UIView.transitionWithView(self,
-                duration:1,
-                options: UIViewAnimationOptions.TransitionCrossDissolve,
-                animations: {
-                    self.image = UIImage(data: data)
-                },
-                completion: nil
-            )
+            dispatch_async(dispatch_get_main_queue()) {
+                self.loader.hidden = true;
+                self.loader.removeFromSuperview()
+                UIView.transitionWithView(self,
+                    duration:1,
+                    options: UIViewAnimationOptions.TransitionCrossDissolve,
+                    animations: {
+                        self.image = UIImage(data: data)
+                    },
+                    completion: nil
+                )
+            }
         }, failure: {() -> Void in
             dispatch_async(dispatch_get_main_queue()) {
                 self.setImageUnknown()

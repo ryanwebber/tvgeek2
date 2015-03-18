@@ -68,6 +68,11 @@ class RelatedView:BaseView{
         super.doneLoading()
     }
     
+    override func sizeThatFits(size: CGSize) -> CGSize {
+        var initial_height = size.width / 2
+        return CGSize()
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         

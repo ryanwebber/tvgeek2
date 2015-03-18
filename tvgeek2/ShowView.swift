@@ -31,6 +31,10 @@ class ShowViewController:UIViewController, ViewShowDelegate{
     }
     
     override func viewDidLoad() {
+        
+        self.navigationController?.navigationBar.barStyle = UIBarStyle.BlackTranslucent
+        self.navigationController?.navigationBar.translucent = true
+        
         Api().getShowFromId(String(self.showId), callback: {(show: Show) -> Void in
             dispatch_async(dispatch_get_main_queue()) {
                 self.showView.setShow(show)

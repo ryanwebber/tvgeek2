@@ -72,9 +72,8 @@ class HomeViewController:UIViewController, UISearchBarDelegate, ViewShowDelegate
 class HomeView:BaseView{
     
     private var scroller = UIScrollView()
-    
-    private var myshows = MyShowsView()
-    private var myshowsLabel = UILabel()
+    private var myshows = WatchView()
+    private var popular = PopularView()
     
     var delegate: ViewShowDelegate?{
         get{
@@ -94,12 +93,8 @@ class HomeView:BaseView{
 
         self.backgroundColor = COLOR_DARK
         
-        myshowsLabel.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
-        myshowsLabel.textColor = COLOR_GRAY_FADE
-        myshowsLabel.text = "My Shows"
-        
         scroller.addSubview(myshows)
-        //scroller.addSubview(myshowsLabel)
+        scroller.addSubview(popular)
         self.addSubview(scroller)
     }
     
@@ -109,7 +104,8 @@ class HomeView:BaseView{
     }
     
     func setPopular(popular: [Show]){
-        return
+        self.popular.setShows(popular)
+        self.setNeedsLayout()
     }
 
     override func layoutSubviews() {
@@ -119,19 +115,18 @@ class HomeView:BaseView{
         scroller.frame = bounds
         if !super.isLoading(){
             var lims = super.bounds.size
-            
-            var start = CGFloat(0)
             var width = lims.width - 2*PADDING
             
-            var size = myshowsLabel.sizeThatFits(CGSize(width: width, height: lims.height))
-            myshowsLabel.frame = CGRect(x: PADDING, y: start, width: width, height: size.height)
-            
-            //start+=size.height + PADDING
-            size = CGSize(width: lims.width, height: lims.width)
+            var start = CGFloat(0)
+            var size = CGSize(width: lims.width, height: lims.width)
             myshows.frame = CGRect(x: 0, y: start, width: size.width, height: size.height)
             
             start+=size.height
-            scroller.contentSize = CGSize(width: lims.width, height: start + PADDING*2)
+            size = popular.sizeThatFits(lims)
+            popular.frame = CGRect(x: 0, y: start, width: size.width, height: size.height)
+
+            start+=size.height
+            scroller.contentSize = CGSize(width: lims.width, height: start)
         }
     }
 }
