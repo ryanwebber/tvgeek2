@@ -13,6 +13,8 @@ class ShowViewController:UIViewController, ViewShowDelegate{
     
     private var showView = ShowView()
     private var showId:Int
+    private var favourited = false
+    private var toggle: UIBarButtonItem?
     
     init(showId: Int){
         self.showId = showId
@@ -20,6 +22,9 @@ class ShowViewController:UIViewController, ViewShowDelegate{
         
         self.edgesForExtendedLayout = UIRectEdge.None
         showView.delegate = self
+        
+        toggle = UIBarButtonItem(title: "Favourite", style: UIBarButtonItemStyle.Plain, target: self, action: Selector("toggleFavourite"))
+        self.navigationItem.rightBarButtonItem = toggle
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -63,6 +68,11 @@ class ShowViewController:UIViewController, ViewShowDelegate{
     
     func shouldViewShow(showId: Int) {
         self.navigationController?.pushViewController(ShowViewController(showId: showId), animated: true)
+    }
+    
+    func toggleFavourite(){
+        favourited = !favourited
+        toggle!.title = favourited ? "Unfavourite":"Favourite"
     }
 }
 

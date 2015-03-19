@@ -16,6 +16,7 @@ let COLOR_GRAY_FADE = UIColor(white: 0.5, alpha: 1)
 let COLOR_WHITE = UIColor(white: 1, alpha: 1)
 let COLOR_LIGHT = UIColor(white: 0.75, alpha: 1)
 let COLOR_DARK_TRANS = UIColor(white: 0.1, alpha: 0.75)
+let COLOR_DARKER_TRANS = UIColor(white: 0.1, alpha: 0.88)
 let COLOR_TRANS = UIColor(white: 0, alpha: 0)
 
 let PADDING:CGFloat = 12

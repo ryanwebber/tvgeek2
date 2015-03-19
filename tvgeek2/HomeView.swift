@@ -41,7 +41,7 @@ class HomeViewController:UIViewController, UISearchBarDelegate, ViewShowDelegate
     override func viewDidLoad() {
         Api().getPopularShows({(popular: [Show]) -> Void in
             dispatch_async(dispatch_get_main_queue()) {
-                self.homeView.setShows(popular)
+                self.homeView.setShows([])
                 self.homeView.setPopular(popular)
             }
         })

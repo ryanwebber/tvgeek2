@@ -198,7 +198,7 @@
 		93B689F41A90F49700EDAB0D /* ui */ = {
 			isa = PBXGroup;
 			children = (
-				93D9C8B61AABA4220081A2FA /* elements */,
+				93D9C8B61AABA4220081A2FA /* util */,
 				93D9C8B51AABA40E0081A2FA /* views */,
 				9327303C1AA69EF70033F650 /* styles.swift */,
 			);
@@ -226,14 +226,14 @@
 			name = views;
 			sourceTree = "<group>";
 		};
-		93D9C8B61AABA4220081A2FA /* elements */ = {
+		93D9C8B61AABA4220081A2FA /* util */ = {
 			isa = PBXGroup;
 			children = (
 				93D9C8B71AABA44F0081A2FA /* URLImageView.swift */,
 				93C541001AAFBCEF00AD651C /* RatingView.swift */,
 				93DFB7131AB5532000AE9882 /* ViewShowDelegate.swift */,
 			);
-			name = elements;
+			name = util;
 			sourceTree = "<group>";
 		};
 		93DFB7151AB7951C00AE9882 /* Network */ = {

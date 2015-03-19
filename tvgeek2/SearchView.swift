@@ -55,6 +55,7 @@ class SearchView:UITableView, UITableViewDataSource{
         self.separatorColor = COLOR_GRAY
         self.rowHeight = ROW_HEIGHT
         self.dataSource = self
+        self.bounces = false
     }
     
     func setSearchResults(shows: [Show]){

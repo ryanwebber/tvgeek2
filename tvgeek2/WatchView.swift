@@ -12,6 +12,7 @@ import UIKit
 class WatchView:BaseView, UIScrollViewDelegate{
     private var shows:[Show] = []
     private var showViews: [SimpleShowView] = []
+    private var noshows = NoWatchShows()
     
     private var scroll = UIScrollView()
     private var pageControl = UIPageControl()
@@ -31,6 +32,10 @@ class WatchView:BaseView, UIScrollViewDelegate{
         scroll.showsHorizontalScrollIndicator = false
         scroll.pagingEnabled = true
         scroll.delegate = self
+        
+        noshows.hidden = true
+        
+        self.addSubview(noshows)
         
         var taps = UITapGestureRecognizer(target: self, action: Selector("viewTapped:"))
         scroll.addGestureRecognizer(taps)
@@ -64,8 +69,8 @@ class WatchView:BaseView, UIScrollViewDelegate{
         pageControl.numberOfPages = shows.count
         
         if super.isLoading(){
-            self.addSubview(scroll)
-            self.addSubview(pageControl)
+            self.insertSubview(scroll, belowSubview: noshows)
+            self.insertSubview(pageControl, belowSubview: noshows)
         }
         
         super.doneLoading()
@@ -78,9 +83,14 @@ class WatchView:BaseView, UIScrollViewDelegate{
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        var lims = self.bounds.size
         
-        if(!super.isLoading()){
-            var lims = self.bounds.size
+        if(super.isLoading()){
+        }else if(shows.count == 0){
+            noshows.hidden = false
+            noshows.setNeedsDisplay()
+            noshows.frame = self.bounds
+        }else{
             scroll.frame = self.bounds
             scroll.contentSize = CGSize(width: CGFloat(shows.count) * lims.width, height: lims.height)
             
@@ -92,6 +102,63 @@ class WatchView:BaseView, UIScrollViewDelegate{
             var size = pageControl.sizeThatFits(lims)
             pageControl.frame = CGRect(x: 0, y: 0, width: lims.width, height: size.height*2/3)
         }
+    }
+}
+
+class NoWatchShows: UIView{
+    private var title = UILabel()
+    private var desc = UILabel()
+    private var image = UIImageView(image: UIImage(named: "placeholder_favourite"))
+    private var overlay = UIView()
+    
+    override init() {
+        super.init(frame: CGRectZero)
+        
+        title.textColor = COLOR_WHITE
+        title.textAlignment = NSTextAlignment.Center
+        title.adjustsFontSizeToFitWidth = false;
+        title.lineBreakMode = NSLineBreakMode.ByTruncatingTail;
+        title.font = UIFont.systemFontOfSize(FONT_SIZE_LARGE)
+        title.numberOfLines = 1
+        title.text = "D'oh!"
+        
+        desc.textColor = COLOR_LIGHT
+        desc.textAlignment = NSTextAlignment.Center
+        desc.font = UIFont.systemFontOfSize(FONT_SIZE_MED)
+        desc.numberOfLines = 0
+        desc.text = "You have no favourite shows! Search for your favourites or look through popular shows below"
+        
+        image.contentMode = UIViewContentMode.ScaleAspectFill
+        
+        overlay.backgroundColor = COLOR_DARKER_TRANS
+        
+        overlay.addSubview(title)
+        overlay.addSubview(desc)
+        
+        self.addSubview(image)
+        self.addSubview(overlay)
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        var lims = self.bounds.size
+        var width = lims.width - PADDING*2
+        
+        image.frame = self.bounds
+        overlay.frame = self.bounds
+        
+        var height = title.font.lineHeight
+        var size = desc.sizeThatFits(CGSize(width: width, height: lims.height))
+        height += size.height
+        
+        var title_offset = (lims.height/2) - (height/2)
+        var desc_offset = title_offset + title.font.lineHeight
+        
+        title.frame = CGRect(x: PADDING, y: title_offset, width: width, height: title.font.lineHeight)
+        desc.frame = CGRect(x: PADDING, y: desc_offset, width: size.width, height: size.height)
     }
 }
 
