@@ -127,6 +127,43 @@ class Api{
         })
     }
     
+    func getProductionsForPersonById(id: String, callback: (productions:[CastMember]) -> ()){
+        var url = NSURL(string: "https://api-v2launch.trakt.tv/people/\(id)/shows?extended=images,full")
+        http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in
+            var json:NSDictionary
+            if result.success{
+                var arr = (self.getJSONFromData(result.data!) as NSDictionary)["cast"] as NSArray
+                var productions = [CastMember]()
+                for (var i = 0;i<arr.count;i++) {
+                    var json = arr[i] as NSDictionary
+                    var character = json["character"] as String
+                    json = json["show"] as NSDictionary
+                    var show = Show(
+                        title: json["title"] as String,
+                        rating: json["rating"] as? Float,
+                        poster: ((json["images"] as NSDictionary)["poster"] as NSDictionary)["thumb"] as? String,
+                        cover: ((json["images"] as NSDictionary)["fanart"] as NSDictionary)["thumb"] as? String,
+                        description: json["overview"] as? String,
+                        airDay: nil,
+                        airTime: nil,
+                        airTimezone: nil,
+                        network: nil,
+                        year: json["year"] as? Int,
+                        id: (json["ids"] as NSDictionary)["trakt"] as Int,
+                        genres: []
+                    )
+                    productions.append(CastMember(
+                        production: show,
+                        character: character
+                    ))
+                }
+                callback(productions: productions)
+            }else{
+                Error.HTTPError(result)
+            }
+        })
+    }
+    
     func getSeasonsForShowById(id: String, callback: (thumbnails:[String]) -> ()){
         var url = NSURL(string: "https://api-v2launch.trakt.tv/shows/\(id)/seasons?extended=images,full")
         http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in
