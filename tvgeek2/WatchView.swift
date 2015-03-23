@@ -68,6 +68,11 @@ class WatchView:BaseView, UIScrollViewDelegate{
         
         pageControl.numberOfPages = shows.count
         
+        if shows.count > 0{
+            noshows.hidden = true
+            noshows.setNeedsDisplay()
+        }
+        
         if super.isLoading(){
             self.insertSubview(scroll, belowSubview: noshows)
             self.insertSubview(pageControl, belowSubview: noshows)

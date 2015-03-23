@@ -23,7 +23,10 @@ class ShowViewController:UIViewController, ViewShowDelegate{
         self.edgesForExtendedLayout = UIRectEdge.None
         showView.delegate = self
         
-        toggle = UIBarButtonItem(title: "Favourite", style: UIBarButtonItemStyle.Plain, target: self, action: Selector("toggleFavourite"))
+        favourited = Cache.isShowStored(showId)
+        var title = favourited ? "Unfavourite":"Favourite"
+        
+        toggle = UIBarButtonItem(title: title, style: UIBarButtonItemStyle.Plain, target: self, action: Selector("toggleFavourite"))
         self.navigationItem.rightBarButtonItem = toggle
     }
     
@@ -71,8 +74,18 @@ class ShowViewController:UIViewController, ViewShowDelegate{
     }
     
     func toggleFavourite(){
-        favourited = !favourited
-        toggle!.title = favourited ? "Unfavourite":"Favourite"
+        
+        if let show = showView.show{
+            
+            if favourited{
+                Cache.removeStoredShow(show)
+            }else{
+                Cache.storeShow(show)
+            }
+            
+            favourited = !favourited
+            toggle!.title = favourited ? "Unfavourite":"Favourite"
+        }
     }
 }
 

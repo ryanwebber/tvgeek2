@@ -52,4 +52,60 @@ struct Show{
     var year: Int?;
     var id: Int;
     var genres: [String]
+    
+    func encode() -> NSDictionary{
+        var dict = NSMutableDictionary()
+        
+        dict.setValue(title, forKey: "title")
+        dict.setValue(rating, forKey: "rating")
+        dict.setValue(poster, forKey: "poster")
+        dict.setValue(cover, forKey: "cover")
+        dict.setValue(description, forKey: "description")
+        dict.setValue(airDay, forKey: "airday")
+        dict.setValue(airTime, forKey: "airtime")
+        dict.setValue(airTimezone, forKey: "airtimezone")
+        dict.setValue(network, forKey: "network")
+        dict.setValue(year, forKey: "year")
+        dict.setValue(id, forKey: "id")
+        dict.setValue(genres, forKey: "genres")
+        
+        return dict
+    }
+    
+    static func decode(dict: NSDictionary) -> Show{
+        var title = dict.objectForKey("title") as String
+        var rating = dict.objectForKey("year") as? Float
+        var poster = dict.objectForKey("poster") as? String
+        var cover = dict.objectForKey("cover") as? String
+        var description = dict.objectForKey("description") as? String
+        var airDay = dict.objectForKey("airday") as? String
+        var airTime = dict.objectForKey("airtime") as? String
+        var airTimezone = dict.objectForKey("airtimezone") as? String
+        var network = dict.objectForKey("network") as? String
+        var year = dict.objectForKey("year") as? Int
+        var id = dict.objectForKey("id") as Int
+        
+        var genres: [String]
+        if let g = dict.objectForKey("genres") as? [String]{
+            genres = g
+        }else{
+            genres = []
+        }
+        
+        return Show(
+            title: title,
+            rating: rating,
+            poster: poster,
+            cover: cover,
+            description: description,
+            airDay: airDay,
+            airTime: airTime,
+            airTimezone: airTimezone,
+            network: network,
+            year: year,
+            id: id,
+            genres: genres
+        )
+    }
 }
+

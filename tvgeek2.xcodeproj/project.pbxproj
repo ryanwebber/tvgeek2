@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9324DD2C1ABF54740039711A /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9324DD2B1ABF54740039711A /* Cache.swift */; };
 		9327303D1AA69EF80033F650 /* styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9327303C1AA69EF70033F650 /* styles.swift */; };
 		93337B021A9EB48400DD720C /* keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 93337B011A9EB48400DD720C /* keys.plist */; };
 		933C0E2B1A2CD5AE006AB2FC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933C0E2A1A2CD5AE006AB2FC /* AppDelegate.swift */; };
@@ -47,6 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9324DD2B1ABF54740039711A /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		9327303C1AA69EF70033F650 /* styles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = styles.swift; sourceTree = "<group>"; };
 		93337B011A9EB48400DD720C /* keys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = keys.plist; sourceTree = "<group>"; };
 		933C0E251A2CD5AE006AB2FC /* tvgeek2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tvgeek2.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -173,6 +175,7 @@
 				9348BBAF1A2E93D1006A0DDE /* Http.swift */,
 				93B689F71A90F59300EDAB0D /* Api.swift */,
 				93D9C8BB1AABB3680081A2FA /* Error.swift */,
+				9324DD2B1ABF54740039711A /* Cache.swift */,
 			);
 			name = api;
 			sourceTree = "<group>";
@@ -365,6 +368,7 @@
 				933C0E2B1A2CD5AE006AB2FC /* AppDelegate.swift in Sources */,
 				9327303D1AA69EF80033F650 /* styles.swift in Sources */,
 				934F82941AB2A13500E2F76A /* RelatedView.swift in Sources */,
+				9324DD2C1ABF54740039711A /* Cache.swift in Sources */,
 				934F829A1AB3EEDA00E2F76A /* SeasonView.swift in Sources */,
 				9341C6FB1AACB3010076E759 /* SearchView.swift in Sources */,
 				93F6C28E1AA180C400CF942B /* HomeView.swift in Sources */,

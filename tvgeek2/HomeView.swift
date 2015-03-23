@@ -38,10 +38,17 @@ class HomeViewController:UIViewController, UISearchBarDelegate, ViewShowDelegate
         self.view = homeView
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        var shows = Cache.getStoredShows()
+        NSLog("Loading %i shows.", shows.count)
+        self.homeView.setShows(shows)
+    }
+    
     override func viewDidLoad() {
+        
         Api().getPopularShows({(popular: [Show]) -> Void in
             dispatch_async(dispatch_get_main_queue()) {
-                self.homeView.setShows([])
                 self.homeView.setPopular(popular)
             }
         })

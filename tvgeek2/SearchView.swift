@@ -91,7 +91,7 @@ class SearchResultTableCell: UITableViewCell{
         self.backgroundColor = COLOR_DARK
         self.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         
-        var titleText = (show.year != nil) ? "\(show.title) (\(show.year!))" : show.title
+        var titleText = show.title
         
         poster.contentMode = UIViewContentMode.ScaleAspectFill
         poster.layer.borderWidth = 1
@@ -109,6 +109,7 @@ class SearchResultTableCell: UITableViewCell{
         alt.adjustsFontSizeToFitWidth = false
         alt.lineBreakMode = NSLineBreakMode.ByTruncatingTail
         alt.text = show.description
+        alt.numberOfLines = 2
         
         whenSelected.backgroundColor = COLOR_GRAY
         
@@ -135,16 +136,16 @@ class SearchResultTableCell: UITableViewCell{
         
         title.frame = CGRect(
             x: poster_offset,
-            y: poster.frame.origin.y,
+            y: poster.frame.origin.y + PADDING,
             width: data_width,
-            height: poster.frame.height - alt.font.lineHeight - (PADDING*2)
+            height: title.font.lineHeight
         )
         
         alt.frame = CGRect(
             x: poster_offset,
-            y: poster.frame.height - (PADDING+alt.font.lineHeight),
+            y: poster.frame.origin.y + PADDING + title.font.lineHeight + PADDING_SMALL,
             width: data_width,
-            height: alt.font.lineHeight
+            height: alt.font.lineHeight*2
         )
     }
     
