@@ -65,7 +65,8 @@ class Api{
                         year: json["year"] as? Int,
                         id: (json["ids"] as NSDictionary)["trakt"] as Int,
                         tvrageid: (json["ids"] as NSDictionary)["tvrage"] as? Int,
-                        genres: []
+                        genres: [],
+                        status: nil
                     ))
                 }
                 callback(shows: shows)
@@ -96,7 +97,8 @@ class Api{
                         year: json["year"] as? Int,
                         id: (json["ids"] as NSDictionary)["trakt"] as Int,
                         tvrageid: (json["ids"] as NSDictionary)["tvrage"] as? Int,
-                        genres: []
+                        genres: [],
+                        status: nil
                     ))
                 }
                 callback(popular: shows)
@@ -153,7 +155,8 @@ class Api{
                         year: json["year"] as? Int,
                         id: (json["ids"] as NSDictionary)["trakt"] as Int,
                         tvrageid: (json["ids"] as NSDictionary)["tvrage"] as? Int,
-                        genres: []
+                        genres: [],
+                        status: nil
                     )
                     productions.append(CastMember(
                         production: show,
@@ -210,7 +213,8 @@ class Api{
                         year: json["year"] as? Int,
                         id: (json["ids"] as NSDictionary)["trakt"] as Int,
                         tvrageid: (json["ids"] as NSDictionary)["tvrage"] as? Int,
-                        genres: []
+                        genres: [],
+                        status: nil
                     ))
                 }
                 callback(shows: shows)
@@ -238,7 +242,8 @@ class Api{
                     year: json["year"] as? Int,
                     id: (json["ids"] as NSDictionary)["trakt"] as Int,
                     tvrageid: (json["ids"] as NSDictionary)["tvrage"] as? Int,
-                    genres: (json["genres"] as [String])
+                    genres: (json["genres"] as [String]),
+                    status: json["status"] as? String
                 ))
             }else{
                 Error.HTTPError(result)
@@ -307,7 +312,7 @@ class Api{
                 callback(episode: nil)
                 
             }else{
-                Error.HTTPError(result)
+                callback(episode: nil)
             }
         })
     }

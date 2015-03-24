@@ -49,7 +49,7 @@ class HomeViewController:UIViewController, UISearchBarDelegate, ViewShowDelegate
                     if let e = episode{
                         self.homeView.setShowAirDate(e)
                     }else{
-                        NSLog("Next episode unknown")
+                        self.homeView.setShowAirDateUnknown(show)
                     }
                 }
             })
@@ -129,6 +129,10 @@ class HomeView:BaseView{
     
     func setShowAirDate(episode: NextEpisode){
         myshows.setNextAirDate(episode)
+    }
+    
+    func setShowAirDateUnknown(show: Show){
+        myshows.setNextShowDateUnknown(show)
     }
 
     override func layoutSubviews() {

@@ -89,6 +89,22 @@ class WatchView:BaseView, UIScrollViewDelegate{
         }
     }
     
+    func setNextShowDateUnknown(show:Show){
+        for(var i=0;i<shows.count;i++){
+            if shows[i].id == show.id{
+                if let status = show.status{
+                    if status == "ended" {
+                        showViews[i].setAirDate("Series Ended")
+                    }else{
+                        showViews[i].setAirDate("Next Episode Unknown")
+                    }
+                }else{
+                    showViews[i].setAirDate("Next Episode Unknown")
+                }
+            }
+        }
+    }
+    
     func scrollViewDidScroll(scrollView: UIScrollView){
         var page:CGFloat = (scroll.contentOffset.x * CGFloat(shows.count) / scroll.contentSize.width)
         pageControl.currentPage = Int(round(page))

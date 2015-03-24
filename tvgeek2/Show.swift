@@ -40,6 +40,7 @@ struct Show{
     var id: Int;
     var tvrageid: Int?
     var genres: [String]
+    var status: String?
     
     func encode() -> NSDictionary{
         var dict = NSMutableDictionary()
@@ -57,6 +58,7 @@ struct Show{
         dict.setValue(id, forKey: "id")
         dict.setValue(tvrageid, forKey: "tvrageid")
         dict.setValue(genres, forKey: "genres")
+        dict.setValue(status, forKey: "status")
         
         return dict
     }
@@ -74,6 +76,7 @@ struct Show{
         var year = dict.objectForKey("year") as? Int
         var id = dict.objectForKey("id") as Int
         var tvrageid = dict.objectForKey("tvrageid") as? Int
+        var status = dict.objectForKey("status") as? String
         
         var genres: [String]
         if let g = dict.objectForKey("genres") as? [String]{
@@ -95,7 +98,8 @@ struct Show{
             year: year,
             id: id,
             tvrageid: tvrageid,
-            genres: genres
+            genres: genres,
+            status: status
         )
     }
     
