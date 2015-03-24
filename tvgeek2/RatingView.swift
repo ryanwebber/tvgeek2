@@ -43,21 +43,21 @@ class RatingView:UIView{
         var numEmptyStars = 5 - numFullStars - numHalfStars
         
         for(var i=0;i<numFullStars;i++){
-            var imgview = UIImageView(image: UIImage(named: "heart"))
+            var imgview = UIImageView(image: UIImage(named: "star"))
             imgview.contentMode = UIViewContentMode.ScaleAspectFit
             fullhearts.append(imgview)
             self.addSubview(imgview)
         }
         
         for(var i=0;i<numHalfStars;i++){
-            var imgview = UIImageView(image: UIImage(named: "heart-half"))
+            var imgview = UIImageView(image: UIImage(named: "star-half"))
             imgview.contentMode = UIViewContentMode.ScaleAspectFit
             fullhearts.append(imgview)
             self.addSubview(imgview)
         }
         
         for(var i=0;i<numEmptyStars;i++){
-            var imgview = UIImageView(image: UIImage(named: "heart-empty"))
+            var imgview = UIImageView(image: UIImage(named: "star-empty"))
             imgview.contentMode = UIViewContentMode.ScaleAspectFit
             fullhearts.append(imgview)
             self.addSubview(imgview)
