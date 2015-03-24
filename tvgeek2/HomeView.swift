@@ -41,12 +41,22 @@ class HomeViewController:UIViewController, UISearchBarDelegate, ViewShowDelegate
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         var shows = Cache.getStoredShows()
-        NSLog("Loading %i shows.", shows.count)
         self.homeView.setShows(shows)
+        
+        for show in shows{
+            Api().getShowNextEpisodeByShow(show, callback: { (episode: NextEpisode?) -> () in
+                dispatch_async(dispatch_get_main_queue()) {
+                    if let e = episode{
+                        self.homeView.setShowAirDate(e)
+                    }else{
+                        NSLog("Next episode unknown")
+                    }
+                }
+            })
+        }
     }
     
     override func viewDidLoad() {
-        
         Api().getPopularShows({(popular: [Show]) -> Void in
             dispatch_async(dispatch_get_main_queue()) {
                 self.homeView.setPopular(popular)
@@ -115,6 +125,10 @@ class HomeView:BaseView{
     func setPopular(popular: [Show]){
         self.popular.setShows(popular)
         self.setNeedsLayout()
+    }
+    
+    func setShowAirDate(episode: NextEpisode){
+        myshows.setNextAirDate(episode)
     }
 
     override func layoutSubviews() {

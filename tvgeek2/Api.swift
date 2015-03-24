@@ -64,6 +64,7 @@ class Api{
                         network: nil,
                         year: json["year"] as? Int,
                         id: (json["ids"] as NSDictionary)["trakt"] as Int,
+                        tvrageid: (json["ids"] as NSDictionary)["tvrage"] as? Int,
                         genres: []
                     ))
                 }
@@ -94,6 +95,7 @@ class Api{
                         network: nil,
                         year: json["year"] as? Int,
                         id: (json["ids"] as NSDictionary)["trakt"] as Int,
+                        tvrageid: (json["ids"] as NSDictionary)["tvrage"] as? Int,
                         genres: []
                     ))
                 }
@@ -150,6 +152,7 @@ class Api{
                         network: nil,
                         year: json["year"] as? Int,
                         id: (json["ids"] as NSDictionary)["trakt"] as Int,
+                        tvrageid: (json["ids"] as NSDictionary)["tvrage"] as? Int,
                         genres: []
                     )
                     productions.append(CastMember(
@@ -206,8 +209,9 @@ class Api{
                         network: nil,
                         year: json["year"] as? Int,
                         id: (json["ids"] as NSDictionary)["trakt"] as Int,
+                        tvrageid: (json["ids"] as NSDictionary)["tvrage"] as? Int,
                         genres: []
-                        ))
+                    ))
                 }
                 callback(shows: shows)
             }else{
@@ -233,6 +237,7 @@ class Api{
                     network: json["network"] as? String,
                     year: json["year"] as? Int,
                     id: (json["ids"] as NSDictionary)["trakt"] as Int,
+                    tvrageid: (json["ids"] as NSDictionary)["tvrage"] as? Int,
                     genres: (json["genres"] as [String])
                 ))
             }else{
@@ -262,5 +267,48 @@ class Api{
         }else{
             failure()
         }
+    }
+    
+    func getShowNextEpisodeByShow(show:Show, callback: (episode: NextEpisode?) -> ()){
+        var url = NSURL(string: "http://services.tvrage.com/feeds/episode_list.php?sid=\(show.tvrageid!)")
+        http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in
+            if result.success{
+                
+                var dict = SWXMLHash.parse(result.data!)
+                dict = dict["Show"]["Episodelist"]["Season"]
+                
+                for season in dict{
+                    var seasonNumber = season.element?.attributes["no"] as String!
+                    
+                    for episode in season["episode"]{
+                        var episodeNumber = episode["seasonnum"].element!.text!
+                        
+                        var date = episode["airdate"].element!.text!
+                        var title = episode["title"].element?.text
+                        
+                        var format = NSDateFormatter()
+                        format.dateFormat = "yyyy-MM-dd"
+                        
+                        if let then = format.dateFromString(date){
+                            if !then.timeIntervalSinceNow.isSignMinus{
+                                callback(episode: NextEpisode(
+                                    season: seasonNumber,
+                                    episode: episodeNumber,
+                                    title: title,
+                                    date: then,
+                                    show: show
+                                ))
+                                return;
+                            }
+                        }
+                    }
+                }
+                
+                callback(episode: nil)
+                
+            }else{
+                Error.HTTPError(result)
+            }
+        })
     }
 }

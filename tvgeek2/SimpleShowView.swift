@@ -16,6 +16,7 @@ class SimpleShowView: UIView{
     private var title = UILabel()
     private var year = UILabel()
     private var overlay = UIView()
+    private var loader = UIActivityIndicatorView()
     
     required init(coder aDecoder: NSCoder){
         fatalError("init(coder:) has not been implemented")
@@ -37,19 +38,24 @@ class SimpleShowView: UIView{
         
         year.textColor = COLOR_LIGHT
         year.font = UIFont.systemFontOfSize(FONT_SIZE_MED)
-        if let y = show.year{
-            self.year.text = "(\(y))"
-        }else{
-            self.year.text = "(----)"
-        }
+        
+        loader.startAnimating()
+        loader.alpha = 0.25
         
         overlay.backgroundColor = COLOR_DARK_TRANS
         overlay.addSubview(year)
+        overlay.addSubview(loader)
         overlay.addSubview(title)
         
         self.addSubview(cover)
         self.addSubview(overlay)
         
+    }
+    
+    func setAirDate(when: String){
+        year.text = when
+        loader.removeFromSuperview()
+        self.setNeedsLayout()
     }
     
     override func layoutSubviews() {
@@ -63,5 +69,6 @@ class SimpleShowView: UIView{
         
         title.frame = CGRect(x: PADDING, y: PADDING, width: lims.width - PADDING*2, height: title.font.lineHeight)
         year.frame = CGRect(x: PADDING, y: PADDING + title.font.lineHeight, width: lims.width - PADDING*2, height: title.font.lineHeight)
+        loader.frame = CGRect(x: PADDING, y: PADDING + title.font.lineHeight, width: title.font.lineHeight, height: title.font.lineHeight)
     }
 }

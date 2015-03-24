@@ -18,39 +18,27 @@ struct Show{
     var airTime: String?;
     var airs: String? {
         get{
-            if let ad = airDay{
-                if let at = self.airTime{
-                    var range = at.rangeOfString(":")
-                    if let r = range{
-                        var t24:Int? =  at.substringToIndex(r.startIndex).toInt()
-                        if let t24a = t24{
-                            if(t24a == 12){
-                                return "\(ad)s at Noon"
-                            }else if(t24a == 24){
-                                return "\(ad)s at Midnight"
-                            }else if(t24a > 12){
-                                return "\(ad)s at \(t24a-12):00pm"
-                            }else{
-                                return "\(ad)s at \(t24a):00am"
-                            }
-                        }else{
-                            return "\(ad)s 3"
-                        }
-                    }else{
-                        return "\(ad)s 2"
-                    }
+            if let at = formatTime(){
+                if let ad = airDay{
+                    return "\(ad)s at \(at)"
                 }else{
-                    return "\(ad)s 1"
+                    return formatTime()
                 }
             }else{
-                return nil
+                if let ad = airDay{
+                    return "\(ad)s"
+                }else{
+                    return nil
+                }
             }
         }
     };
+    
     var airTimezone: String?;
     var network: String?;
     var year: Int?;
     var id: Int;
+    var tvrageid: Int?
     var genres: [String]
     
     func encode() -> NSDictionary{
@@ -67,6 +55,7 @@ struct Show{
         dict.setValue(network, forKey: "network")
         dict.setValue(year, forKey: "year")
         dict.setValue(id, forKey: "id")
+        dict.setValue(tvrageid, forKey: "tvrageid")
         dict.setValue(genres, forKey: "genres")
         
         return dict
@@ -84,6 +73,7 @@ struct Show{
         var network = dict.objectForKey("network") as? String
         var year = dict.objectForKey("year") as? Int
         var id = dict.objectForKey("id") as Int
+        var tvrageid = dict.objectForKey("tvrageid") as? Int
         
         var genres: [String]
         if let g = dict.objectForKey("genres") as? [String]{
@@ -104,8 +94,35 @@ struct Show{
             network: network,
             year: year,
             id: id,
+            tvrageid: tvrageid,
             genres: genres
         )
+    }
+    
+    func formatTime()->String?{
+        if let at = self.airTime{
+            var range = at.rangeOfString(":")
+            if let r = range{
+                var t24:Int? =  at.substringToIndex(r.startIndex).toInt()
+                if let t24a = t24{
+                    if(t24a == 12){
+                        return "Noon"
+                    }else if(t24a == 24){
+                        return "Midnight"
+                    }else if(t24a > 12){
+                        return "\(t24a-12):00pm"
+                    }else{
+                        return "\(t24a):00am"
+                    }
+                }else{
+                    return nil
+                }
+            }else{
+                return nil
+            }
+        }else{
+            return nil
+        }
     }
 }
 

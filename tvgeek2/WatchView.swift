@@ -81,6 +81,14 @@ class WatchView:BaseView, UIScrollViewDelegate{
         super.doneLoading()
     }
     
+    func setNextAirDate(episode: NextEpisode){
+        for(var i=0;i<shows.count;i++){
+            if shows[i].id == episode.show.id{
+                showViews[i].setAirDate("\(episode.formatEpisode()): \(episode.formatDate())")
+            }
+        }
+    }
+    
     func scrollViewDidScroll(scrollView: UIScrollView){
         var page:CGFloat = (scroll.contentOffset.x * CGFloat(shows.count) / scroll.contentSize.width)
         pageControl.currentPage = Int(round(page))
