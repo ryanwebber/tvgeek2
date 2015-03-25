@@ -12,8 +12,10 @@ import UIKit
 class URLImageView : UIImageView{
     
     private var loader = UIActivityIndicatorView()
+    private var backup:String
     
-    override init(){
+    init(backup:String = "fanart"){
+        self.backup = backup
         super.init(frame: CGRectZero)
         self.backgroundColor = COLOR_DARK
         self.clipsToBounds = true
@@ -49,6 +51,7 @@ class URLImageView : UIImageView{
         loader.stopAnimating()
         loader.hidden = true
         self.backgroundColor = COLOR_GRAY
+        self.image = UIImage(named: backup)
         self.setNeedsLayout()
     }
 
