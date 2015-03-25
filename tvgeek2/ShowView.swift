@@ -238,7 +238,7 @@ class ShowView:BaseView{
             self.genres.text = "None"
         }else{
             var x = show.genres
-            while(x.count > 2){
+            while(x.count > 3){
                 x.removeLast()
             }
             self.genres.text = "/".join(x)

@@ -42,7 +42,6 @@ class URLImageView : UIImageView{
             dispatch_async(dispatch_get_main_queue()) {
                 self.setImageUnknown()
             }
-            NSLog("[ImageView] Failure to get image {\(url)}")
         })
     }
     

@@ -11,7 +11,7 @@ import UIKit
 
 class SeasonView:BaseView{
     private var images:[URLImageView] = []
-    
+    private var error = UILabel()
     private var scroll = UIScrollView()
     
     required init(coder aDecoder: NSCoder){
@@ -24,6 +24,10 @@ class SeasonView:BaseView{
         
         scroll.backgroundColor = COLOR_GRAY
         scroll.showsHorizontalScrollIndicator = false
+        
+        error.textColor = COLOR_LIGHT
+        error.text = "Couldn't find show seasons."
+        error.textAlignment = NSTextAlignment.Center
     }
     
     func setSeasons(thumbnails: [String]){
@@ -49,6 +53,10 @@ class SeasonView:BaseView{
             self.addSubview(scroll)
         }
         
+        if(thumbnails.count == 0){
+            self.addSubview(error)
+        }
+        
         super.doneLoading()
     }
     
@@ -66,6 +74,8 @@ class SeasonView:BaseView{
                 var view = images[i]
                 view.frame = CGRect(x: (PADDING+poster_width)*CGFloat(i) + PADDING, y: PADDING, width: poster_width, height: poster_height)
             }
+            
+            error.frame = CGRect(x: PADDING, y: (lims.height - error.font.lineHeight)/2, width: lims.width - PADDING*2, height: error.font.lineHeight)
             
             scroll.contentSize = CGSize(width: (PADDING+poster_width) * CGFloat(images.count) + PADDING, height: lims.height)
         }

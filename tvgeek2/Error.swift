@@ -10,7 +10,14 @@ import Foundation
 import UIKit
 
 class Error{
-    class func HTTPError(details: HttpResult){
-        fatalError("[HTTPError] Error with http")
+    class func HTTPError(details: HttpResult?){
+        var view = UIAlertView(
+            title: "Connection Error",
+            message: "TVGeek could not connect to the server. Please try again later",
+            delegate: nil,
+            cancelButtonTitle: "Okay"
+        )
+        
+        view.show()
     }
 }

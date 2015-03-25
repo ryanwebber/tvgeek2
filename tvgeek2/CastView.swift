@@ -15,6 +15,7 @@ class CastView:BaseView, UIScrollViewDelegate{
     private var characters:[UILabel] = []
     private var actors:[UILabel] = []
     private var pageControl = UIPageControl()
+    private var error = UILabel()
     
     private var scroll = UIScrollView()
     
@@ -30,6 +31,10 @@ class CastView:BaseView, UIScrollViewDelegate{
         scroll.showsHorizontalScrollIndicator = false
         scroll.pagingEnabled = true
         scroll.delegate = self
+        
+        error.textColor = COLOR_LIGHT
+        error.text = "Couldn't find cast members."
+        error.textAlignment = NSTextAlignment.Center
         
         pageControl.currentPageIndicatorTintColor = COLOR_THEME
     }
@@ -76,6 +81,10 @@ class CastView:BaseView, UIScrollViewDelegate{
             self.addSubview(pageControl)
         }
         
+        if(cast.count == 0){
+            self.addSubview(error)
+        }
+        
         super.doneLoading()
     }
     
@@ -113,6 +122,8 @@ class CastView:BaseView, UIScrollViewDelegate{
                 var alabel = actors[i]
                 alabel.frame = CGRect(x: offset, y: ((lims.height-pager_height)/2), width: width, height: clabel.font.lineHeight)
             }
+            
+            error.frame = CGRect(x: PADDING, y: (lims.height - error.font.lineHeight)/2, width: lims.width - PADDING*2, height: error.font.lineHeight)
             
             scroll.contentSize = CGSize(width: CGFloat(images.count) * lims.width, height: lims.height)
         }

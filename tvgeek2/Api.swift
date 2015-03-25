@@ -77,6 +77,7 @@ class Api{
     }
     
     func getPopularShows(callback: (popular: [Show]) -> ()){
+        
         var url = NSURL(string: "https://api-v2launch.trakt.tv/shows/trending?extended=images,full")
         http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in
             if result.success{
@@ -126,7 +127,7 @@ class Api{
                 }
                 callback(cast: cast)
             }else{
-                Error.HTTPError(result)
+                callback(cast: [])
             }
         })
     }
@@ -187,7 +188,7 @@ class Api{
                 }
                 callback(thumbnails: images)
             }else{
-                Error.HTTPError(result)
+                callback(thumbnails: [])
             }
         })
     }
@@ -219,12 +220,13 @@ class Api{
                 }
                 callback(shows: shows)
             }else{
-                Error.HTTPError(result)
+                callback(shows: [])
             }
         })
     }
     
     func getShowFromId(id:String, callback: (show: Show) -> ()){
+        
         var url = NSURL(string: "https://api-v2launch.trakt.tv/shows/\(id)?extended=images,full")
         http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in
             if result.success{
@@ -275,45 +277,49 @@ class Api{
     }
     
     func getShowNextEpisodeByShow(show:Show, callback: (episode: NextEpisode?) -> ()){
-        var url = NSURL(string: "http://services.tvrage.com/feeds/episode_list.php?sid=\(show.tvrageid!)")
-        http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in
-            if result.success{
-                
-                var dict = SWXMLHash.parse(result.data!)
-                dict = dict["Show"]["Episodelist"]["Season"]
-                
-                for season in dict{
-                    var seasonNumber = season.element?.attributes["no"] as String!
+        if let id = show.tvrageid{
+            var url = NSURL(string: "http://services.tvrage.com/feeds/episode_list.php?sid=\(show.tvrageid!)")
+            http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in
+                if result.success{
                     
-                    for episode in season["episode"]{
-                        var episodeNumber = episode["seasonnum"].element!.text!
+                    var dict = SWXMLHash.parse(result.data!)
+                    dict = dict["Show"]["Episodelist"]["Season"]
+                    
+                    for season in dict{
+                        var seasonNumber = season.element?.attributes["no"] as String!
                         
-                        var date = episode["airdate"].element!.text!
-                        var title = episode["title"].element?.text
-                        
-                        var format = NSDateFormatter()
-                        format.dateFormat = "yyyy-MM-dd"
-                        
-                        if let then = format.dateFromString(date){
-                            if !then.timeIntervalSinceNow.isSignMinus{
-                                callback(episode: NextEpisode(
-                                    season: seasonNumber,
-                                    episode: episodeNumber,
-                                    title: title,
-                                    date: then,
-                                    show: show
-                                ))
-                                return;
+                        for episode in season["episode"]{
+                            var episodeNumber = episode["seasonnum"].element!.text!
+                            
+                            var date = episode["airdate"].element!.text!
+                            var title = episode["title"].element?.text
+                            
+                            var format = NSDateFormatter()
+                            format.dateFormat = "yyyy-MM-dd"
+                            
+                            if let then = format.dateFromString(date){
+                                if !then.timeIntervalSinceNow.isSignMinus{
+                                    callback(episode: NextEpisode(
+                                        season: seasonNumber,
+                                        episode: episodeNumber,
+                                        title: title,
+                                        date: then,
+                                        show: show
+                                        ))
+                                    return;
+                                }
                             }
                         }
                     }
+                    
+                    callback(episode: nil)
+                    
+                }else{
+                    callback(episode: nil)
                 }
-                
-                callback(episode: nil)
-                
-            }else{
-                callback(episode: nil)
-            }
-        })
+            })
+        }else{
+            callback(episode: nil)
+        }
     }
 }

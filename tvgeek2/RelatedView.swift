@@ -12,6 +12,7 @@ import UIKit
 class RelatedView:BaseView{
     private var related:[Show] = []
     private var images:[URLImageView] = []
+    private var error = UILabel()
     var delegate: ViewShowDelegate?
     
     private var scroll = UIScrollView()
@@ -26,6 +27,10 @@ class RelatedView:BaseView{
         
         scroll.backgroundColor = COLOR_GRAY
         scroll.showsHorizontalScrollIndicator = false
+        
+        error.textColor = COLOR_LIGHT
+        error.text = "Couldn't find related shows."
+        error.textAlignment = NSTextAlignment.Center
     }
     
     func viewTapped(handler: UIGestureRecognizer){
@@ -65,6 +70,10 @@ class RelatedView:BaseView{
             self.addSubview(scroll)
         }
         
+        if(shows.count == 0){
+            self.addSubview(error)
+        }
+        
         super.doneLoading()
     }
     
@@ -87,6 +96,8 @@ class RelatedView:BaseView{
                 var view = images[i]
                 view.frame = CGRect(x: (PADDING+poster_width)*CGFloat(i) + PADDING, y: PADDING, width: poster_width, height: poster_height)
             }
+            
+            error.frame = CGRect(x: PADDING, y: (lims.height - error.font.lineHeight)/2, width: lims.width - PADDING*2, height: error.font.lineHeight)
             
             scroll.contentSize = CGSize(width: (PADDING+poster_width) * CGFloat(images.count) + PADDING, height: lims.height)
         }

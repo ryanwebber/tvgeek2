@@ -11,12 +11,24 @@ import UIKit
 
 class NoConnectionViewController: UIViewController{
     private var connectionView:NoConnectionView
+    private var failQuotes:[String] = [
+        "\"Is Star Wars the one with the little wizard boy?\" - Ron Swanson, Parks and Rec",
+        "\"Dear frozen yogurt, you are the celery of desserts. Be ice cream or be nothing. Zero stars.\" - Ron Swanson, Parks and Rec",
+        "\"Whenever I’m really unsure about an idea, first I abuse the people whose help I need. And then I take a nap.\" - Don Draper, Mad Men",
+        "\"He put my stuff in jello again!\" - Dwite Schrute, The Office",
+        "\"You know I always wanted to pretend I was an architect.\" - George Costanza - Seinfeld",
+        "\"If you can’t say something bad about a relationship you shouldn’t say anything at all.\" - George Costanza - Seinfeld",
+        "\"With great mustache, comes great responsibility.\" - Peter Griffen, Family Guy",
+        "\"This woman hates me so much, I'm starting to like her.\" - George Costanza",
+    ]
     
-    init(error: String){
-        self.connectionView = NoConnectionView(error)
+    override init(){
+        
+        var quote:UInt32 = arc4random_uniform(UInt32(failQuotes.count))
+        self.connectionView = NoConnectionView(failQuotes[Int(quote)])
+        
         super.init(nibName: nil, bundle: nil)
         
-        self.navigationController?.navigationBarHidden = true
         self.edgesForExtendedLayout = UIRectEdge.None
     }
     
@@ -27,27 +39,6 @@ class NoConnectionViewController: UIViewController{
     override func loadView() {
         super.loadView()
         self.view = connectionView
-    }
-    
-    func searchBarTextDidBeginEditing(searchBar: UISearchBar){
-        searchBar.showsCancelButton = true
-    }
-    
-    func searchBarCancelButtonClicked(searchBar: UISearchBar){
-        searchBar.showsCancelButton = false
-        searchBar.resignFirstResponder()
-        searchBar.text = nil
-    }
-    
-    func searchBarSearchButtonClicked(searchBar: UISearchBar){
-        searchBar.showsCancelButton = false
-        searchBar.resignFirstResponder()
-        self.navigationController?.pushViewController(SearchViewController(searchBar.text), animated: true)
-        searchBar.text = nil
-    }
-    
-    func shouldViewShow(showId: Int) {
-        self.navigationController?.pushViewController(ShowViewController(showId: showId), animated: true)
     }
 }
 
@@ -60,12 +51,14 @@ class NoConnectionView:UIView{
     }
     
     init(_ err: String){
-        super.init()
+        super.init(frame: CGRectZero)
         self.backgroundColor = COLOR_DARK
         
         label.text = err
-        label.textColor = COLOR_WHITE
+        label.textColor = COLOR_GRAY_FADE
         label.font = UIFont.systemFontOfSize(FONT_SIZE_LARGE)
+        label.textAlignment = NSTextAlignment.Center
+        label.numberOfLines = 0
         
         self.addSubview(label)
     }

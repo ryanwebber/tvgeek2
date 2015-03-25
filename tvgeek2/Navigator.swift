@@ -9,10 +9,15 @@
 import Foundation
 import UIKit
 
+var sharedNavigator: AppNavigator?
+
 class AppNavigator:UINavigationController{
     
     convenience override init(){
         self.init(rootViewController: HomeViewController())
+        if sharedNavigator == nil{
+            sharedNavigator = self
+        }
     }
     
     override func viewDidLoad() {
