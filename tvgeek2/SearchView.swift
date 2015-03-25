@@ -13,13 +13,19 @@ class SearchViewController:UIViewController, UITableViewDelegate{
     
     private var searchView = SearchView()
     private var searchStr:String
+    private var titleView: UIView?
     
     init(_ searchStr: String){
         self.searchStr = searchStr
         super.init(nibName: nil, bundle: nil)
-        self.title = "\"\(searchStr)\""
         
+        self.title = "\"\(searchStr)\""
         searchView.delegate = self
+        
+        var loader = UIActivityIndicatorView(frame: CGRectZero)
+        loader.startAnimating()
+        titleView = self.navigationItem.titleView
+        self.navigationItem.titleView = loader
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -35,6 +41,7 @@ class SearchViewController:UIViewController, UITableViewDelegate{
         Api().getShowsFromSearchString(searchStr, callback: { (shows) -> () in
             dispatch_async(dispatch_get_main_queue()) {
                 self.searchView.setSearchResults(shows)
+                self.navigationItem.titleView = self.titleView
             }
         })
     }
