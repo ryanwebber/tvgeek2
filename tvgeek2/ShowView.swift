@@ -57,7 +57,9 @@ class ShowViewController:UIViewController, ViewShowDelegate{
         
         Api().getRelatedShowsById(String(self.showId), callback: {(shows: [Show]) -> Void in
             dispatch_async(dispatch_get_main_queue()) {
-                self.showView.setRelated(shows)
+                self.showView.setRelated(shows.filter({(show: Show) -> Bool in
+                    return show.poster != nil;
+                }))
             }
         })
         

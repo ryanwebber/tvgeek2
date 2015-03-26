@@ -111,7 +111,7 @@ struct Show{
                 if let t24a = t24{
                     if(t24a == 12){
                         return "Noon"
-                    }else if(t24a == 24){
+                    }else if(t24a == 24 || t24a == 0){
                         return "Midnight"
                     }else if(t24a > 12){
                         return "\(t24a-12):00pm"
