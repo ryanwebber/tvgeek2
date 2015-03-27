@@ -20,7 +20,6 @@ class Api{
             "Content-Type": "application/json",
             "trakt-api-version": "2",
             "trakt-api-key": Api.api_keys["trakt_key"] as String,
-            "Authorization": "Bearer " + (Api.api_keys["trakt_token"] as String)
         ]
         return dict
     }
@@ -279,7 +278,7 @@ class Api{
     func getShowNextEpisodeByShow(show:Show, callback: (episode: NextEpisode?) -> ()){
         if let id = show.tvrageid{
             var url = NSURL(string: "http://services.tvrage.com/feeds/episode_list.php?sid=\(show.tvrageid!)")
-            http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in
+            http.get(url!, headers: Api.nil_headers, completionHandler: {(result:HttpResult) -> Void in
                 if result.success{
                     
                     var dict = SWXMLHash.parse(result.data!)
