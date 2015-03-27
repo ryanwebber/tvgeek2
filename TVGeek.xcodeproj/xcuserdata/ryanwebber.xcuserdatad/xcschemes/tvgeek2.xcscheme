@@ -17,7 +17,7 @@
                BlueprintIdentifier = "933C0E241A2CD5AE006AB2FC"
                BuildableName = "tvgeek2.app"
                BlueprintName = "tvgeek2"
-               ReferencedContainer = "container:tvgeek2.xcodeproj">
+               ReferencedContainer = "container:TVGeek.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -31,7 +31,7 @@
                BlueprintIdentifier = "933C0E3B1A2CD5AE006AB2FC"
                BuildableName = "tvgeek2Tests.xctest"
                BlueprintName = "tvgeek2Tests"
-               ReferencedContainer = "container:tvgeek2.xcodeproj">
+               ReferencedContainer = "container:TVGeek.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -49,7 +49,7 @@
                BlueprintIdentifier = "933C0E3B1A2CD5AE006AB2FC"
                BuildableName = "tvgeek2Tests.xctest"
                BlueprintName = "tvgeek2Tests"
-               ReferencedContainer = "container:tvgeek2.xcodeproj">
+               ReferencedContainer = "container:TVGeek.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -59,7 +59,7 @@
             BlueprintIdentifier = "933C0E241A2CD5AE006AB2FC"
             BuildableName = "tvgeek2.app"
             BlueprintName = "tvgeek2"
-            ReferencedContainer = "container:tvgeek2.xcodeproj">
+            ReferencedContainer = "container:TVGeek.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -72,13 +72,14 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "933C0E241A2CD5AE006AB2FC"
             BuildableName = "tvgeek2.app"
             BlueprintName = "tvgeek2"
-            ReferencedContainer = "container:tvgeek2.xcodeproj">
+            ReferencedContainer = "container:TVGeek.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -90,13 +91,14 @@
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Release"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "933C0E241A2CD5AE006AB2FC"
             BuildableName = "tvgeek2.app"
             BlueprintName = "tvgeek2"
-            ReferencedContainer = "container:tvgeek2.xcodeproj">
+            ReferencedContainer = "container:TVGeek.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
