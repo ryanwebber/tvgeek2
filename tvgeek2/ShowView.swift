@@ -47,6 +47,17 @@ class ShowViewController:UIViewController, ViewShowDelegate{
             dispatch_async(dispatch_get_main_queue()) {
                 self.showView.setShow(show)
             }
+            
+            Api().getShowNextEpisodeByShow(show, callback: { (episode: NextEpisode?) -> () in
+                dispatch_async(dispatch_get_main_queue()) {
+                    if let e = episode{
+                        self.showView.setNextEpisode(e)
+                    }else{
+                        self.showView.setUnknownNextEpisode(show)
+                    }
+                }
+            })
+            
         })
         
         Api().getSeasonsForShowById(String(self.showId), callback: {(thumbnails: [String]) -> Void in
@@ -109,6 +120,8 @@ class ShowView:BaseView{
     private var airs = UILabel()
     private var overviewLabel = UILabel()
     private var overview = UITextView()
+    private var nextLabel = UILabel()
+    private var next = NextEpisodeView()
     private var seasonsLabel = UILabel()
     private var seasons = SeasonView()
     private var relatedLabel = UILabel()
@@ -184,6 +197,10 @@ class ShowView:BaseView{
         overview.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
         overview.userInteractionEnabled = false
         
+        nextLabel.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
+        nextLabel.textColor = COLOR_GRAY_FADE
+        nextLabel.text = "Next Episode"
+        
         seasonsLabel.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
         seasonsLabel.textColor = COLOR_GRAY_FADE
         seasonsLabel.text = "Season(s)"
@@ -209,6 +226,8 @@ class ShowView:BaseView{
         scroll.addSubview(airs)
         scroll.addSubview(overviewLabel)
         scroll.addSubview(overview)
+        scroll.addSubview(nextLabel)
+        scroll.addSubview(next)
         scroll.addSubview(seasonsLabel)
         scroll.addSubview(seasons)
         scroll.addSubview(relatedLabel)
@@ -261,6 +280,14 @@ class ShowView:BaseView{
         self.overview.text = show.description
         
         super.doneLoading()
+    }
+    
+    func setNextEpisode(episode: NextEpisode){
+        next.setNextEpisode(episode)
+    }
+    
+    func setUnknownNextEpisode(show: Show){
+        next.setUnknownNextEpisode(show)
     }
     
     func setSeasons(images: [String]){
@@ -332,6 +359,14 @@ class ShowView:BaseView{
             start += size.height
             size = overview.sizeThatFits(CGSize(width: width, height: lims.height))
             overview.frame = CGRect(x: PADDING, y: start, width: width, height: size.height)
+            
+            start += size.height + PADDING*2
+            size = nextLabel.sizeThatFits(CGSize(width: width, height: nextLabel.font.lineHeight))
+            nextLabel.frame = CGRect(x: PADDING, y: start, width: size.width, height: size.height)
+            
+            start += size.height + PADDING
+            size = CGSize(width: lims.width, height: (lims.width/3) * 3/2)
+            next.frame = CGRect(x: 0, y: start, width: lims.width, height: size.height)
             
             start += size.height + PADDING*2
             size = seasonsLabel.sizeThatFits(CGSize(width: width, height: seasonsLabel.font.lineHeight))

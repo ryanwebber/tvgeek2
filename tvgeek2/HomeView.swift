@@ -21,6 +21,7 @@ class HomeViewController:UIViewController, UISearchBarDelegate, ViewShowDelegate
         searchBar.barStyle = UIBarStyle.BlackTranslucent
         searchBar.placeholder = "Search"
         searchBar.searchBarStyle = UISearchBarStyle.Minimal
+        searchBar.translucent = true
         searchBar.delegate = self
         
         self.navigationItem.titleView = searchBar

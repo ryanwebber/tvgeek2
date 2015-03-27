@@ -24,5 +24,6 @@ class AppNavigator:UINavigationController{
         super.viewDidLoad()
         self.navigationBar.tintColor = COLOR_THEME
         self.navigationBar.barStyle = UIBarStyle.BlackTranslucent
+        self.navigationBar.translucent = true
     }
 }
