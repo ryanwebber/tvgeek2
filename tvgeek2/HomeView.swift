@@ -58,11 +58,19 @@ class HomeViewController:UIViewController, UISearchBarDelegate, ViewShowDelegate
     }
     
     override func viewDidLoad() {
+        var shows = Cache.getStoredShows()
+        
         Api().getPopularShows({(popular: [Show]) -> Void in
             dispatch_async(dispatch_get_main_queue()) {
                 self.homeView.setPopular(popular)
             }
         })
+        
+        for show in shows{
+            Api().getShowFromId(String(show.id), callback: { (newshow:Show) -> () in
+                Cache.updateShow(newshow)
+            })
+        }
     }
     
     func searchBarTextDidBeginEditing(searchBar: UISearchBar){

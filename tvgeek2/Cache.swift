@@ -35,6 +35,22 @@ class Cache {
         return false
     }
     
+    class func updateShow(show:Show){
+        var storage = NSUserDefaults.standardUserDefaults()
+        
+        var existing = storage.mutableArrayValueForKey("favourites")
+        
+        for(var i=0;i<existing.count;i++){
+            var dict = existing[i] as NSDictionary
+            if let id = dict.objectForKey("id") as? Int{
+                if id == show.id{
+                    existing[i] = show.encode()
+                    return
+                }
+            }
+        }
+    }
+    
     class func getStoredShows()->[Show]{
         var storage = NSUserDefaults.standardUserDefaults()
         
