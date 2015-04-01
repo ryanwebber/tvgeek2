@@ -88,6 +88,7 @@ class PopularShowCell: UICollectionViewCell{
     private var title = UILabel()
     private var year = UILabel()
     private var overlay = UIView()
+    private var gradient = CAGradientLayer()
     
     override init(frame: CGRect){
         super.init(frame:frame)
@@ -104,7 +105,15 @@ class PopularShowCell: UICollectionViewCell{
         year.textColor = COLOR_LIGHT
         year.font = UIFont.systemFontOfSize(FONT_SIZE_SMALL)
         
-        overlay.backgroundColor = COLOR_DARK_TRANS
+        let color0 = UIColor(red:0, green:0, blue:0, alpha:0.0).CGColor
+        let color1 = UIColor(red:0, green:0, blue:0, alpha:0.0).CGColor
+        let color2 = UIColor(red:0, green:0, blue:0, alpha:0.5).CGColor
+        let color3 = UIColor(red:0, green:0, blue:0, alpha:1).CGColor
+        
+        gradient.colors = [color0,color1,color2]
+        gradient.locations = [0, 0.4, 0.6, 1]
+        overlay.layer.insertSublayer(gradient, atIndex: 0)
+        
         overlay.addSubview(year)
         overlay.addSubview(title)
         
@@ -131,15 +140,16 @@ class PopularShowCell: UICollectionViewCell{
     
     override func setNeedsLayout() {
         super.layoutSubviews()
+        gradient.frame = self.bounds
         var lims = self.bounds.size
         
         cover.frame = self.bounds
         
-        var height = (PADDING*2) + title.font.lineHeight + year.font.lineHeight
-        overlay.frame = CGRect(x:0, y: lims.height - height, width: lims.width, height: height)
+        var offset = lims.height - ((PADDING*2) + title.font.lineHeight + year.font.lineHeight)
+        overlay.frame = self.bounds
         
-        title.frame = CGRect(x: PADDING, y: PADDING, width: lims.width - PADDING*2, height: title.font.lineHeight)
-        year.frame = CGRect(x: PADDING, y: PADDING + title.font.lineHeight, width: lims.width - PADDING*2, height: title.font.lineHeight)
+        title.frame = CGRect(x: PADDING, y: offset + PADDING, width: lims.width - PADDING*2, height: title.font.lineHeight)
+        year.frame = CGRect(x: PADDING, y: offset + PADDING + title.font.lineHeight, width: lims.width - PADDING*2, height: title.font.lineHeight)
     }
 }
 

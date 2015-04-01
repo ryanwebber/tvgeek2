@@ -17,6 +17,7 @@ class SimpleShowView: UIView{
     private var year = UILabel()
     private var overlay = UIView()
     private var loader = UIActivityIndicatorView()
+    private var gradient = CAGradientLayer()
     
     required init(coder aDecoder: NSCoder){
         fatalError("init(coder:) has not been implemented")
@@ -42,7 +43,15 @@ class SimpleShowView: UIView{
         loader.startAnimating()
         loader.alpha = 0.25
         
-        overlay.backgroundColor = COLOR_DARK_TRANS
+        let color0 = UIColor(red:0, green:0, blue:0, alpha:0.0).CGColor
+        let color1 = UIColor(red:0, green:0, blue:0, alpha:0.0).CGColor
+        let color2 = UIColor(red:0, green:0, blue:0, alpha:0.75).CGColor
+        let color3 = UIColor(red:0, green:0, blue:0, alpha:1).CGColor
+        
+        gradient.colors = [color0,color1,color2]
+        gradient.locations = [0, 0.6, 0.9, 1]
+        overlay.layer.insertSublayer(gradient, atIndex: 0)
+        
         overlay.addSubview(year)
         overlay.addSubview(loader)
         overlay.addSubview(title)
@@ -60,15 +69,16 @@ class SimpleShowView: UIView{
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        gradient.frame = self.bounds
         var lims = self.bounds.size
         
         cover.frame = self.bounds
         
-        var height = (PADDING*2) + title.font.lineHeight + year.font.lineHeight
-        overlay.frame = CGRect(x:0, y: lims.height - height, width: lims.width, height: height)
+        var offset = lims.height - ((PADDING*2) + title.font.lineHeight + year.font.lineHeight)
+        overlay.frame = self.bounds
         
-        title.frame = CGRect(x: PADDING, y: PADDING, width: lims.width - PADDING*2, height: title.font.lineHeight)
-        year.frame = CGRect(x: PADDING, y: PADDING + title.font.lineHeight, width: lims.width - PADDING*2, height: title.font.lineHeight)
-        loader.frame = CGRect(x: PADDING, y: PADDING + title.font.lineHeight, width: title.font.lineHeight, height: title.font.lineHeight)
+        title.frame = CGRect(x: PADDING, y: offset + PADDING, width: lims.width - PADDING*2, height: title.font.lineHeight)
+        year.frame = CGRect(x: PADDING, y: offset + PADDING + title.font.lineHeight, width: lims.width - PADDING*2, height: title.font.lineHeight)
+        loader.frame = CGRect(x: PADDING, y: offset + PADDING + title.font.lineHeight, width: title.font.lineHeight, height: title.font.lineHeight)
     }
 }
