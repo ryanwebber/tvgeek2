@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>E8535B4F-C4F2-44F1-84E8-9DF7B05E072D</string>
+	<key>IDESourceControlProjectName</key>
+	<string>TVGeek</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>BB2EB974DDD57E2A179ABD2F58FCD853F4DF65FB</key>
+		<string>https://github.com/ryanwebber/tvgeek2.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>TVGeek.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>BB2EB974DDD57E2A179ABD2F58FCD853F4DF65FB</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/ryanwebber/tvgeek2.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>BB2EB974DDD57E2A179ABD2F58FCD853F4DF65FB</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>BB2EB974DDD57E2A179ABD2F58FCD853F4DF65FB</string>
+			<key>IDESourceControlWCCName</key>
+			<string>tvgeek2</string>
+		</dict>
+	</array>
+</dict>
+</plist>
