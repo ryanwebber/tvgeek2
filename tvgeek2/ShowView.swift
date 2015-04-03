@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class ShowViewController:UIViewController, ViewShowDelegate{
+class ShowViewController:UIViewController, ViewShowDelegate, ViewSeasonDelegate{
     
     private var showView = ShowView()
     private var showId:Int
@@ -21,7 +21,8 @@ class ShowViewController:UIViewController, ViewShowDelegate{
         super.init(nibName: nil, bundle: nil)
         
         self.edgesForExtendedLayout = UIRectEdge.None
-        showView.delegate = self
+        showView.showDelegate = self
+        showView.seasonDelegate = self
         
         favourited = Cache.isShowStored(showId)
         var title = favourited ? "Unfavourite":"Favourite"
@@ -60,9 +61,9 @@ class ShowViewController:UIViewController, ViewShowDelegate{
             
         })
         
-        Api().getSeasonsForShowById(String(self.showId), callback: {(thumbnails: [String]) -> Void in
+        Api().getSeasonsForShowById(String(self.showId), callback: {(seasons: [Season]) -> Void in
             dispatch_async(dispatch_get_main_queue()) {
-                self.showView.setSeasons(thumbnails)
+                self.showView.setSeasons(seasons)
             }
         })
         
@@ -84,6 +85,10 @@ class ShowViewController:UIViewController, ViewShowDelegate{
     
     func shouldViewShow(showId: Int) {
         self.navigationController?.pushViewController(ShowViewController(showId: showId), animated: true)
+    }
+    
+    func shouldViewSeason(season: Season) {
+        NSLog("hello")
     }
     
     func toggleFavourite(){
@@ -129,12 +134,21 @@ class ShowView:BaseView{
     private var castLabel = UILabel()
     private var cast = CastView()
     
-    var delegate: ViewShowDelegate?{
+    var showDelegate: ViewShowDelegate?{
         get{
             return self.related.delegate
         }
         set{
             self.related.delegate = newValue
+        }
+    }
+    
+    var seasonDelegate: ViewSeasonDelegate?{
+        get{
+            return self.seasons.delegate
+        }
+        set{
+            self.seasons.delegate = newValue
         }
     }
     
@@ -290,9 +304,9 @@ class ShowView:BaseView{
         next.setUnknownNextEpisode(show)
     }
     
-    func setSeasons(images: [String]){
-        seasonsLabel.text = "\(images.count) Season(s)"
-        seasons.setSeasons(images)
+    func setSeasons(list: [Season]){
+        seasonsLabel.text = "\(list.count) Season(s)"
+        seasons.setSeasons(list)
         self.setNeedsLayout()
     }
     

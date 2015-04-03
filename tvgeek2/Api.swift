@@ -170,24 +170,53 @@ class Api{
         })
     }
     
-    func getSeasonsForShowById(id: String, callback: (thumbnails:[String]) -> ()){
+    func getSeasonsForShowById(id: String, callback: (seasons:[Season]) -> ()){
         var url = NSURL(string: "https://api-v2launch.trakt.tv/shows/\(id)/seasons?extended=images,full")
         http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in
             if result.success{
                 var arr = self.getJSONArrayFromData(result.data!)
-                var images = [String]()
+                var seasons = [Season]()
                 for (var i = 0;i<arr.count;i++) {
                     var num = (arr[i] as NSDictionary)["number"] as Int
                     if num > 0 {
                         var image = (((arr[i] as NSDictionary)["images"] as NSDictionary)["poster"] as NSDictionary)["thumb"] as? String
-                        if let i = image{
-                            images.append(i)
-                        }
+                        seasons.append(Season(
+                            poster: image,
+                            season: num,
+                            episodes: []
+                        ))
                     }
                 }
-                callback(thumbnails: images)
+                callback(seasons: seasons)
             }else{
-                callback(thumbnails: [])
+                callback(seasons: [])
+            }
+        })
+    }
+    
+    func getSeasonWithEpisodesForShowSeasonByIdAndSeason(id: Int, season: Season, callback: (season:Season) -> ()){
+        var url = NSURL(string: "https://api-v2launch.trakt.tv/shows/\(id)/seasons/\(season.season)/?extended=images,full")
+        http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in
+            if result.success{
+                var arr = self.getJSONArrayFromData(result.data!)
+                var s = season
+                var episodes = [Episode]()
+                for (var i = 0;i<arr.count;i++) {
+                    var num = (arr[i] as NSDictionary)["number"] as Int
+                    var title = (arr[i] as NSDictionary)["title"] as? String
+                    var image = (((arr[i] as NSDictionary)["images"] as NSDictionary)["screenshot"] as NSDictionary)["thumb"] as? String
+                    var overview = (arr[i] as NSDictionary)["overview"] as? String
+                    episodes.append(Episode(
+                        season: s,
+                        episode: num,
+                        title: title,
+                        cover: image,
+                        overview: overview
+                    ))
+                }
+                callback(season: s)
+            }else{
+                Error.HTTPError(result)
             }
         })
     }
