@@ -11,6 +11,9 @@ import UIKit
 
 class Error{
     class func HTTPError(details: HttpResult?){
+        
+        sharedNavigator?.pushViewController(NoConnectionViewController(), animated: false)
+        
         var view = UIAlertView(
             title: "Connection Error",
             message: "TVGeek could not connect to the server. Please try again later",

@@ -256,7 +256,6 @@ class Api{
     }
     
     func getShowFromId(id:String, callback: (show: Show) -> ()){
-        
         var url = NSURL(string: "https://api-v2launch.trakt.tv/shows/\(id)?extended=images,full")
         http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in
             if result.success{
