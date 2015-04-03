@@ -39,6 +39,8 @@
 		93F679D01ACE19F900A51685 /* Season.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F679CF1ACE19F900A51685 /* Season.swift */; };
 		93F679D21ACE1ACE00A51685 /* Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F679D11ACE1ACE00A51685 /* Episode.swift */; };
 		93F679D41ACE1EC500A51685 /* ViewSeasonDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F679D31ACE1EC500A51685 /* ViewSeasonDelegate.swift */; };
+		93F679D71ACE22BB00A51685 /* EpisodeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F679D61ACE22BB00A51685 /* EpisodeListView.swift */; };
+		93F679DA1ACE350400A51685 /* EpisodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F679D91ACE350400A51685 /* EpisodeView.swift */; };
 		93F6C28E1AA180C400CF942B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F6C28D1AA180C400CF942B /* HomeView.swift */; };
 		93FE21321AA9F2A900AEFF34 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FE21311AA9F2A900AEFF34 /* BaseView.swift */; };
 /* End PBXBuildFile section */
@@ -90,6 +92,8 @@
 		93F679CF1ACE19F900A51685 /* Season.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Season.swift; sourceTree = "<group>"; };
 		93F679D11ACE1ACE00A51685 /* Episode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Episode.swift; sourceTree = "<group>"; };
 		93F679D31ACE1EC500A51685 /* ViewSeasonDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewSeasonDelegate.swift; sourceTree = "<group>"; };
+		93F679D61ACE22BB00A51685 /* EpisodeListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpisodeListView.swift; sourceTree = "<group>"; };
+		93F679D91ACE350400A51685 /* EpisodeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpisodeView.swift; sourceTree = "<group>"; };
 		93F6C28D1AA180C400CF942B /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		93FE21311AA9F2A900AEFF34 /* BaseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -239,9 +243,11 @@
 		93D9C8B51AABA40E0081A2FA /* views */ = {
 			isa = PBXGroup;
 			children = (
-				93DFB7181AB7BAC800AE9882 /* search */,
-				93DFB7151AB7951C00AE9882 /* Network */,
 				93C055511AA80F4300F659B8 /* navigator */,
+				93F679D81ACE34F500A51685 /* episode */,
+				93F679D51ACE225C00A51685 /* season */,
+				93DFB7181AB7BAC800AE9882 /* search */,
+				93DFB7151AB7951C00AE9882 /* network */,
 				932730401AA7CF780033F650 /* show */,
 				93A0D7341A9FEA37002366DF /* home */,
 				93FE21311AA9F2A900AEFF34 /* BaseView.swift */,
@@ -260,12 +266,12 @@
 			name = util;
 			sourceTree = "<group>";
 		};
-		93DFB7151AB7951C00AE9882 /* Network */ = {
+		93DFB7151AB7951C00AE9882 /* network */ = {
 			isa = PBXGroup;
 			children = (
 				93DFB7161AB7953800AE9882 /* NoConnectionView.swift */,
 			);
-			name = Network;
+			name = network;
 			sourceTree = "<group>";
 		};
 		93DFB7181AB7BAC800AE9882 /* search */ = {
@@ -274,6 +280,22 @@
 				9341C6FA1AACB3010076E759 /* SearchView.swift */,
 			);
 			name = search;
+			sourceTree = "<group>";
+		};
+		93F679D51ACE225C00A51685 /* season */ = {
+			isa = PBXGroup;
+			children = (
+				93F679D61ACE22BB00A51685 /* EpisodeListView.swift */,
+			);
+			name = season;
+			sourceTree = "<group>";
+		};
+		93F679D81ACE34F500A51685 /* episode */ = {
+			isa = PBXGroup;
+			children = (
+				93F679D91ACE350400A51685 /* EpisodeView.swift */,
+			);
+			name = episode;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -393,10 +415,12 @@
 				9341C6FB1AACB3010076E759 /* SearchView.swift in Sources */,
 				9324DD2E1ABFC5DA0039711A /* SWXMLHash.swift in Sources */,
 				9324DD301ABFCBCD0039711A /* NextEpisode.swift in Sources */,
+				93F679DA1ACE350400A51685 /* EpisodeView.swift in Sources */,
 				937A6FE51AC4E0E400427971 /* NextEpisodeView.swift in Sources */,
 				93F6C28E1AA180C400CF942B /* HomeView.swift in Sources */,
 				93F679D21ACE1ACE00A51685 /* Episode.swift in Sources */,
 				9348BBB01A2E93D1006A0DDE /* Http.swift in Sources */,
+				93F679D71ACE22BB00A51685 /* EpisodeListView.swift in Sources */,
 				93DFB7171AB7953800AE9882 /* NoConnectionView.swift in Sources */,
 				93D9C8B81AABA44F0081A2FA /* URLImageView.swift in Sources */,
 				9359ECF91AB8F74700A676E2 /* SimpleShowView.swift in Sources */,

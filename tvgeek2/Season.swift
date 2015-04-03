@@ -9,7 +9,16 @@
 import Foundation
 
 struct Season{
+    var showid: String
     var poster: String?
     var season: Int
     var episodes: [Episode] = []
+    
+    func format()->String{
+        if season < 10{
+            return "s0\(season)"
+        }else{
+            return "s\(season)"
+        }
+    }
 }

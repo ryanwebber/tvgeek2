@@ -88,7 +88,7 @@ class ShowViewController:UIViewController, ViewShowDelegate, ViewSeasonDelegate{
     }
     
     func shouldViewSeason(season: Season) {
-        NSLog("hello")
+        self.navigationController?.pushViewController(EpisodeListViewController(season), animated: true)
     }
     
     func toggleFavourite(){

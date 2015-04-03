@@ -181,6 +181,7 @@ class Api{
                     if num > 0 {
                         var image = (((arr[i] as NSDictionary)["images"] as NSDictionary)["poster"] as NSDictionary)["thumb"] as? String
                         seasons.append(Season(
+                            showid: id,
                             poster: image,
                             season: num,
                             episodes: []
@@ -194,8 +195,8 @@ class Api{
         })
     }
     
-    func getSeasonWithEpisodesForShowSeasonByIdAndSeason(id: Int, season: Season, callback: (season:Season) -> ()){
-        var url = NSURL(string: "https://api-v2launch.trakt.tv/shows/\(id)/seasons/\(season.season)/?extended=images,full")
+    func getSeasonWithEpisodesForShowSeasonBySeason(season: Season, callback: (season:Season) -> ()){
+        var url = NSURL(string: "https://api-v2launch.trakt.tv/shows/\(season.showid)/seasons/\(season.season)/?extended=images,full")
         http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in
             if result.success{
                 var arr = self.getJSONArrayFromData(result.data!)
@@ -214,6 +215,7 @@ class Api{
                         overview: overview
                     ))
                 }
+                s.episodes = episodes
                 callback(season: s)
             }else{
                 Error.HTTPError(result)

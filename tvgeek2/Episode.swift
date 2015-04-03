@@ -14,4 +14,12 @@ struct Episode{
     var title: String?
     var cover: String?
     var overview: String?
+    
+    func format()->String{
+        if episode < 10{
+            return "e0\(episode)"
+        }else{
+            return "e\(episode)"
+        }
+    }
 }
