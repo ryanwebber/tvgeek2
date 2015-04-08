@@ -44,6 +44,15 @@ class NoConnectionViewController: UIViewController, RefreshConnectionDelegate{
     override func viewDidLoad() {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         connectionView.delegate = self
+        
+        var view = UIAlertView(
+            title: "Connection Error",
+            message: "TVGeek could not connect to the server. Please try again later",
+            delegate: nil,
+            cancelButtonTitle: "Okay"
+        )
+        
+        view.show()
     }
     
     func refreshConnection() {
