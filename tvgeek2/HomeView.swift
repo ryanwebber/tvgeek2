@@ -43,6 +43,7 @@ class HomeViewController:UIViewController, UISearchBarDelegate, ViewShowDelegate
         super.viewWillAppear(animated)
         var shows = Cache.getStoredShows()
         self.homeView.setShows(shows)
+        self.homeView.hideOverlay(animated: false)
         
         for show in shows{
             Api().getShowNextEpisodeByShow(show, callback: { (episode: NextEpisode?) -> () in
@@ -75,12 +76,14 @@ class HomeViewController:UIViewController, UISearchBarDelegate, ViewShowDelegate
     
     func searchBarTextDidBeginEditing(searchBar: UISearchBar){
         searchBar.showsCancelButton = true
+        homeView.showOverlay()
     }
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar){
         searchBar.showsCancelButton = false
         searchBar.resignFirstResponder()
         searchBar.text = nil
+        homeView.hideOverlay()
     }
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar){
@@ -100,6 +103,7 @@ class HomeView:BaseView{
     private var scroller = UIScrollView()
     private var myshows = WatchView()
     private var popular = PopularView()
+    private var darkOverlay = UIView()
     
     var delegate: ViewShowDelegate?{
         get{
@@ -124,6 +128,10 @@ class HomeView:BaseView{
         scroller.addSubview(myshows)
         scroller.addSubview(popular)
         self.addSubview(scroller)
+        
+        darkOverlay.alpha = 0
+        darkOverlay.backgroundColor = COLOR_DARKER_TRANS
+        self.addSubview(darkOverlay)
     }
     
     func setShows(shows: [Show]){
@@ -142,6 +150,23 @@ class HomeView:BaseView{
     
     func setShowAirDateUnknown(show: Show){
         myshows.setNextShowDateUnknown(show)
+    }
+    
+    func showOverlay(){
+        UIView.animateWithDuration(0.25, animations: {
+            self.darkOverlay.alpha = 1
+        })
+    }
+    
+    func hideOverlay(animated:Bool=false){
+        
+        if(animated){
+            UIView.animateWithDuration(0.25, animations: {
+                self.darkOverlay.alpha = 0
+            })
+        }else{
+            self.darkOverlay.alpha = 0
+        }
     }
 
     override func layoutSubviews() {
@@ -163,6 +188,8 @@ class HomeView:BaseView{
 
             start+=size.height
             scroller.contentSize = CGSize(width: lims.width, height: start)
+            
+            darkOverlay.frame = self.bounds;
         }
     }
 }
