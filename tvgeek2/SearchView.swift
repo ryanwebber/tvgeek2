@@ -48,7 +48,7 @@ class SearchViewController:UIViewController, UITableViewDelegate{
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
         var index = indexPath.row
-        self.navigationController?.pushViewController(ShowViewController(showId: (self.view as SearchView).shows[index].id), animated: true)
+        self.navigationController?.pushViewController(ShowViewController(showId: (self.view as! SearchView).shows[index].id), animated: true)
     }
 }
 
@@ -56,7 +56,7 @@ class SearchView:UITableView, UITableViewDataSource{
     var shows: [Show] = []
     private var tableCells: [UITableViewCell] = []
     
-    convenience override init(){
+    convenience init(){
         self.init(frame: CGRectZero, style: UITableViewStyle.Plain)
         self.backgroundColor = COLOR_DARK
         self.separatorColor = COLOR_GRAY

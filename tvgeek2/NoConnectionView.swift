@@ -22,7 +22,7 @@ class NoConnectionViewController: UIViewController, RefreshConnectionDelegate{
         "\"This woman hates me so much, I'm starting to like her.\" - George Costanza, Seinfeld",
     ]
     
-    override init(){
+    init(){
         
         var quote:UInt32 = arc4random_uniform(UInt32(failQuotes.count))
         self.connectionView = NoConnectionView(failQuotes[Int(quote)])

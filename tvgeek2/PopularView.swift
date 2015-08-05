@@ -19,7 +19,7 @@ class PopularView:UICollectionView, UICollectionViewDataSource, UICollectionView
         fatalError("init(coder:) has not been implemented")
     }
     
-    override init(){
+    init(){
         var layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
@@ -40,7 +40,7 @@ class PopularView:UICollectionView, UICollectionViewDataSource, UICollectionView
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell{
-        var cell = collectionView.dequeueReusableCellWithReuseIdentifier(PopularShowCell.identifier, forIndexPath: indexPath) as PopularShowCell
+        var cell = collectionView.dequeueReusableCellWithReuseIdentifier(PopularShowCell.identifier, forIndexPath: indexPath) as! PopularShowCell
         var r = CGFloat(Float(arc4random()) / Float(UINT32_MAX))
         var g = CGFloat(Float(arc4random()) / Float(UINT32_MAX))
         var b = CGFloat(Float(arc4random()) / Float(UINT32_MAX))

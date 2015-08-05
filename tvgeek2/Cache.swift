@@ -23,7 +23,7 @@ class Cache {
         var existing = storage.mutableArrayValueForKey("favourites")
         
         for x in existing{
-            var dict = x as NSDictionary
+            var dict = x as! NSDictionary
             if let id = dict.objectForKey("id") as? Int{
                 if id == show.id{
                     existing.removeObject(x)
@@ -41,7 +41,7 @@ class Cache {
         var existing = storage.mutableArrayValueForKey("favourites")
         
         for(var i=0;i<existing.count;i++){
-            var dict = existing[i] as NSDictionary
+            var dict = existing[i] as! NSDictionary
             if let id = dict.objectForKey("id") as? Int{
                 if id == show.id{
                     existing[i] = show.encode()
@@ -58,7 +58,7 @@ class Cache {
         var shows = [Show]()
         
         for item in arr{
-            var dict = item as NSDictionary
+            var dict = item as! NSDictionary
             shows.append(Show.decode(dict))
         }
         

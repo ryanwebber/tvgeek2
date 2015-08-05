@@ -13,7 +13,7 @@ class BaseView: UIView{
     private var loader = UIActivityIndicatorView()
     private var loading = true
     
-    override init(){
+    init(){
         super.init(frame: CGRectZero)
         self.backgroundColor = COLOR_DARK
         

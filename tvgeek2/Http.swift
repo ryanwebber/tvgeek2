@@ -41,7 +41,7 @@ class HttpResult {
     var headers : Dictionary<String, String> {
         get {
             if let responseValue = response {
-                return responseValue.allHeaderFields as Dictionary<String,String>
+                return responseValue.allHeaderFields as! Dictionary<String,String>
             }
             else {
                 return Dictionary<String, String>()
@@ -52,7 +52,7 @@ class HttpResult {
     init(data: NSData?, request: NSURLRequest, response: NSURLResponse?, error : NSError?) {
         self.data = data
         self.request = request
-        self.response = response as NSHTTPURLResponse?
+        self.response = response as! NSHTTPURLResponse?
         self.error = error
         self.success = false
         

@@ -13,7 +13,7 @@ var sharedNavigator: AppNavigator?
 
 class AppNavigator:UINavigationController{
     
-    convenience override init(){
+    convenience init(){
         self.init(rootViewController: HomeViewController())
         if sharedNavigator == nil{
             sharedNavigator = self

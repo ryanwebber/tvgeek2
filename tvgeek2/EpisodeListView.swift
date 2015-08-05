@@ -57,7 +57,7 @@ class EpisodeListView:UITableView, UITableViewDataSource{
     var episodes: [Episode] = []
     var whenSelected = UIView()
     
-    convenience override init(){
+    convenience init(){
         self.init(frame: CGRectZero, style: UITableViewStyle.Plain)
         self.backgroundColor = COLOR_DARK
         self.separatorColor = COLOR_GRAY
@@ -82,7 +82,7 @@ class EpisodeListView:UITableView, UITableViewDataSource{
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var dequeued = self.dequeueReusableCellWithIdentifier("episode") as UITableViewCell?
+        var dequeued = self.dequeueReusableCellWithIdentifier("episode") as! UITableViewCell?
         if dequeued == nil{
             dequeued = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "episode")
         }

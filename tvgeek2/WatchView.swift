@@ -140,7 +140,7 @@ class NoWatchShows: UIView{
     private var image = UIImageView(image: UIImage(named: "placeholder_favourite"))
     private var overlay = UIView()
     
-    override init() {
+    init() {
         super.init(frame: CGRectZero)
         
         title.textColor = COLOR_WHITE

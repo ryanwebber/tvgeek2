@@ -13,7 +13,7 @@ class HomeViewController:UIViewController, UISearchBarDelegate, ViewShowDelegate
     
     private var homeView = HomeView()
     
-    override init(){
+    init(){
         super.init(nibName: nil, bundle: nil)
         
         var searchBar = UISearchBar()

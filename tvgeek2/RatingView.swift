@@ -15,7 +15,7 @@ class RatingView:UIView{
     private var halfhearts: [UIImageView] = []
     private var emptyhearts: [UIImageView] = []
     
-    override init(){
+    init(){
         super.init(frame: CGRectZero)
     }
 

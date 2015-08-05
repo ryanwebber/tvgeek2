@@ -19,7 +19,7 @@ class Api{
         var dict = [
             "Content-Type": "application/json",
             "trakt-api-version": "2",
-            "trakt-api-key": Api.api_keys["trakt_key"] as String,
+            "trakt-api-key": Api.api_keys["trakt_key"] as! String,
         ]
         return dict
     }
@@ -35,11 +35,11 @@ class Api{
     }
     
     private func getJSONFromData(data:NSData) -> NSDictionary{
-        return NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil) as NSDictionary
+        return NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil) as! NSDictionary
     }
     
     private func getJSONArrayFromData(data:NSData) -> NSArray{
-        return NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil) as NSArray
+        return NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil) as! NSArray
     }
     
     func getShowsFromSearchString(searchString: String, callback: (shows: [Show]) -> ()){
@@ -50,20 +50,20 @@ class Api{
                 var arr = self.getJSONArrayFromData(result.data!)
                 var shows = [Show]()
                 for (var i = 0;i<arr.count;i++) {
-                    var json = (arr[i] as NSDictionary)["show"] as NSDictionary
+                    var json = (arr[i] as! NSDictionary)["show"] as! NSDictionary
                     shows.append(Show(
-                        title: json["title"] as String,
+                        title: json["title"] as! String,
                         rating: nil,
-                        poster: ((json["images"] as NSDictionary)["poster"] as NSDictionary)["thumb"] as? String,
-                        cover: ((json["images"] as NSDictionary)["fanart"] as NSDictionary)["thumb"] as? String,
+                        poster: ((json["images"] as! NSDictionary)["poster"] as! NSDictionary)["thumb"] as? String,
+                        cover: ((json["images"] as! NSDictionary)["fanart"] as! NSDictionary)["thumb"] as? String,
                         description: json["overview"] as? String,
                         airDay: nil,
                         airTime: nil,
                         airTimezone: nil,
                         network: nil,
                         year: json["year"] as? Int,
-                        id: (json["ids"] as NSDictionary)["trakt"] as Int,
-                        tvrageid: (json["ids"] as NSDictionary)["tvrage"] as? Int,
+                        id: (json["ids"] as! NSDictionary)["trakt"] as! Int,
+                        tvrageid: (json["ids"] as! NSDictionary)["tvrage"] as? Int,
                         genres: [],
                         status: nil
                     ))
@@ -83,20 +83,20 @@ class Api{
                 var arr = self.getJSONArrayFromData(result.data!)
                 var shows = [Show]()
                 for (var i = 0;i<arr.count;i++) {
-                    var json = (arr[i] as NSDictionary)["show"] as NSDictionary
+                    var json = (arr[i] as! NSDictionary)["show"] as! NSDictionary
                     shows.append(Show(
-                        title: json["title"] as String,
+                        title: json["title"] as! String,
                         rating: json["rating"] as? Float,
-                        poster: ((json["images"] as NSDictionary)["poster"] as NSDictionary)["thumb"] as? String,
-                        cover: ((json["images"] as NSDictionary)["fanart"] as NSDictionary)["thumb"] as? String,
+                        poster: ((json["images"] as! NSDictionary)["poster"] as! NSDictionary)["thumb"] as? String,
+                        cover: ((json["images"] as! NSDictionary)["fanart"] as! NSDictionary)["thumb"] as? String,
                         description: json["overview"] as? String,
                         airDay: nil,
                         airTime: nil,
                         airTimezone: nil,
                         network: nil,
                         year: json["year"] as? Int,
-                        id: (json["ids"] as NSDictionary)["trakt"] as Int,
-                        tvrageid: (json["ids"] as NSDictionary)["tvrage"] as? Int,
+                        id: (json["ids"] as! NSDictionary)["trakt"] as! Int,
+                        tvrageid: (json["ids"] as! NSDictionary)["tvrage"] as? Int,
                         genres: [],
                         status: nil
                     ))
@@ -113,15 +113,15 @@ class Api{
         http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in
             var json:NSDictionary
             if result.success{
-                var arr = (self.getJSONFromData(result.data!) as NSDictionary)["cast"] as NSArray
+                var arr = (self.getJSONFromData(result.data!) as NSDictionary)["cast"] as! NSArray
                 var cast = [Person]()
                 for (var i = 0;i<arr.count;i++) {
-                    var json = arr[i] as NSDictionary
+                    var json = arr[i] as! NSDictionary
                     cast.append(Person(
-                        name: (json["person"] as NSDictionary)["name"] as String,
-                        character: json["character"] as String,
-                        headshot: (((json["person"] as NSDictionary)["images"] as NSDictionary)["headshot"] as NSDictionary)["thumb"] as? String,
-                        id: ((json["person"] as NSDictionary)["ids"] as NSDictionary)["trakt"] as Int
+                        name: (json["person"] as! NSDictionary)["name"] as! String,
+                        character: json["character"] as! String,
+                        headshot: (((json["person"] as! NSDictionary)["images"] as! NSDictionary)["headshot"] as! NSDictionary)["thumb"] as? String,
+                        id: ((json["person"] as! NSDictionary)["ids"] as! NSDictionary)["trakt"] as! Int
                     ))
                 }
                 callback(cast: cast)
@@ -136,25 +136,25 @@ class Api{
         http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in
             var json:NSDictionary
             if result.success{
-                var arr = (self.getJSONFromData(result.data!) as NSDictionary)["cast"] as NSArray
+                var arr = (self.getJSONFromData(result.data!) as NSDictionary)["cast"] as! NSArray
                 var productions = [CastMember]()
                 for (var i = 0;i<arr.count;i++) {
-                    var json = arr[i] as NSDictionary
-                    var character = json["character"] as String
-                    json = json["show"] as NSDictionary
+                    var json = arr[i] as! NSDictionary
+                    var character = json["character"] as! String
+                    json = json["show"] as! NSDictionary
                     var show = Show(
-                        title: json["title"] as String,
+                        title: json["title"] as! String,
                         rating: json["rating"] as? Float,
-                        poster: ((json["images"] as NSDictionary)["poster"] as NSDictionary)["thumb"] as? String,
-                        cover: ((json["images"] as NSDictionary)["fanart"] as NSDictionary)["thumb"] as? String,
+                        poster: ((json["images"] as! NSDictionary)["poster"] as! NSDictionary)["thumb"] as? String,
+                        cover: ((json["images"] as! NSDictionary)["fanart"] as! NSDictionary)["thumb"] as? String,
                         description: json["overview"] as? String,
                         airDay: nil,
                         airTime: nil,
                         airTimezone: nil,
                         network: nil,
                         year: json["year"] as? Int,
-                        id: (json["ids"] as NSDictionary)["trakt"] as Int,
-                        tvrageid: (json["ids"] as NSDictionary)["tvrage"] as? Int,
+                        id: (json["ids"] as! NSDictionary)["trakt"] as! Int,
+                        tvrageid: (json["ids"] as! NSDictionary)["tvrage"] as? Int,
                         genres: [],
                         status: nil
                     )
@@ -177,9 +177,9 @@ class Api{
                 var arr = self.getJSONArrayFromData(result.data!)
                 var seasons = [Season]()
                 for (var i = 0;i<arr.count;i++) {
-                    var num = (arr[i] as NSDictionary)["number"] as Int
+                    var num = (arr[i] as! NSDictionary)["number"] as! Int
                     if num > 0 {
-                        var image = (((arr[i] as NSDictionary)["images"] as NSDictionary)["poster"] as NSDictionary)["thumb"] as? String
+                        var image = (((arr[i] as! NSDictionary)["images"] as! NSDictionary)["poster"] as! NSDictionary)["thumb"] as? String
                         seasons.append(Season(
                             showid: id,
                             poster: image,
@@ -203,10 +203,10 @@ class Api{
                 var s = season
                 var episodes = [Episode]()
                 for (var i = 0;i<arr.count;i++) {
-                    var num = (arr[i] as NSDictionary)["number"] as Int
-                    var title = (arr[i] as NSDictionary)["title"] as? String
-                    var image = (((arr[i] as NSDictionary)["images"] as NSDictionary)["screenshot"] as NSDictionary)["thumb"] as? String
-                    var overview = (arr[i] as NSDictionary)["overview"] as? String
+                    var num = (arr[i] as! NSDictionary)["number"] as! Int
+                    var title = (arr[i] as! NSDictionary)["title"] as? String
+                    var image = (((arr[i] as! NSDictionary)["images"] as! NSDictionary)["screenshot"] as! NSDictionary)["thumb"] as? String
+                    var overview = (arr[i] as! NSDictionary)["overview"] as? String
                     episodes.append(Episode(
                         season: s,
                         episode: num,
@@ -230,20 +230,20 @@ class Api{
                 var arr = self.getJSONArrayFromData(result.data!)
                 var shows = [Show]()
                 for (var i = 0;i<arr.count;i++) {
-                    var json = arr[i] as NSDictionary
+                    var json = arr[i] as! NSDictionary
                     shows.append(Show(
-                        title: json["title"] as String,
+                        title: json["title"] as! String,
                         rating: nil,
-                        poster: ((json["images"] as NSDictionary)["poster"] as NSDictionary)["thumb"] as? String,
-                        cover: ((json["images"] as NSDictionary)["fanart"] as NSDictionary)["thumb"] as? String,
+                        poster: ((json["images"] as! NSDictionary)["poster"] as! NSDictionary)["thumb"] as? String,
+                        cover: ((json["images"] as! NSDictionary)["fanart"] as! NSDictionary)["thumb"] as? String,
                         description: json["overview"] as? String,
                         airDay: nil,
                         airTime: nil,
                         airTimezone: nil,
                         network: nil,
                         year: json["year"] as? Int,
-                        id: (json["ids"] as NSDictionary)["trakt"] as Int,
-                        tvrageid: (json["ids"] as NSDictionary)["tvrage"] as? Int,
+                        id: (json["ids"] as! NSDictionary)["trakt"] as! Int,
+                        tvrageid: (json["ids"] as! NSDictionary)["tvrage"] as? Int,
                         genres: [],
                         status: nil
                     ))
@@ -261,19 +261,19 @@ class Api{
             if result.success{
                 var json = self.getJSONFromData(result.data!)
                 callback(show: Show(
-                    title: json["title"] as String,
+                    title: json["title"] as! String,
                     rating: json["rating"] as? Float,
-                    poster: ((json["images"] as NSDictionary)["poster"] as NSDictionary)["thumb"] as? String,
-                    cover: ((json["images"] as NSDictionary)["fanart"] as NSDictionary)["thumb"] as? String,
+                    poster: ((json["images"] as! NSDictionary)["poster"] as! NSDictionary)["thumb"] as? String,
+                    cover: ((json["images"] as! NSDictionary)["fanart"] as! NSDictionary)["thumb"] as? String,
                     description: json["overview"] as? String,
-                    airDay: (json["airs"] as NSDictionary)["day"] as? String,
-                    airTime: (json["airs"] as NSDictionary)["time"] as? String,
-                    airTimezone: (json["airs"] as NSDictionary)["timezone"] as? String,
+                    airDay: (json["airs"] as! NSDictionary)["day"] as? String,
+                    airTime: (json["airs"] as! NSDictionary)["time"] as? String,
+                    airTimezone: (json["airs"] as! NSDictionary)["timezone"] as? String,
                     network: json["network"] as? String,
                     year: json["year"] as? Int,
-                    id: (json["ids"] as NSDictionary)["trakt"] as Int,
-                    tvrageid: (json["ids"] as NSDictionary)["tvrage"] as? Int,
-                    genres: (json["genres"] as [String]),
+                    id: (json["ids"] as! NSDictionary)["trakt"] as! Int,
+                    tvrageid: (json["ids"] as! NSDictionary)["tvrage"] as? Int,
+                    genres: (json["genres"] as! [String]),
                     status: json["status"] as? String
                 ))
             }else{

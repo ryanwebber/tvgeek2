@@ -64,7 +64,7 @@ struct Show{
     }
     
     static func decode(dict: NSDictionary) -> Show{
-        var title = dict.objectForKey("title") as String
+        var title = dict.objectForKey("title") as! String
         var rating = dict.objectForKey("year") as? Float
         var poster = dict.objectForKey("poster") as? String
         var cover = dict.objectForKey("cover") as? String
@@ -74,7 +74,7 @@ struct Show{
         var airTimezone = dict.objectForKey("airtimezone") as? String
         var network = dict.objectForKey("network") as? String
         var year = dict.objectForKey("year") as? Int
-        var id = dict.objectForKey("id") as Int
+        var id = dict.objectForKey("id") as! Int
         var tvrageid = dict.objectForKey("tvrageid") as? Int
         var status = dict.objectForKey("status") as? String
         
