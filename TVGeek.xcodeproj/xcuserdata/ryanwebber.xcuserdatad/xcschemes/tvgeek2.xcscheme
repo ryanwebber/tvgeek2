@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "933C0E241A2CD5AE006AB2FC"
-               BuildableName = "tvgeek2.app"
+               BuildableName = "TvGeek.app"
                BlueprintName = "tvgeek2"
                ReferencedContainer = "container:TVGeek.xcodeproj">
             </BuildableReference>
@@ -57,7 +57,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "933C0E241A2CD5AE006AB2FC"
-            BuildableName = "tvgeek2.app"
+            BuildableName = "TvGeek.app"
             BlueprintName = "tvgeek2"
             ReferencedContainer = "container:TVGeek.xcodeproj">
          </BuildableReference>
@@ -77,7 +77,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "933C0E241A2CD5AE006AB2FC"
-            BuildableName = "tvgeek2.app"
+            BuildableName = "TvGeek.app"
             BlueprintName = "tvgeek2"
             ReferencedContainer = "container:TVGeek.xcodeproj">
          </BuildableReference>
@@ -96,7 +96,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "933C0E241A2CD5AE006AB2FC"
-            BuildableName = "tvgeek2.app"
+            BuildableName = "TvGeek.app"
             BlueprintName = "tvgeek2"
             ReferencedContainer = "container:TVGeek.xcodeproj">
          </BuildableReference>
