@@ -22,13 +22,13 @@ class SearchViewController:UIViewController, UITableViewDelegate{
         self.title = "\"\(searchStr)\""
         searchView.delegate = self
         
-        var loader = UIActivityIndicatorView(frame: CGRectZero)
+        let loader = UIActivityIndicatorView(frame: CGRectZero)
         loader.startAnimating()
         titleView = self.navigationItem.titleView
         self.navigationItem.titleView = loader
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -47,7 +47,7 @@ class SearchViewController:UIViewController, UITableViewDelegate{
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
-        var index = indexPath.row
+        let index = indexPath.row
         self.navigationController?.pushViewController(ShowViewController(showId: (self.view as! SearchView).shows[index].id), animated: true)
     }
 }
@@ -98,7 +98,7 @@ class SearchResultTableCell: UITableViewCell{
         self.backgroundColor = COLOR_DARK
         self.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         
-        var titleText = show.title
+        let titleText = show.title
         
         poster.contentMode = UIViewContentMode.ScaleAspectFill
         poster.layer.borderWidth = 1
@@ -126,18 +126,18 @@ class SearchResultTableCell: UITableViewCell{
         self.selectedBackgroundView = whenSelected
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        var lims = self.contentView.bounds.size
-        var left = self.separatorInset.left
+        let lims = self.contentView.bounds.size
+        let left = self.separatorInset.left
         
-        var poster_width = (lims.height - PADDING) * 2/3
-        var poster_offset = poster_width + PADDING + left
-        var data_width = lims.width - poster_offset
+        let poster_width = (lims.height - PADDING) * 2/3
+        let poster_offset = poster_width + PADDING + left
+        let data_width = lims.width - poster_offset
         
         poster.frame = CGRect(x: PADDING, y: PADDING/2, width: poster_width, height: lims.height - PADDING)
         

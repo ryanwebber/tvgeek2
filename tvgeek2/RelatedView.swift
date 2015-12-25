@@ -17,7 +17,7 @@ class RelatedView:BaseView{
     
     private var scroll = UIScrollView()
     
-    required init(coder aDecoder: NSCoder){
+    required init?(coder aDecoder: NSCoder){
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -34,7 +34,7 @@ class RelatedView:BaseView{
     }
     
     func viewTapped(handler: UIGestureRecognizer){
-        var index = handler.view?.tag
+        let index = handler.view?.tag
         if let del = delegate{
             if let i = index{
                 del.shouldViewShow(i)
@@ -51,14 +51,14 @@ class RelatedView:BaseView{
         }
         
         for show in shows{
-            var view = URLImageView()
+            let view = URLImageView()
             view.setImageUrl(show.poster)
             view.backgroundColor = COLOR_TRANS
             view.contentMode = UIViewContentMode.ScaleAspectFill
             view.layer.borderWidth = 1
             view.layer.borderColor = COLOR_WHITE.CGColor
             view.userInteractionEnabled = true
-            var taps = UITapGestureRecognizer(target: self, action: Selector("viewTapped:"))
+            let taps = UITapGestureRecognizer(target: self, action: Selector("viewTapped:"))
             view.addGestureRecognizer(taps)
             view.tag = show.id
             
@@ -86,14 +86,14 @@ class RelatedView:BaseView{
         super.layoutSubviews()
         
         if(!super.isLoading()){
-            var lims = self.bounds.size
+            let lims = self.bounds.size
             scroll.frame = self.bounds
             
-            var poster_width = (lims.height-PADDING*2)*2/3
-            var poster_height = poster_width*3/2
+            let poster_width = (lims.height-PADDING*2)*2/3
+            let poster_height = poster_width*3/2
             
             for (var i=0;i<images.count;i++){
-                var view = images[i]
+                let view = images[i]
                 view.frame = CGRect(x: (PADDING+poster_width)*CGFloat(i) + PADDING, y: PADDING, width: poster_width, height: poster_height)
             }
             

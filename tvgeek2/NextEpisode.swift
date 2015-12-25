@@ -20,7 +20,7 @@ struct NextEpisode {
     }
     
     func formatDate()->String{
-        var formatter = NSDateFormatter()
+        let formatter = NSDateFormatter()
         formatter.dateFormat = "MMMM d"
         var pre = formatter.stringFromDate(date)
         

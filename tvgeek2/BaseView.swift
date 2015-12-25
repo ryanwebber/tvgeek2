@@ -21,7 +21,7 @@ class BaseView: UIView{
         self.addSubview(loader)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("Not implementing views with nibs")
     }
     

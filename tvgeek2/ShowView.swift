@@ -25,13 +25,13 @@ class ShowViewController:UIViewController, ViewShowDelegate, ViewSeasonDelegate{
         showView.seasonDelegate = self
         
         favourited = Cache.isShowStored(showId)
-        var title = favourited ? "Unfavourite":"Favourite"
+        let title = favourited ? "Unfavourite":"Favourite"
         
         toggle = UIBarButtonItem(title: title, style: UIBarButtonItemStyle.Plain, target: self, action: Selector("toggleFavourite"))
         self.navigationItem.rightBarButtonItem = toggle
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -152,7 +152,7 @@ class ShowView:BaseView{
         }
     }
     
-    required init(coder aDecoder: NSCoder){
+    required init?(coder aDecoder: NSCoder){
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -276,7 +276,7 @@ class ShowView:BaseView{
             while(x.count > 3){
                 x.removeLast()
             }
-            self.genres.text = "/".join(x)
+            self.genres.text = x.joinWithSeparator("/")
         }
         
         if let n = show.network{
@@ -321,20 +321,20 @@ class ShowView:BaseView{
     override func layoutSubviews() {
         super.layoutSubviews()
         if(!super.isLoading()){
-            var lims = self.bounds.size
+            let lims = self.bounds.size
             
             scroll.frame = self.bounds
             
             cover.frame = CGRect(x: -PADDING_SMALL, y: -PADDING_SMALL, width: lims.width + 2*PADDING_SMALL, height: COVER_HEIGHT + 2*PADDING_SMALL)
             
-            var poster_height = COVER_HEIGHT*2/3
-            var poster_width = poster_height*2/3
+            let poster_height = COVER_HEIGHT*2/3
+            let poster_width = poster_height*2/3
             
             poster.frame = CGRect(x: PADDING, y: COVER_HEIGHT + PADDING_SMALL*2 - (poster_height*2/3), width: poster_width, height: poster_height)
             
-            var endy = (poster.frame.origin.y + poster.frame.height)
-            var data_width = lims.width - (poster.frame.origin.x + poster.frame.width + PADDING*2)
-            var rating_height = min(FONT_SIZE_LARGE, (data_width - PADDING_SMALL*4) / 5)
+            let endy = (poster.frame.origin.y + poster.frame.height)
+            let data_width = lims.width - (poster.frame.origin.x + poster.frame.width + PADDING*2)
+            let rating_height = min(FONT_SIZE_LARGE, (data_width - PADDING_SMALL*4) / 5)
             
             ratings.frame = CGRect(
                 x: poster.frame.origin.x + poster.frame.width + PADDING,
@@ -344,7 +344,7 @@ class ShowView:BaseView{
             )
             
             var start = endy + PADDING*2
-            var width = lims.width - 2*PADDING
+            let width = lims.width - 2*PADDING
             
             var size = title.sizeThatFits(CGSize(width: width, height: lims.height))
             title.frame = CGRect(x: PADDING, y: start, width: width, height: size.height)

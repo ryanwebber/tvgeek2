@@ -24,7 +24,7 @@ class NoConnectionViewController: UIViewController, RefreshConnectionDelegate{
     
     init(){
         
-        var quote:UInt32 = arc4random_uniform(UInt32(failQuotes.count))
+        let quote:UInt32 = arc4random_uniform(UInt32(failQuotes.count))
         self.connectionView = NoConnectionView(failQuotes[Int(quote)])
         
         super.init(nibName: nil, bundle: nil)
@@ -32,7 +32,7 @@ class NoConnectionViewController: UIViewController, RefreshConnectionDelegate{
         self.edgesForExtendedLayout = UIRectEdge.None
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -45,7 +45,7 @@ class NoConnectionViewController: UIViewController, RefreshConnectionDelegate{
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         connectionView.delegate = self
         
-        var view = UIAlertView(
+        let view = UIAlertView(
             title: "Connection Error",
             message: "TVGeek could not connect to the server. Please try again later",
             delegate: nil,
@@ -66,7 +66,7 @@ class NoConnectionView:UIView{
     private var button = UIButton()
     var delegate: RefreshConnectionDelegate?
     
-    required init(coder aDecoder: NSCoder){
+    required init?(coder aDecoder: NSCoder){
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -98,12 +98,12 @@ class NoConnectionView:UIView{
     }
     
     override func layoutSubviews() {
-        var lims = self.bounds.size
+        let lims = self.bounds.size
         
         
-        var button_size = button.sizeThatFits(self.bounds.size)
+        let button_size = button.sizeThatFits(self.bounds.size)
         
-        var size = label.sizeThatFits(lims)
+        let size = label.sizeThatFits(lims)
         label.frame = CGRect(x:PADDING, y:(lims.height-size.height)/2 - (button_size.height + PADDING * 2), width:lims.width - PADDING*2, height: size.height)
         
         button.frame = CGRect(x: lims.width/3, y: label.frame.origin.y + label.frame.height + PADDING*2, width: lims.width/3, height: button_size.height)

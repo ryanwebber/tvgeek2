@@ -57,8 +57,8 @@ class HttpResult {
         self.success = false
         
         if error != nil {
-            println("Http.\(request.HTTPMethod!): \(request.URL)")
-            println("Error: \(error!.localizedDescription)")
+            print("Http.\(request.HTTPMethod!): \(request.URL)")
+            print("Error: \(error!.localizedDescription)")
         }
         else {
             if let responseValue = self.response {
@@ -67,13 +67,19 @@ class HttpResult {
                     success = true
                 }
                 else {
-                    println("Http.\(request.HTTPMethod!) \(request.URL)")
-                    println("Status: \(statusCode)")
+                    print("Http.\(request.HTTPMethod!) \(request.URL)")
+                    print("Status: \(statusCode)")
                     if let jsonError: AnyObject = jsonObject {
                         var err: NSError?
-                        var errData = NSJSONSerialization.dataWithJSONObject(jsonError, options:NSJSONWritingOptions.PrettyPrinted, error: &err)
-                        var errMessage = NSString(data: errData!, encoding: NSUTF8StringEncoding)
-                        println("Error: \(errMessage)")
+                        var errData: NSData?
+                        do {
+                            errData = try NSJSONSerialization.dataWithJSONObject(jsonError, options:NSJSONWritingOptions.PrettyPrinted)
+                        } catch let error as NSError {
+                            err = error
+                            errData = nil
+                        }
+                        let errMessage = NSString(data: errData!, encoding: NSUTF8StringEncoding)
+                        print("Error: \(errMessage)")
                     }
                 }
             }
@@ -85,7 +91,11 @@ class HttpResult {
         var jsonError: NSError?
         if let contentType = headers["Content-Type"] {
             if contentType.rangeOfString("application/json") != nil {
-                resultJsonObject = NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments, error: &jsonError) as AnyObject?
+                do {
+                    try resultJsonObject = NSJSONSerialization.JSONObjectWithData(self.data!, options: .AllowFragments) as AnyObject?
+                } catch {
+                    resultJsonObject = nil
+                }
             }
         }
         return resultJsonObject

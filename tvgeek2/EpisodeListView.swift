@@ -22,13 +22,13 @@ class EpisodeListViewController:UIViewController, UITableViewDelegate{
         self.title = "Season \(season.season)"
         listView.delegate = self
         
-        var loader = UIActivityIndicatorView(frame: CGRectZero)
+        let loader = UIActivityIndicatorView(frame: CGRectZero)
         loader.startAnimating()
         titleView = self.navigationItem.titleView
         self.navigationItem.titleView = loader
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -82,12 +82,12 @@ class EpisodeListView:UITableView, UITableViewDataSource{
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var dequeued = self.dequeueReusableCellWithIdentifier("episode") as! UITableViewCell?
+        var dequeued = self.dequeueReusableCellWithIdentifier("episode") 
         if dequeued == nil{
             dequeued = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "episode")
         }
-        var cell = dequeued!
-        var episode = episodes[indexPath.row]
+        let cell = dequeued!
+        let episode = episodes[indexPath.row]
         
         cell.backgroundColor = COLOR_DARK
         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
@@ -95,9 +95,9 @@ class EpisodeListView:UITableView, UITableViewDataSource{
         cell.selectedBackgroundView = whenSelected
         
         if let t = episode.title{
-            cell.textLabel?.text = "\(episode.format())\t\(t)"
+            cell.textLabel?.text = "\(episode.format()) - \(t)"
         }else{
-            cell.textLabel?.text = "Episode \(episode.episode)"
+            cell.textLabel?.text = "\(episode.format())"
         }
         return cell;
     }

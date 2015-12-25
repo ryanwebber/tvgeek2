@@ -19,7 +19,7 @@ class SimpleShowView: UIView{
     private var loader = UIActivityIndicatorView()
     private var gradient = CAGradientLayer()
     
-    required init(coder aDecoder: NSCoder){
+    required init?(coder aDecoder: NSCoder){
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -70,11 +70,11 @@ class SimpleShowView: UIView{
     override func layoutSubviews() {
         super.layoutSubviews()
         gradient.frame = self.bounds
-        var lims = self.bounds.size
+        let lims = self.bounds.size
         
         cover.frame = self.bounds
         
-        var offset = lims.height - ((PADDING*2) + title.font.lineHeight + year.font.lineHeight)
+        let offset = lims.height - ((PADDING*2) + title.font.lineHeight + year.font.lineHeight)
         overlay.frame = self.bounds
         
         title.frame = CGRect(x: PADDING, y: offset + PADDING, width: lims.width - PADDING*2, height: title.font.lineHeight)

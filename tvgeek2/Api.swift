@@ -11,12 +11,12 @@ import Foundation
 class Api{
     
     class var api_keys: NSDictionary{
-        var path = NSBundle.mainBundle().pathForResource("keys", ofType: "plist")
+        let path = NSBundle.mainBundle().pathForResource("keys", ofType: "plist")
         return NSDictionary(contentsOfFile: path!)!
     }
     
     class var trakt_header: Dictionary<String, String>{
-        var dict = [
+        let dict = [
             "Content-Type": "application/json",
             "trakt-api-version": "2",
             "trakt-api-key": Api.api_keys["trakt_key"] as! String,
@@ -35,22 +35,22 @@ class Api{
     }
     
     private func getJSONFromData(data:NSData) -> NSDictionary{
-        return NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil) as! NSDictionary
+        return (try! NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments)) as! NSDictionary
     }
     
     private func getJSONArrayFromData(data:NSData) -> NSArray{
-        return NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil) as! NSArray
+        return (try! NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments)) as! NSArray
     }
     
     func getShowsFromSearchString(searchString: String, callback: (shows: [Show]) -> ()){
-        var encoded = searchString.lowercaseString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
-        var url = NSURL(string: "https://api-v2launch.trakt.tv/search?query=\(encoded!)&type=show")
+        let encoded = searchString.lowercaseString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+        let url = NSURL(string: "https://api-v2launch.trakt.tv/search?query=\(encoded!)&type=show")
         http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in
             if result.success{
-                var arr = self.getJSONArrayFromData(result.data!)
+                let arr = self.getJSONArrayFromData(result.data!)
                 var shows = [Show]()
                 for (var i = 0;i<arr.count;i++) {
-                    var json = (arr[i] as! NSDictionary)["show"] as! NSDictionary
+                    let json = (arr[i] as! NSDictionary)["show"] as! NSDictionary
                     shows.append(Show(
                         title: json["title"] as! String,
                         rating: nil,
@@ -77,13 +77,13 @@ class Api{
     
     func getPopularShows(callback: (popular: [Show]) -> ()){
         
-        var url = NSURL(string: "https://api-v2launch.trakt.tv/shows/trending?extended=images,full")
+        let url = NSURL(string: "https://api-v2launch.trakt.tv/shows/trending?extended=images,full")
         http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in
             if result.success{
-                var arr = self.getJSONArrayFromData(result.data!)
+                let arr = self.getJSONArrayFromData(result.data!)
                 var shows = [Show]()
                 for (var i = 0;i<arr.count;i++) {
-                    var json = (arr[i] as! NSDictionary)["show"] as! NSDictionary
+                    let json = (arr[i] as! NSDictionary)["show"] as! NSDictionary
                     shows.append(Show(
                         title: json["title"] as! String,
                         rating: json["rating"] as? Float,
@@ -109,14 +109,14 @@ class Api{
     }
     
     func getCastForShowById(id: String, callback: (cast:[Person]) -> ()){
-        var url = NSURL(string: "https://api-v2launch.trakt.tv/shows/\(id)/people?extended=images,full")
+        let url = NSURL(string: "https://api-v2launch.trakt.tv/shows/\(id)/people?extended=images,full")
         http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in
             var json:NSDictionary
             if result.success{
-                var arr = (self.getJSONFromData(result.data!) as NSDictionary)["cast"] as! NSArray
+                let arr = (self.getJSONFromData(result.data!) as NSDictionary)["cast"] as! NSArray
                 var cast = [Person]()
                 for (var i = 0;i<arr.count;i++) {
-                    var json = arr[i] as! NSDictionary
+                    let json = arr[i] as! NSDictionary
                     cast.append(Person(
                         name: (json["person"] as! NSDictionary)["name"] as! String,
                         character: json["character"] as! String,
@@ -132,17 +132,17 @@ class Api{
     }
     
     func getProductionsForPersonById(id: String, callback: (productions:[CastMember]) -> ()){
-        var url = NSURL(string: "https://api-v2launch.trakt.tv/people/\(id)/shows?extended=images,full")
+        let url = NSURL(string: "https://api-v2launch.trakt.tv/people/\(id)/shows?extended=images,full")
         http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in
             var json:NSDictionary
             if result.success{
-                var arr = (self.getJSONFromData(result.data!) as NSDictionary)["cast"] as! NSArray
+                let arr = (self.getJSONFromData(result.data!) as NSDictionary)["cast"] as! NSArray
                 var productions = [CastMember]()
                 for (var i = 0;i<arr.count;i++) {
                     var json = arr[i] as! NSDictionary
-                    var character = json["character"] as! String
+                    let character = json["character"] as! String
                     json = json["show"] as! NSDictionary
-                    var show = Show(
+                    let show = Show(
                         title: json["title"] as! String,
                         rating: json["rating"] as? Float,
                         poster: ((json["images"] as! NSDictionary)["poster"] as! NSDictionary)["thumb"] as? String,
@@ -171,15 +171,15 @@ class Api{
     }
     
     func getSeasonsForShowById(id: String, callback: (seasons:[Season]) -> ()){
-        var url = NSURL(string: "https://api-v2launch.trakt.tv/shows/\(id)/seasons?extended=images,full")
+        let url = NSURL(string: "https://api-v2launch.trakt.tv/shows/\(id)/seasons?extended=images,full")
         http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in
             if result.success{
-                var arr = self.getJSONArrayFromData(result.data!)
+                let arr = self.getJSONArrayFromData(result.data!)
                 var seasons = [Season]()
                 for (var i = 0;i<arr.count;i++) {
-                    var num = (arr[i] as! NSDictionary)["number"] as! Int
+                    let num = (arr[i] as! NSDictionary)["number"] as! Int
                     if num > 0 {
-                        var image = (((arr[i] as! NSDictionary)["images"] as! NSDictionary)["poster"] as! NSDictionary)["thumb"] as? String
+                        let image = (((arr[i] as! NSDictionary)["images"] as! NSDictionary)["poster"] as! NSDictionary)["thumb"] as? String
                         seasons.append(Season(
                             showid: id,
                             poster: image,
@@ -196,17 +196,17 @@ class Api{
     }
     
     func getSeasonWithEpisodesForShowSeasonBySeason(season: Season, callback: (season:Season) -> ()){
-        var url = NSURL(string: "https://api-v2launch.trakt.tv/shows/\(season.showid)/seasons/\(season.season)/?extended=images,full")
+        let url = NSURL(string: "https://api-v2launch.trakt.tv/shows/\(season.showid)/seasons/\(season.season)/?extended=images,full")
         http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in
             if result.success{
-                var arr = self.getJSONArrayFromData(result.data!)
+                let arr = self.getJSONArrayFromData(result.data!)
                 var s = season
                 var episodes = [Episode]()
                 for (var i = 0;i<arr.count;i++) {
-                    var num = (arr[i] as! NSDictionary)["number"] as! Int
-                    var title = (arr[i] as! NSDictionary)["title"] as? String
-                    var image = (((arr[i] as! NSDictionary)["images"] as! NSDictionary)["screenshot"] as! NSDictionary)["thumb"] as? String
-                    var overview = (arr[i] as! NSDictionary)["overview"] as? String
+                    let num = (arr[i] as! NSDictionary)["number"] as! Int
+                    let title = (arr[i] as! NSDictionary)["title"] as? String
+                    let image = (((arr[i] as! NSDictionary)["images"] as! NSDictionary)["screenshot"] as! NSDictionary)["thumb"] as? String
+                    let overview = (arr[i] as! NSDictionary)["overview"] as? String
                     episodes.append(Episode(
                         season: s,
                         episode: num,
@@ -224,13 +224,13 @@ class Api{
     }
     
     func getRelatedShowsById(id: String, callback: (shows: [Show]) -> ()){
-        var url = NSURL(string: "https://api-v2launch.trakt.tv/shows/\(id)/related?extended=images,full")
+        let url = NSURL(string: "https://api-v2launch.trakt.tv/shows/\(id)/related?extended=images,full")
         http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in
             if result.success{
-                var arr = self.getJSONArrayFromData(result.data!)
+                let arr = self.getJSONArrayFromData(result.data!)
                 var shows = [Show]()
                 for (var i = 0;i<arr.count;i++) {
-                    var json = arr[i] as! NSDictionary
+                    let json = arr[i] as! NSDictionary
                     shows.append(Show(
                         title: json["title"] as! String,
                         rating: nil,
@@ -256,10 +256,10 @@ class Api{
     }
     
     func getShowFromId(id:String, callback: (show: Show) -> ()){
-        var url = NSURL(string: "https://api-v2launch.trakt.tv/shows/\(id)?extended=images,full")
+        let url = NSURL(string: "https://api-v2launch.trakt.tv/shows/\(id)?extended=images,full")
         http.get(url!, headers: Api.trakt_header, completionHandler: {(result:HttpResult) -> Void in
             if result.success{
-                var json = self.getJSONFromData(result.data!)
+                let json = self.getJSONFromData(result.data!)
                 callback(show: Show(
                     title: json["title"] as! String,
                     rating: json["rating"] as? Float,
@@ -307,23 +307,24 @@ class Api{
     
     func getShowNextEpisodeByShow(show:Show, callback: (episode: NextEpisode?) -> ()){
         if let id = show.tvrageid{
-            var url = NSURL(string: "http://services.tvrage.com/feeds/episode_list.php?sid=\(show.tvrageid!)")
+            let url = NSURL(string: "http://services.tvrage.com/feeds/episode_list.php?sid=\(show.tvrageid!)")
             http.get(url!, headers: Api.nil_headers, completionHandler: {(result:HttpResult) -> Void in
+                
                 if result.success{
                     
                     var dict = SWXMLHash.parse(result.data!)
                     dict = dict["Show"]["Episodelist"]["Season"]
                     
                     for season in dict{
-                        var seasonNumber = season.element?.attributes["no"] as String!
+                        let seasonNumber = season.element?.attributes["no"] as String!
                         
                         for episode in season["episode"]{
-                            var episodeNumber = episode["seasonnum"].element!.text!
+                            let episodeNumber = episode["seasonnum"].element!.text!
                             
-                            var date = episode["airdate"].element!.text!
-                            var title = episode["title"].element?.text
+                            let date = episode["airdate"].element!.text!
+                            let title = episode["title"].element?.text
                             
-                            var format = NSDateFormatter()
+                            let format = NSDateFormatter()
                             format.dateFormat = "yyyy-MM-dd"
                             
                             if let then = format.dateFromString(date){

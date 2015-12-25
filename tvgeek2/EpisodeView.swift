@@ -21,7 +21,7 @@ class EpisodeViewController:UIViewController{
         self.edgesForExtendedLayout = UIRectEdge.None
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -47,7 +47,7 @@ class EpisodeView:BaseView{
     private var overviewLabel = UILabel()
     private var overview = UITextView()
     
-    required init(coder aDecoder: NSCoder){
+    required init?(coder aDecoder: NSCoder){
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -113,22 +113,22 @@ class EpisodeView:BaseView{
     override func layoutSubviews() {
         super.layoutSubviews()
         if(!super.isLoading()){
-            var lims = self.bounds.size
+            let lims = self.bounds.size
             
             scroll.frame = self.bounds
             
             cover.frame = CGRect(x: -PADDING_SMALL, y: -PADDING_SMALL, width: lims.width + 2*PADDING_SMALL, height: COVER_HEIGHT + 2*PADDING_SMALL)
             
-            var poster_height = COVER_HEIGHT*2/3
-            var poster_width = poster_height*2/3
+            let poster_height = COVER_HEIGHT*2/3
+            let poster_width = poster_height*2/3
             
             poster.frame = CGRect(x: PADDING, y: COVER_HEIGHT + PADDING_SMALL*2 - (poster_height*2/3), width: poster_width, height: poster_height)
             
-            var endy = (poster.frame.origin.y + poster.frame.height)
+            let endy = (poster.frame.origin.y + poster.frame.height)
             var data_width = lims.width - (poster.frame.origin.x + poster.frame.width + PADDING*2)
             
             var start = endy + PADDING*2
-            var width = lims.width - 2*PADDING
+            let width = lims.width - 2*PADDING
             
             var size = title.sizeThatFits(CGSize(width: width, height: lims.height))
             title.frame = CGRect(x: PADDING, y: start, width: width, height: size.height)

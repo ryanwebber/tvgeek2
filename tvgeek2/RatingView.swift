@@ -19,12 +19,12 @@ class RatingView:UIView{
         super.init(frame: CGRectZero)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     func setRating(rating: CGFloat){
-        var r = rating / 2;
+        let r = rating / 2;
         while(!fullhearts.isEmpty){
             fullhearts[0].removeFromSuperview()
             fullhearts.removeAtIndex(0)
@@ -38,26 +38,26 @@ class RatingView:UIView{
             emptyhearts.removeAtIndex(0)
         }
         
-        var numFullStars = Int(round(r - 0.25))
-        var numHalfStars = (r - floor(r)) > 0.25 && (r - floor(r)) < 0.75 ? 1 : 0
-        var numEmptyStars = 5 - numFullStars - numHalfStars
+        let numFullStars = Int(round(r - 0.25))
+        let numHalfStars = (r - floor(r)) > 0.25 && (r - floor(r)) < 0.75 ? 1 : 0
+        let numEmptyStars = 5 - numFullStars - numHalfStars
         
         for(var i=0;i<numFullStars;i++){
-            var imgview = UIImageView(image: UIImage(named: "star"))
+            let imgview = UIImageView(image: UIImage(named: "star"))
             imgview.contentMode = UIViewContentMode.ScaleAspectFit
             fullhearts.append(imgview)
             self.addSubview(imgview)
         }
         
         for(var i=0;i<numHalfStars;i++){
-            var imgview = UIImageView(image: UIImage(named: "star-half"))
+            let imgview = UIImageView(image: UIImage(named: "star-half"))
             imgview.contentMode = UIViewContentMode.ScaleAspectFit
             fullhearts.append(imgview)
             self.addSubview(imgview)
         }
         
         for(var i=0;i<numEmptyStars;i++){
-            var imgview = UIImageView(image: UIImage(named: "star-empty"))
+            let imgview = UIImageView(image: UIImage(named: "star-empty"))
             imgview.contentMode = UIViewContentMode.ScaleAspectFit
             fullhearts.append(imgview)
             self.addSubview(imgview)
@@ -65,11 +65,11 @@ class RatingView:UIView{
     }
     
     override func layoutSubviews() {
-        var lims = self.bounds.size
+        let lims = self.bounds.size
         
-        var full_width = (lims.height * 5) + (PADDING_SMALL * 4)
-        var hwidth = lims.height
-        var offset = (lims.width - full_width) / 2
+        let full_width = (lims.height * 5) + (PADDING_SMALL * 4)
+        let hwidth = lims.height
+        let offset = (lims.width - full_width) / 2
         
         for(var i=0;i<fullhearts.count;i++){
             fullhearts[i].frame = CGRect(

@@ -16,7 +16,7 @@ class HomeViewController:UIViewController, UISearchBarDelegate, ViewShowDelegate
     init(){
         super.init(nibName: nil, bundle: nil)
         
-        var searchBar = UISearchBar()
+        let searchBar = UISearchBar()
         
         searchBar.barStyle = UIBarStyle.BlackTranslucent
         searchBar.placeholder = "Search"
@@ -30,7 +30,7 @@ class HomeViewController:UIViewController, UISearchBarDelegate, ViewShowDelegate
         homeView.delegate = self
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -43,7 +43,7 @@ class HomeViewController:UIViewController, UISearchBarDelegate, ViewShowDelegate
         super.viewWillAppear(animated)
         var shows = Cache.getStoredShows()
         self.homeView.setShows(shows)
-        self.homeView.hideOverlay(animated: false)
+        self.homeView.hideOverlay(false)
         
         for show in shows{
             Api().getShowNextEpisodeByShow(show, callback: { (episode: NextEpisode?) -> () in
@@ -59,7 +59,7 @@ class HomeViewController:UIViewController, UISearchBarDelegate, ViewShowDelegate
     }
     
     override func viewDidLoad() {
-        var shows = Cache.getStoredShows()
+        let shows = Cache.getStoredShows()
         
         Api().getPopularShows({(popular: [Show]) -> Void in
             dispatch_async(dispatch_get_main_queue()) {
@@ -89,7 +89,7 @@ class HomeViewController:UIViewController, UISearchBarDelegate, ViewShowDelegate
     func searchBarSearchButtonClicked(searchBar: UISearchBar){
         searchBar.showsCancelButton = false
         searchBar.resignFirstResponder()
-        self.navigationController?.pushViewController(SearchViewController(searchBar.text), animated: true)
+        self.navigationController?.pushViewController(SearchViewController(searchBar.text!), animated: true)
         searchBar.text = nil
     }
     
@@ -115,7 +115,7 @@ class HomeView:BaseView{
         }
     }
     
-    required init(coder aDecoder: NSCoder){
+    required init?(coder aDecoder: NSCoder){
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -172,10 +172,10 @@ class HomeView:BaseView{
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        var bounds = self.bounds
+        let bounds = self.bounds
         scroller.frame = bounds
         if !super.isLoading(){
-            var lims = super.bounds.size
+            let lims = super.bounds.size
             var width = lims.width - 2*PADDING
             
             var start = CGFloat(0)

@@ -15,12 +15,12 @@ class PopularView:UICollectionView, UICollectionViewDataSource, UICollectionView
     
     var showDelegate: ViewShowDelegate?
     
-    required init(coder aDecoder: NSCoder){
+    required init?(coder aDecoder: NSCoder){
         fatalError("init(coder:) has not been implemented")
     }
     
     init(){
-        var layout = UICollectionViewFlowLayout()
+        let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
 
@@ -40,10 +40,10 @@ class PopularView:UICollectionView, UICollectionViewDataSource, UICollectionView
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell{
-        var cell = collectionView.dequeueReusableCellWithReuseIdentifier(PopularShowCell.identifier, forIndexPath: indexPath) as! PopularShowCell
-        var r = CGFloat(Float(arc4random()) / Float(UINT32_MAX))
-        var g = CGFloat(Float(arc4random()) / Float(UINT32_MAX))
-        var b = CGFloat(Float(arc4random()) / Float(UINT32_MAX))
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(PopularShowCell.identifier, forIndexPath: indexPath) as! PopularShowCell
+        let r = CGFloat(Float(arc4random()) / Float(UINT32_MAX))
+        let g = CGFloat(Float(arc4random()) / Float(UINT32_MAX))
+        let b = CGFloat(Float(arc4random()) / Float(UINT32_MAX))
         cell.backgroundColor = UIColor(red: r, green: g, blue: b, alpha: 1)
         
         cell.setShow(self.shows[indexPath.item], cover: images[indexPath.item])
@@ -57,13 +57,13 @@ class PopularView:UICollectionView, UICollectionViewDataSource, UICollectionView
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize{
-        var width = collectionView.bounds.width / 2
+        let width = collectionView.bounds.width / 2
         return CGSize(width: width, height: width)
     }
     
     override func sizeThatFits(size: CGSize) -> CGSize {
-        var height = size.width / 2
-        var max_height = ceil(CGFloat(self.shows.count/2))
+        let height = size.width / 2
+        let max_height = ceil(CGFloat(self.shows.count/2))
         return CGSize(width: size.width, height: height*max_height)
     }
     
@@ -71,7 +71,7 @@ class PopularView:UICollectionView, UICollectionViewDataSource, UICollectionView
         self.shows = shows
         
         for show in shows{
-            var image = URLImageView()
+            let image = URLImageView()
             image.setImageUrl(show.cover)
             image.contentMode = UIViewContentMode.ScaleAspectFill
             images.append(image)
@@ -121,7 +121,7 @@ class PopularShowCell: UICollectionViewCell{
         self.addSubview(overlay)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -141,11 +141,11 @@ class PopularShowCell: UICollectionViewCell{
     override func setNeedsLayout() {
         super.layoutSubviews()
         gradient.frame = self.bounds
-        var lims = self.bounds.size
+        let lims = self.bounds.size
         
         cover.frame = self.bounds
         
-        var offset = lims.height - ((PADDING*2) + title.font.lineHeight + year.font.lineHeight)
+        let offset = lims.height - ((PADDING*2) + title.font.lineHeight + year.font.lineHeight)
         overlay.frame = self.bounds
         
         title.frame = CGRect(x: PADDING, y: offset + PADDING, width: lims.width - PADDING*2, height: title.font.lineHeight)

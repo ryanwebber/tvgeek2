@@ -19,7 +19,7 @@ class CastView:BaseView, UIScrollViewDelegate{
     
     private var scroll = UIScrollView()
     
-    required init(coder aDecoder: NSCoder){
+    required init?(coder aDecoder: NSCoder){
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -50,7 +50,7 @@ class CastView:BaseView, UIScrollViewDelegate{
         }
         
         for person in cast{
-            var view = URLImageView()
+            let view = URLImageView()
             view.setImageUrl(person.headshot)
             view.backgroundColor = COLOR_TRANS
             view.contentMode = UIViewContentMode.ScaleAspectFill
@@ -59,7 +59,7 @@ class CastView:BaseView, UIScrollViewDelegate{
             scroll.addSubview(view)
             images.append(view)
             
-            var clabel = UILabel()
+            let clabel = UILabel()
             clabel.textColor = COLOR_WHITE
             clabel.text = person.character
             clabel.font = UIFont.systemFontOfSize(FONT_SIZE_LARGE)
@@ -67,7 +67,7 @@ class CastView:BaseView, UIScrollViewDelegate{
             characters.append(clabel)
             scroll.addSubview(clabel)
             
-            var alabel = UILabel()
+            let alabel = UILabel()
             alabel.textColor = COLOR_LIGHT
             alabel.text = person.name
             alabel.font = UIFont.systemFontOfSize(FONT_SIZE_MED)
@@ -89,7 +89,7 @@ class CastView:BaseView, UIScrollViewDelegate{
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView){
-        var page:CGFloat = (scroll.contentOffset.x * CGFloat(cast.count) / scroll.contentSize.width)
+        let page:CGFloat = (scroll.contentOffset.x * CGFloat(cast.count) / scroll.contentSize.width)
         pageControl.currentPage = Int(round(page))
     }
     
@@ -97,29 +97,29 @@ class CastView:BaseView, UIScrollViewDelegate{
         super.layoutSubviews()
         
         if(!super.isLoading()){
-            var lims = self.bounds.size
+            let lims = self.bounds.size
             scroll.frame = self.bounds
             
-            var size = pageControl.sizeThatFits(lims)
-            var pager_height = size.height*2/3
+            let size = pageControl.sizeThatFits(lims)
+            let pager_height = size.height*2/3
             pageControl.frame = CGRect(x: 0, y: lims.height - pager_height, width: lims.width, height: pager_height)
             
-            var poster_width = (lims.height-((PADDING) + pager_height))*2/3
-            var poster_height = poster_width*3/2
+            let poster_width = (lims.height-((PADDING) + pager_height))*2/3
+            let poster_height = poster_width*3/2
             
             for (var i=0;i<images.count;i++){
                 var offset = lims.width * CGFloat(i)
                 
-                var view = images[i]
+                let view = images[i]
                 view.frame = CGRect(x: offset+PADDING, y: PADDING, width: poster_width, height: poster_height)
                 
                 offset += PADDING*2 + poster_width
-                var width = lims.width - (PADDING*3 + poster_width)
+                let width = lims.width - (PADDING*3 + poster_width)
                 
-                var clabel = characters[i]
+                let clabel = characters[i]
                 clabel.frame = CGRect(x: offset, y: ((lims.height-pager_height)/2) - clabel.font.lineHeight, width: width, height: clabel.font.lineHeight)
                 
-                var alabel = actors[i]
+                let alabel = actors[i]
                 alabel.frame = CGRect(x: offset, y: ((lims.height-pager_height)/2), width: width, height: clabel.font.lineHeight)
             }
             

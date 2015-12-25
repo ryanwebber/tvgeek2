@@ -43,7 +43,7 @@ struct Show{
     var status: String?
     
     func encode() -> NSDictionary{
-        var dict = NSMutableDictionary()
+        let dict = NSMutableDictionary()
         
         dict.setValue(title, forKey: "title")
         dict.setValue(rating, forKey: "rating")
@@ -64,19 +64,19 @@ struct Show{
     }
     
     static func decode(dict: NSDictionary) -> Show{
-        var title = dict.objectForKey("title") as! String
-        var rating = dict.objectForKey("year") as? Float
-        var poster = dict.objectForKey("poster") as? String
-        var cover = dict.objectForKey("cover") as? String
-        var description = dict.objectForKey("description") as? String
-        var airDay = dict.objectForKey("airday") as? String
-        var airTime = dict.objectForKey("airtime") as? String
-        var airTimezone = dict.objectForKey("airtimezone") as? String
-        var network = dict.objectForKey("network") as? String
-        var year = dict.objectForKey("year") as? Int
-        var id = dict.objectForKey("id") as! Int
-        var tvrageid = dict.objectForKey("tvrageid") as? Int
-        var status = dict.objectForKey("status") as? String
+        let title = dict.objectForKey("title") as! String
+        let rating = dict.objectForKey("year") as? Float
+        let poster = dict.objectForKey("poster") as? String
+        let cover = dict.objectForKey("cover") as? String
+        let description = dict.objectForKey("description") as? String
+        let airDay = dict.objectForKey("airday") as? String
+        let airTime = dict.objectForKey("airtime") as? String
+        let airTimezone = dict.objectForKey("airtimezone") as? String
+        let network = dict.objectForKey("network") as? String
+        let year = dict.objectForKey("year") as? Int
+        let id = dict.objectForKey("id") as! Int
+        let tvrageid = dict.objectForKey("tvrageid") as? Int
+        let status = dict.objectForKey("status") as? String
         
         var genres: [String]
         if let g = dict.objectForKey("genres") as? [String]{
@@ -105,9 +105,9 @@ struct Show{
     
     func formatTime()->String?{
         if let at = self.airTime{
-            var range = at.rangeOfString(":")
+            let range = at.rangeOfString(":")
             if let r = range{
-                var t24:Int? =  at.substringToIndex(r.startIndex).toInt()
+                let t24:Int? =  Int(at.substringToIndex(r.startIndex))
                 if let t24a = t24{
                     if(t24a == 12){
                         return "Noon"

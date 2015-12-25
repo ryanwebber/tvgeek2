@@ -18,7 +18,7 @@ class WatchView:BaseView, UIScrollViewDelegate{
     private var pageControl = UIPageControl()
     var delegate: ViewShowDelegate?;
     
-    required init(coder aDecoder: NSCoder){
+    required init?(coder aDecoder: NSCoder){
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -37,15 +37,15 @@ class WatchView:BaseView, UIScrollViewDelegate{
         
         self.addSubview(noshows)
         
-        var taps = UITapGestureRecognizer(target: self, action: Selector("viewTapped:"))
+        let taps = UITapGestureRecognizer(target: self, action: Selector("viewTapped:"))
         scroll.addGestureRecognizer(taps)
         
         pageControl.currentPageIndicatorTintColor = COLOR_THEME
     }
     
     func viewTapped(handler: UIGestureRecognizer){
-        var p = handler.locationInView(scroll)
-        var index:Int = Int(p.x / self.frame.width)
+        let p = handler.locationInView(scroll)
+        let index:Int = Int(p.x / self.frame.width)
         
         if let del = self.delegate{
             del.shouldViewShow(self.shows[index].id)
@@ -61,7 +61,7 @@ class WatchView:BaseView, UIScrollViewDelegate{
         }
         
         for show in shows{
-            var view = SimpleShowView(show: show)
+            let view = SimpleShowView(show: show)
             showViews.append(view)
             scroll.addSubview(view)
         }
@@ -106,13 +106,13 @@ class WatchView:BaseView, UIScrollViewDelegate{
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView){
-        var page:CGFloat = (scroll.contentOffset.x * CGFloat(shows.count) / scroll.contentSize.width)
+        let page:CGFloat = (scroll.contentOffset.x * CGFloat(shows.count) / scroll.contentSize.width)
         pageControl.currentPage = Int(round(page))
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        var lims = self.bounds.size
+        let lims = self.bounds.size
         
         if(super.isLoading()){
         }else if(shows.count == 0){
@@ -124,11 +124,11 @@ class WatchView:BaseView, UIScrollViewDelegate{
             scroll.contentSize = CGSize(width: CGFloat(shows.count) * lims.width, height: lims.height)
             
             for(var i=0;i<showViews.count;i++){
-                var view = showViews[i]
+                let view = showViews[i]
                 view.frame = CGRect(x: CGFloat(i)*lims.width, y:0, width: lims.width, height: lims.height)
             }
             
-            var size = pageControl.sizeThatFits(lims)
+            let size = pageControl.sizeThatFits(lims)
             pageControl.frame = CGRect(x: 0, y: 0, width: lims.width, height: size.height*2/3)
         }
     }
@@ -168,23 +168,23 @@ class NoWatchShows: UIView{
         self.addSubview(overlay)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     override func layoutSubviews() {
-        var lims = self.bounds.size
-        var width = lims.width - PADDING*2
+        let lims = self.bounds.size
+        let width = lims.width - PADDING*2
         
         image.frame = self.bounds
         overlay.frame = self.bounds
         
         var height = title.font.lineHeight
-        var size = desc.sizeThatFits(CGSize(width: width, height: lims.height))
+        let size = desc.sizeThatFits(CGSize(width: width, height: lims.height))
         height += size.height
         
-        var title_offset = (lims.height/2) - (height/2)
-        var desc_offset = title_offset + title.font.lineHeight
+        let title_offset = (lims.height/2) - (height/2)
+        let desc_offset = title_offset + title.font.lineHeight
         
         title.frame = CGRect(x: PADDING, y: title_offset, width: width, height: title.font.lineHeight)
         desc.frame = CGRect(x: PADDING, y: desc_offset, width: size.width, height: size.height)

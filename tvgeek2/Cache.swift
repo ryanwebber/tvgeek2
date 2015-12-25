@@ -11,19 +11,19 @@ import Foundation
 class Cache {
     
     class func storeShow(show:Show){
-        var storage = NSUserDefaults.standardUserDefaults()
+        let storage = NSUserDefaults.standardUserDefaults()
         
-        var existing = storage.mutableArrayValueForKey("favourites")
+        let existing = storage.mutableArrayValueForKey("favourites")
         existing.addObject(show.encode())
     }
     
     class func removeStoredShow(show: Show) -> Bool{
-        var storage = NSUserDefaults.standardUserDefaults()
+        let storage = NSUserDefaults.standardUserDefaults()
         
-        var existing = storage.mutableArrayValueForKey("favourites")
+        let existing = storage.mutableArrayValueForKey("favourites")
         
         for x in existing{
-            var dict = x as! NSDictionary
+            let dict = x as! NSDictionary
             if let id = dict.objectForKey("id") as? Int{
                 if id == show.id{
                     existing.removeObject(x)
@@ -36,12 +36,12 @@ class Cache {
     }
     
     class func updateShow(show:Show){
-        var storage = NSUserDefaults.standardUserDefaults()
+        let storage = NSUserDefaults.standardUserDefaults()
         
-        var existing = storage.mutableArrayValueForKey("favourites")
+        let existing = storage.mutableArrayValueForKey("favourites")
         
         for(var i=0;i<existing.count;i++){
-            var dict = existing[i] as! NSDictionary
+            let dict = existing[i] as! NSDictionary
             if let id = dict.objectForKey("id") as? Int{
                 if id == show.id{
                     existing[i] = show.encode()
@@ -52,13 +52,13 @@ class Cache {
     }
     
     class func getStoredShows()->[Show]{
-        var storage = NSUserDefaults.standardUserDefaults()
+        let storage = NSUserDefaults.standardUserDefaults()
         
-        var arr = storage.mutableArrayValueForKey("favourites")
+        let arr = storage.mutableArrayValueForKey("favourites")
         var shows = [Show]()
         
         for item in arr{
-            var dict = item as! NSDictionary
+            let dict = item as! NSDictionary
             shows.append(Show.decode(dict))
         }
         
@@ -66,7 +66,7 @@ class Cache {
     }
     
     class func isShowStored(id: Int)->Bool{
-        var shows = getStoredShows()
+        let shows = getStoredShows()
         for show in shows{
             if show.id == id {
                 return true

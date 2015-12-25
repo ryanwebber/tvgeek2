@@ -16,7 +16,7 @@ class SeasonView:BaseView{
     private var scroll = UIScrollView()
     var delegate: ViewSeasonDelegate?
     
-    required init(coder aDecoder: NSCoder){
+    required init?(coder aDecoder: NSCoder){
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -42,13 +42,13 @@ class SeasonView:BaseView{
         
         var i = 0;
         for season in seasons{
-            var view = SeasonPosterView(season: season.season)
+            let view = SeasonPosterView(season: season.season)
             view.setImageUrl(season.poster)
             view.backgroundColor = COLOR_TRANS
             view.contentMode = UIViewContentMode.ScaleAspectFill
             view.layer.borderWidth = 1
             view.layer.borderColor = COLOR_WHITE.CGColor
-            var taps = UITapGestureRecognizer(target: self, action: Selector("viewTapped:"))
+            let taps = UITapGestureRecognizer(target: self, action: Selector("viewTapped:"))
             view.addGestureRecognizer(taps)
             view.tag = i++
             view.userInteractionEnabled = true
@@ -69,7 +69,7 @@ class SeasonView:BaseView{
     }
     
     func viewTapped(handler: UIGestureRecognizer){
-        var index = handler.view?.tag
+        let index = handler.view?.tag
         if let del = delegate{
             if let i = index{
                 del.shouldViewSeason(seasons[i])
@@ -81,14 +81,14 @@ class SeasonView:BaseView{
         super.layoutSubviews()
         
         if(!super.isLoading()){
-            var lims = self.bounds.size
+            let lims = self.bounds.size
             scroll.frame = self.bounds
             
-            var poster_width = (lims.height-PADDING*2)*2/3
-            var poster_height = poster_width*3/2
+            let poster_width = (lims.height-PADDING*2)*2/3
+            let poster_height = poster_width*3/2
             
             for (var i=0;i<images.count;i++){
-                var view = images[i]
+                let view = images[i]
                 view.frame = CGRect(x: (PADDING+poster_width)*CGFloat(i) + PADDING, y: PADDING, width: poster_width, height: poster_height)
             }
             
@@ -112,14 +112,14 @@ class SeasonPosterView:URLImageView{
         self.addSubview(num)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        var max_width = self.bounds.width - PADDING_MED*2
-        var skip:CGFloat = 10
+        let max_width = self.bounds.width - PADDING_MED*2
+        let skip:CGFloat = 10
         
         var x = num.sizeThatFits(CGSize(width: CGFloat.max, height: num.font.lineHeight))
         while(x.width + skip < max_width){

@@ -55,12 +55,12 @@ class URLImageView : UIImageView{
         self.setNeedsLayout()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     override func layoutSubviews() {
-        var lims = self.bounds.size
+        let lims = self.bounds.size
         loader.frame = CGRect(
             x: (lims.width + loader.frame.width) / 2,
             y: (lims.height + loader.frame.height) / 2,
