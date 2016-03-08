@@ -154,7 +154,7 @@
 			isa = PBXGroup;
 			children = (
 				93B689F41A90F49700EDAB0D /* ui */,
-				93B689F31A90F48E00EDAB0D /* objects */,
+				93B689F31A90F48E00EDAB0D /* models */,
 				9348BBAE1A2E93B6006A0DDE /* api */,
 				933C0E2A1A2CD5AE006AB2FC /* AppDelegate.swift */,
 				933C0E331A2CD5AE006AB2FC /* Images.xcassets */,
@@ -211,7 +211,7 @@
 			name = home;
 			sourceTree = "<group>";
 		};
-		93B689F31A90F48E00EDAB0D /* objects */ = {
+		93B689F31A90F48E00EDAB0D /* models */ = {
 			isa = PBXGroup;
 			children = (
 				93B689F51A90F4C100EDAB0D /* Show.swift */,
@@ -221,7 +221,7 @@
 				93F679CF1ACE19F900A51685 /* Season.swift */,
 				93F679D11ACE1ACE00A51685 /* Episode.swift */,
 			);
-			name = objects;
+			name = models;
 			sourceTree = "<group>";
 		};
 		93B689F41A90F49700EDAB0D /* ui */ = {
@@ -347,7 +347,7 @@
 			attributes = {
 				LastSwiftMigration = 0720;
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "Ryan Webber";
 				TargetAttributes = {
 					933C0E241A2CD5AE006AB2FC = {
@@ -490,6 +490,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -530,7 +531,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -558,6 +560,7 @@
 				INFOPLIST_FILE = tvgeek2/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = www.ryanwebber.tvgeek;
 				PRODUCT_NAME = TvGeek;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -573,6 +576,7 @@
 				INFOPLIST_FILE = tvgeek2/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = www.ryanwebber.tvgeek;
 				PRODUCT_NAME = TvGeek;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -593,6 +597,7 @@
 				);
 				INFOPLIST_FILE = tvgeek2Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "ryanwebber.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/tvgeek2.app/tvgeek2";
 			};
@@ -608,6 +613,7 @@
 				);
 				INFOPLIST_FILE = tvgeek2Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "ryanwebber.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/tvgeek2.app/tvgeek2";
 			};

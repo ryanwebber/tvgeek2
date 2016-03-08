@@ -307,43 +307,39 @@ class Api{
     
     func getShowNextEpisodeByShow(show:Show, callback: (episode: NextEpisode?) -> ()){
         if let id = show.tvrageid{
-            let url = NSURL(string: "http://services.tvrage.com/feeds/episode_list.php?sid=\(show.tvrageid!)")
+            let url = NSURL(string: "http://api.tvmaze.com/lookup/shows?tvrage=\(show.tvrageid!)")
             http.get(url!, headers: Api.nil_headers, completionHandler: {(result:HttpResult) -> Void in
-                
                 if result.success{
-                    
-                    var dict = SWXMLHash.parse(result.data!)
-                    dict = dict["Show"]["Episodelist"]["Season"]
-                    
-                    for season in dict{
-                        let seasonNumber = season.element?.attributes["no"] as String!
+                    let json = self.getJSONFromData(result.data!);
+                    if let _link = json["_links"]?["nextepisode"]??["href"] as? String{
                         
-                        for episode in season["episode"]{
-                            let episodeNumber = episode["seasonnum"].element!.text!
-                            
-                            let date = episode["airdate"].element!.text!
-                            let title = episode["title"].element?.text
-                            
-                            let format = NSDateFormatter()
-                            format.dateFormat = "yyyy-MM-dd"
-                            
-                            if let then = format.dateFromString(date){
-                                if !then.timeIntervalSinceNow.isSignMinus{
+                        let url2 = NSURL(string: _link)
+                        self.http.get(url2!, headers: Api.nil_headers, completionHandler: {(result:HttpResult) -> Void in
+                            if result.success{
+                                let json = self.getJSONFromData(result.data!);
+                                if let _time = json["airstamp"] as? String{
+                                    
+                                    let dateFormatter = NSDateFormatter()
+                                    dateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+                                    dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZ"
+                                    
                                     callback(episode: NextEpisode(
-                                        season: seasonNumber,
-                                        episode: episodeNumber,
-                                        title: title,
-                                        date: then,
+                                        season: String(json["season"]!),
+                                        episode: String(json["number"]!),
+                                        title: json["name"] as! String,
+                                        date: dateFormatter.dateFromString(_time)!,
                                         show: show
-                                        ))
-                                    return;
+                                    ))
+                                }else{
+                                    callback(episode: nil)
                                 }
+                            }else{
+                                callback(episode: nil)
                             }
-                        }
+                        })
+                    }else{
+                        callback(episode: nil)
                     }
-                    
-                    callback(episode: nil)
-                    
                 }else{
                     callback(episode: nil)
                 }
